@@ -11,6 +11,8 @@ public class Skill {
 
     private String skillName;
 
+    private double minCompetencyScore;
+
     public Long getId() {
         return id;
     }
@@ -21,5 +23,13 @@ public class Skill {
 
     public void setSkillName(String skillName) {
         this.skillName = skillName;
+    }
+
+    public double getMinCompetencyScore() {
+        return minCompetencyScore;
+    }
+
+    public void setMinCompetencyScore(double minCompetencyScore) {
+        this.minCompetencyScore = minCompetencyScore;
     }
 }

@@ -1,84 +1,47 @@
 package com.example.demo.serviceimpl;
 
+import com.example.demo.entity.AssessmentResult;
 import com.example.demo.entity.Skill;
-import com.example.demo.entity.SkillGapRecommendation;
+import com.example.demo.entity.SkillGapRecord;
 import com.example.demo.repository.AssessmentResultRepository;
-import com.example.demo.repository.SkillGapRecommendationRepository;
-import com.example.demo.repository.SkillRepository;
-import com.example.demo.repository.StudentProfileRepository;
-import com.example.demo.service.RecommendationService;
+import com.example.demo.repository.SkillGapRecordRepository;
+import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
-public class RecommendationServiceImpl implements RecommendationService {
+@Service
+public class RecommendationServiceImpl {
 
     private final AssessmentResultRepository assessmentRepository;
-    private final SkillGapRecommendationRepository recommendationRepository;
-    private final StudentProfileRepository studentRepository;
-    private final SkillRepository skillRepository;
+    private final SkillGapRecordRepository gapRepository;
 
-    // 🔑 EXACT constructor order
     public RecommendationServiceImpl(
             AssessmentResultRepository assessmentRepository,
-            SkillGapRecommendationRepository recommendationRepository,
-            StudentProfileRepository studentRepository,
-            SkillRepository skillRepository) {
-
+            SkillGapRecordRepository gapRepository) {
         this.assessmentRepository = assessmentRepository;
-        this.recommendationRepository = recommendationRepository;
-        this.studentRepository = studentRepository;
-        this.skillRepository = skillRepository;
+        this.gapRepository = gapRepository;
     }
 
-    @Override
-    public SkillGapRecommendation computeRecommendationForStudentSkill(Long studentId, Long skillId) {
+    public SkillGapRecord generateRecommendation(Long profileId, Long skillId) {
 
-        Skill skill = skillRepository.findById(skillId)
-                .orElseThrow(() -> new RuntimeException("Not Found"));
+        Optional<AssessmentResult> assessmentOpt =
+                assessmentRepository.findByStudentProfileIdAndSkillId(profileId, skillId);
 
-        double target = skill.getMinCompetencyScore();
-        double current = assessmentRepository
-                .findByStudentProfileIdAndSkillId(studentId, skillId)
-                .stream()
-                .mapToDouble(a -> a.getScoreObtained())
-                .max()
-                .orElse(0.0);
-
-        double gap = target - current;
-
-        SkillGapRecommendation rec = new SkillGapRecommendation();
-        rec.setSkill(skill);
-        rec.setGapScore(gap);
-        rec.setGeneratedBy("SYSTEM");
-
-        if (gap >= 20) {
-            rec.setPriority("HIGH");
-            rec.setRecommendedAction("Immediate training required");
-        } else if (gap >= 10) {
-            rec.setPriority("MEDIUM");
-            rec.setRecommendedAction("Practice recommended");
-        } else {
-            rec.setPriority("LOW");
-            rec.setRecommendedAction("Maintain skill level");
+        if (assessmentOpt.isEmpty()) {
+            throw new RuntimeException("Assessment not found");
         }
 
-        return recommendationRepository.save(rec);
-    }
+        AssessmentResult assessment = assessmentOpt.get();
+        Skill skill = assessment.getSkill();
 
-    @Override
-    public List<SkillGapRecommendation> computeRecommendationsForStudent(Long studentId) {
+        double gap = skill.getMinCompetencyScore() - assessment.getScore();
 
-        List<SkillGapRecommendation> list = new ArrayList<>();
-        for (Skill skill : skillRepository.findByActiveTrue()) {
-            list.add(computeRecommendationForStudentSkill(studentId, skill.getId()));
-        }
-        return list;
-    }
+        SkillGapRecord record = new SkillGapRecord();
+        record.setSkill(skill);
+        record.setCurrentScore(assessment.getScore());
+        record.setTargetScore(skill.getMinCompetencyScore());
+        record.setGapScore(Math.max(gap, 0));
 
-    @Override
-    public List<SkillGapRecommendation> getRecommendationsForStudent(Long studentId) {
-        return recommendationRepository
-                .findByStudentProfileIdOrderByGeneratedAtDesc(studentId);
+        return gapRepository.save(record);
     }
 }
