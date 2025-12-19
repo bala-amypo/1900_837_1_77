@@ -1,14 +1,11 @@
 package com.example.demo.dto;
 
-import java.sql.Timestamp;
+public class RegisterRequest {
 
-public class UserDTO {
-
-    private Long id;
     private String fullName;
     private String email;
+    private String password;
     private String role;
-    private Timestamp createdAt;
 
     // getters & setters
 }
