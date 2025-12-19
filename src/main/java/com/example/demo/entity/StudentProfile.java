@@ -1,32 +1,8 @@
-package com.example.demo.entity;
+package com.example.demo.repository;
 
-import jakarta.persistence.*;
-import java.sql.Timestamp;
+import com.example.demo.entity.AssessmentResult;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Entity
-@Table(name = "student_profiles", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "enrollmentId")
-})
-public class StudentProfile {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @OneToOne
-    private User user;
-
-    private String enrollmentId;
-    private String cohort;
-    private Integer yearLevel;
-    private Boolean active = true;
-
-    private Timestamp lastUpdatedAt;
-
-    @PreUpdate
-    public void onUpdate() {
-        this.lastUpdatedAt = new Timestamp(System.currentTimeMillis());
-    }
-
-    // getters & setters
+public interface AssessmentResultRepository
+        extends JpaRepository<AssessmentResult, Long> {
 }
