@@ -1,40 +1,31 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.time.Instant;
+import java.sql.Timestamp;
 
 @Entity
-@Table(name = "skill_gap_records")
 public class SkillGapRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     private StudentProfile studentProfile;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Skill skill;
 
-    @Column(nullable = false)
     private Double currentScore;
-
-    @Column(nullable = false)
     private Double targetScore;
-
-    @Column(nullable = false)
     private Double gapScore;
 
-    @Column(nullable = false)
-    private Instant calculatedAt;
+    private Timestamp calculatedAt;
 
     @PrePersist
     public void onCreate() {
-        calculatedAt = Instant.now();
+        this.calculatedAt = new Timestamp(System.currentTimeMillis());
     }
 
-    public SkillGapRecord() {}
-
-    /* Getters & Setters */
+    // getters & setters
 }
