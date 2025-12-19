@@ -9,22 +9,39 @@ public class AssessmentResult {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private double scoreObtained;
-    private double maxScore;
+    @ManyToOne
+    private StudentProfile studentProfile;
 
-    public double getScoreObtained() {
-        return scoreObtained;
+    @ManyToOne
+    private Skill skill;
+
+    private double score;
+
+    public Long getId() {
+        return id;
     }
 
-    public void setScoreObtained(double scoreObtained) {
-        this.scoreObtained = scoreObtained;
+    public StudentProfile getStudentProfile() {
+        return studentProfile;
     }
 
-    public double getMaxScore() {
-        return maxScore;
+    public void setStudentProfile(StudentProfile studentProfile) {
+        this.studentProfile = studentProfile;
     }
 
-    public void setMaxScore(double maxScore) {
-        this.maxScore = maxScore;
+    public Skill getSkill() {
+        return skill;
+    }
+
+    public void setSkill(Skill skill) {
+        this.skill = skill;
+    }
+
+    public double getScore() {
+        return score;
+    }
+
+    public void setScore(double score) {
+        this.score = score;
     }
 }

@@ -10,7 +10,10 @@ public class StudentProfile {
     private Long id;
 
     private String enrollmentId;
-    private Long userId;
+
+    private String name;
+
+    private String department;
 
     public Long getId() {
         return id;
@@ -24,11 +27,19 @@ public class StudentProfile {
         this.enrollmentId = enrollmentId;
     }
 
-    public Long getUserId() {
-        return userId;
+    public String getName() {
+        return name;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
     }
 }
