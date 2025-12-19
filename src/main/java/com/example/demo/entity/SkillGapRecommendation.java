@@ -1,7 +1,6 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.sql.Timestamp;
 
 @Entity
 public class SkillGapRecommendation {
@@ -11,22 +10,51 @@ public class SkillGapRecommendation {
     private Long id;
 
     @ManyToOne
-    private StudentProfile studentProfile;
-
-    @ManyToOne
     private Skill skill;
 
-    private String recommendedAction;
+    private double gapScore;
     private String priority;
-    private Double gapScore;
+    private String recommendedAction;
     private String generatedBy;
 
-    private Timestamp generatedAt;
-
-    @PrePersist
-    public void onCreate() {
-        this.generatedAt = new Timestamp(System.currentTimeMillis());
+    // ===== Getters & Setters =====
+    public Skill getSkill() {
+        return skill;
     }
 
-    // getters & setters
+    public void setSkill(Skill skill) {
+        this.skill = skill;
+    }
+
+    public double getGapScore() {
+        return gapScore;
+    }
+
+    public void setGapScore(double gapScore) {
+        this.gapScore = gapScore;
+    }
+
+    public String getPriority() {
+        return priority;
+    }
+
+    public void setPriority(String priority) {
+        this.priority = priority;
+    }
+
+    public String getRecommendedAction() {
+        return recommendedAction;
+    }
+
+    public void setRecommendedAction(String recommendedAction) {
+        this.recommendedAction = recommendedAction;
+    }
+
+    public String getGeneratedBy() {
+        return generatedBy;
+    }
+
+    public void setGeneratedBy(String generatedBy) {
+        this.generatedBy = generatedBy;
+    }
 }

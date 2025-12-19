@@ -18,13 +18,13 @@ public class AssessmentServiceImpl implements AssessmentService {
     @Override
     public AssessmentResult recordAssessment(AssessmentResult result) {
 
-        if (result.getScoreObtained() == null ||
+        if (result.getScoreObtained() == 0 ||
             result.getScoreObtained() < 0 ||
             result.getScoreObtained() > result.getMaxScore()) {
             throw new IllegalArgumentException("Invalid score");
         }
 
-        if (result.getMaxScore() == null) {
+        if (result.getMaxScore() == 0) {
             result.setMaxScore(100.0);
         }
 
