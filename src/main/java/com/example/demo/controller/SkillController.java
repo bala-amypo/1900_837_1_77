@@ -1,3 +1,12 @@
+package com.example.demo.controller;
+
+import com.example.demo.entity.Skill;
+import com.example.demo.service.SkillService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/skills")
 public class SkillController {
@@ -8,36 +17,31 @@ public class SkillController {
         this.service = service;
     }
 
-    // ✅ CREATE → POST
     @PostMapping
-    public ResponseEntity<Skill> createSkill(@RequestBody Skill skill) {
+    public ResponseEntity<Skill> create(@RequestBody Skill skill) {
         return ResponseEntity.ok(service.createSkill(skill));
     }
 
-    // ✅ READ (ALL) → GET
     @GetMapping
-    public ResponseEntity<List<Skill>> getAllSkills() {
+    public ResponseEntity<List<Skill>> getAll() {
         return ResponseEntity.ok(service.getAllSkills());
     }
 
-    // ✅ READ (BY ID) → GET
     @GetMapping("/{id}")
-    public ResponseEntity<Skill> getSkillById(@PathVariable Long id) {
-        return ResponseEntity.ok(service.getById(id));
+    public ResponseEntity<Skill> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(service.getSkillById(id));
     }
 
-    // ✅ UPDATE → PUT
     @PutMapping("/{id}")
-    public ResponseEntity<Skill> updateSkill(
+    public ResponseEntity<Skill> update(
             @PathVariable Long id,
             @RequestBody Skill skill) {
         return ResponseEntity.ok(service.updateSkill(id, skill));
     }
 
-    // ✅ DELETE → DELETE
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteSkill(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.deleteSkill(id);
-        return ResponseEntity.ok("Skill deleted successfully");
+        return ResponseEntity.noContent().build();
     }
 }
