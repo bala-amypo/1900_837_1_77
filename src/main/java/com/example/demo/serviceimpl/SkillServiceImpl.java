@@ -1,3 +1,12 @@
+package com.example.demo.serviceimpl;
+
+import com.example.demo.entity.Skill;
+import com.example.demo.repository.SkillRepository;
+import com.example.demo.service.SkillService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
 @Service
 public class SkillServiceImpl implements SkillService {
 
@@ -18,16 +27,16 @@ public class SkillServiceImpl implements SkillService {
     }
 
     @Override
-    public Skill getById(Long id) {
+    public Skill getSkillById(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Skill not found"));
     }
 
     @Override
     public Skill updateSkill(Long id, Skill skill) {
-        Skill existing = getById(id);
+        Skill existing = getSkillById(id);
         existing.setName(skill.getName());
-        existing.setDescription(skill.getDescription());
+        existing.setMinCompetencyScore(skill.getMinCompetencyScore());
         return repository.save(existing);
     }
 
