@@ -1,5 +1,6 @@
 package com.example.demo.serviceimpl;
 
+import com.example.demo.entity.Role;
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
@@ -23,6 +24,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User register(User user) {
+        return userRepository.save(user);
+    }
+
+    @Override
     public Optional<User> findById(Long id) {
         return userRepository.findById(id);
     }
@@ -35,5 +41,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public List<User> listInstructors() {
+        return userRepository.findByRole(Role.INSTRUCTOR);
     }
 }
