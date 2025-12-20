@@ -9,24 +9,27 @@ public class AssessmentResult {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private StudentProfile studentProfile;
+    @Column(nullable = false)
+    private Long studentProfileId;
 
     @ManyToOne
+    @JoinColumn(name = "skill_id", nullable = false)
     private Skill skill;
 
-    private double score;
+    private Integer score;
+
+    // getters & setters
 
     public Long getId() {
         return id;
     }
 
-    public StudentProfile getStudentProfile() {
-        return studentProfile;
+    public Long getStudentProfileId() {
+        return studentProfileId;
     }
 
-    public void setStudentProfile(StudentProfile studentProfile) {
-        this.studentProfile = studentProfile;
+    public void setStudentProfileId(Long studentProfileId) {
+        this.studentProfileId = studentProfileId;
     }
 
     public Skill getSkill() {
@@ -37,11 +40,11 @@ public class AssessmentResult {
         this.skill = skill;
     }
 
-    public double getScore() {
+    public Integer getScore() {
         return score;
     }
 
-    public void setScore(double score) {
+    public void setScore(Integer score) {
         this.score = score;
     }
 }
