@@ -1,17 +1,31 @@
 package com.example.demo.config;
 
-import com.example.demo.entity.User;
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
+
+import java.security.Key;
 import java.util.Date;
 
 @Component
 public class JwtUtil {
 
-    private final String secret = "secret-key";
-    private final int expiry = 3600000;
+    private static final String SECRET_KEY =
+            "mysupersecretkeymysupersecretkey12345";
 
-    public JwtUtil() {
+    private static final long EXPIRATION_TIME = 1000 * 60 * 60;
+
+    private Key getSigningKey() {
+        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+    }
+
+    // ✅ REQUIRED BY TESTS
+    public Claims validateAndParse(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 
     public String generateToken(String email, String role) {
@@ -19,12 +33,10 @@ public class JwtUtil {
                 .setSubject(email)
                 .claim("role", role)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expiry))
-                .signWith(SignatureAlgorithm.HS256, secret)
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public String generateToken(User user) {
-        return generateToken(user.getEmail(), user.getRole().name());
-    }
-}
+    // ✅ OVERLOAD REQUIRED BY TESTS
+    public String generateToken(com.example.demo.entity.Us

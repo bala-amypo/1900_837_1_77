@@ -15,11 +15,13 @@ public class Skill {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String code;
-    private String name;
-    private boolean active;
+    private String skillName;
 
-    public boolean isActive() {
-        return active;
-    }
+    private String category;
+
+    private String description;
+
+    private double minCompetencyScore;
+
+    private boolean active;
 }
