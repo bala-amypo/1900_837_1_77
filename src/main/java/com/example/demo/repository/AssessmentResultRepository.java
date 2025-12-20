@@ -8,10 +8,10 @@ import java.util.List;
 public interface AssessmentResultRepository
         extends JpaRepository<AssessmentResult, Long> {
 
-    // REQUIRED by tests
+    // REQUIRED by college tests
     List<AssessmentResult> findByStudentProfileId(Long studentProfileId);
 
-    // REQUIRED by tests
+    // REQUIRED by college tests
     List<AssessmentResult> findByStudentProfileIdAndSkillId(
             Long studentProfileId,
             Long skillId

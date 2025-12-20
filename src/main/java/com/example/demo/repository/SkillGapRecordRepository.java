@@ -8,10 +8,10 @@ import java.util.List;
 public interface SkillGapRecordRepository
         extends JpaRepository<SkillGapRecord, Long> {
 
-    // REQUIRED by tests
+    // Fetch all gaps for student
     List<SkillGapRecord> findByStudentProfileId(Long studentProfileId);
 
-    // REQUIRED by tests
+    // REQUIRED by college tests
     List<SkillGapRecord> findByStudentProfileIdOrderByGapScoreDesc(
             Long studentProfileId
     );

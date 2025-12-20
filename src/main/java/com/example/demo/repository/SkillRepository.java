@@ -8,9 +8,9 @@ import java.util.Optional;
 
 public interface SkillRepository extends JpaRepository<Skill, Long> {
 
-    // OPTIONAL (used in validations)
+    // Used to prevent duplicate skills
     Optional<Skill> findBySkillName(String skillName);
 
-    // REQUIRED in gap calculation
+    // Used in GAP calculation
     List<Skill> findByActiveTrue();
 }

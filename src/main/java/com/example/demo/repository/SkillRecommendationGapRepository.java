@@ -8,7 +8,7 @@ import java.util.List;
 public interface SkillGapRecommendationRepository
         extends JpaRepository<SkillGapRecommendation, Long> {
 
-    // REQUIRED by tests
+    // REQUIRED by college tests
     List<SkillGapRecommendation>
     findByStudentProfileIdOrderByGeneratedAtDesc(Long studentProfileId);
 }
