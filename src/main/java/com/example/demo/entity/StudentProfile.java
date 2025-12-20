@@ -9,36 +9,17 @@ public class StudentProfile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @OneToOne
+    private User user;
+
+    @Column(unique = true)
     private String enrollmentId;
-    private String department;
-    private Integer studyYear;
 
-    // 🔹 Getters & Setters
-    public Long getId() {
-        return id;
-    }
+    private String cohort;
 
-    public String getEnrollmentId() {
-        return enrollmentId;
-    }
+    private Integer yearLevel;
 
-    public void setEnrollmentId(String enrollmentId) {
-        this.enrollmentId = enrollmentId;
-    }
+    private Boolean active = true;
 
-    public String getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(String department) {
-        this.department = department;
-    }
-
-    public Integer getYear() {
-        return year;
-    }
-
-    public void setYear(Integer studyYear) {
-        this.year = year;
-    }
+    // getters & setters
 }

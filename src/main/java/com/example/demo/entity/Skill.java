@@ -9,54 +9,16 @@ public class Skill {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String skillName;
+
     private String category;
+
     private String description;
-    private Integer minCompetencyScore;
-    private boolean active = true;
 
-    // 🔹 Getters & Setters
-    public Long getId() {
-        return id;
-    }
+    private Double minCompetencyScore;
 
-    public String getSkillName() {
-        return skillName;
-    }
+    private Boolean active = true;
 
-    public void setSkillName(String skillName) {
-        this.skillName = skillName;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Integer getMinCompetencyScore() {
-        return minCompetencyScore;
-    }
-
-    public void setMinCompetencyScore(Integer minCompetencyScore) {
-        this.minCompetencyScore = minCompetencyScore;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
+    // getters & setters
 }
