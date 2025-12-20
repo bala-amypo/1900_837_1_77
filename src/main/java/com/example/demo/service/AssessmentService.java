@@ -5,9 +5,9 @@ import java.util.List;
 
 public interface AssessmentService {
 
-    AssessmentResult recordAssessment(AssessmentResult result);
+    List<AssessmentResult> getResultsByStudent(Long studentProfileId);
 
-    List<AssessmentResult> getResultsByStudent(Long studentId);
+    AssessmentResult getResultsByStudentAndSkill(Long studentProfileId, Long skillId);
 
-    List<AssessmentResult> getResultsByStudentAndSkill(Long studentId, Long skillId);
+    Double calculatePercentage(AssessmentResult result);
 }
