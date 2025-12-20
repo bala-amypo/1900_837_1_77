@@ -2,25 +2,36 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.time.Instant;
 
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class AssessmentResult {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String assessmentId;
+
     @ManyToOne
-    private StudentProfile studentProfile;
+    private StudentProfile student;
 
     @ManyToOne
     private Skill skill;
 
-    private Double scoreObtained;
-    private Double maxScore;
+    private double score;
+    private Instant attemptedAt;
+
+    public double getScore() {
+        return score;
+    }
+
+    public Instant getAttemptedAt() {
+        return attemptedAt;
+    }
 }

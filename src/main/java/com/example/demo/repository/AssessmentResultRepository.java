@@ -2,14 +2,15 @@ package com.example.demo.repository;
 
 import com.example.demo.entity.AssessmentResult;
 import org.springframework.data.jpa.repository.JpaRepository;
+import java.time.Instant;
+import java.util.*;
 
-import java.util.List;
-import java.util.Optional;
+public interface AssessmentResultRepository extends JpaRepository<AssessmentResult, Long> {
 
-public interface AssessmentResultRepository
-        extends JpaRepository<AssessmentResult, Long> {
+    Optional<AssessmentResult> findRecentByStudent(Long studentId);
 
-    List<AssessmentResult> findByStudentProfileId(Long studentProfileId);
+    List<AssessmentResult> findResultsForStudentBetween(
+            Long studentId, Instant start, Instant end);
 
-    Optional<AssessmentResult> findByStudentProfileIdAndSkillId(Long studentProfileId, Long skillId);
+    Double avgScoreByCohortAndSkill(String cohort, Long skillId);
 }

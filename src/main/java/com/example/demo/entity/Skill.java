@@ -6,22 +6,20 @@ import lombok.*;
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class Skill {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String skillName;
+    private String code;
+    private String name;
+    private boolean active;
 
-    private String category;
-
-    private String description;
-
-    private Double minCompetencyScore;
-
-    private boolean active = true;
+    public boolean isActive() {
+        return active;
+    }
 }

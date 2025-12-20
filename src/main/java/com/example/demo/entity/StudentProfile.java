@@ -2,6 +2,7 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.time.Instant;
 
 @Entity
 @Getter
@@ -15,16 +16,10 @@ public class StudentProfile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    private User user;
+    private String grade;
+    private Instant lastUpdatedAt;
 
-    @Column(unique = true)
-    private String enrollmentId;
-
-    private String cohort;
-
-    @Column(name = "year_level")
-    private Integer yearLevel;
-
-    private Boolean active = true;
+    public void preUpdate() {
+        this.lastUpdatedAt = Instant.now();
+    }
 }
