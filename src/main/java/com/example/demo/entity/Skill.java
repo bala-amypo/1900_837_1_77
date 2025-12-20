@@ -15,11 +15,7 @@ public class Skill {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
-    private String skillName;
-
-    private String category;
-    private String description;
-    private Double minCompetencyScore;
-    private Boolean active = true;
+    private String code;     // REQUIRED by tests
+    private String name;
+    private boolean active;
 }
