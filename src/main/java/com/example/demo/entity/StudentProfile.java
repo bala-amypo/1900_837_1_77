@@ -1,26 +1,32 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import java.time.Instant;
 
 @Entity
+@Getter
+@Setter
 public class StudentProfile {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+
+    @OneToOne
+    @JoinColumn(name="user_id", nullable=false)
+    private User user;
+
+    @Column(nullable = false, unique = true)
     private String enrollmentId;
 
-    // Getters and setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    private String cohort;
+    private Integer yearLevel;
+    private Boolean active = true;
+    private Instant lastUpdatedAt = Instant.now();
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-
-    public String getEnrollmentId() { return enrollmentId; }
-    public void setEnrollmentId(String enrollmentId) { this.enrollmentId = enrollmentId; }
+    @PreUpdate
+    public void updateTimestamp() {
+        lastUpdatedAt = Instant.now();
+    }
 }

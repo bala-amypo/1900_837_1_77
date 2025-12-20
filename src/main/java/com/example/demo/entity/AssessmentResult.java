@@ -1,34 +1,28 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.time.Instant;
 
 @Entity
+@Getter
+@Setter
 public class AssessmentResult {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "student_profile_id")
     private StudentProfile studentProfile;
 
     @ManyToOne
-    @JoinColumn(name = "skill_id")
     private Skill skill;
 
-    private int score;
+    @Column(nullable = false)
+    private Double scoreObtained;
 
-    // getters and setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public StudentProfile getStudentProfile() { return studentProfile; }
-    public void setStudentProfile(StudentProfile studentProfile) { this.studentProfile = studentProfile; }
-
-    public Skill getSkill() { return skill; }
-    public void setSkill(Skill skill) { this.skill = skill; }
-
-    public int getScore() { return score; }
-    public void setScore(int score) { this.score = score; }
+    private Double maxScore = 100.0;
+    private Instant assessedAt = Instant.now();
 }
