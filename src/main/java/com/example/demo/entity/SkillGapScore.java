@@ -15,6 +15,8 @@ public class SkillGapScore {
     @ManyToOne
     private Skill skill;
 
+    private Integer currentScore;
+    private Integer targetScore;
     private Integer gapScore;
 
     // 🔹 Getters & Setters
@@ -36,6 +38,22 @@ public class SkillGapScore {
 
     public void setSkill(Skill skill) {
         this.skill = skill;
+    }
+
+    public Integer getCurrentScore() {
+        return currentScore;
+    }
+
+    public void setCurrentScore(Integer currentScore) {
+        this.currentScore = currentScore;
+    }
+
+    public Integer getTargetScore() {
+        return targetScore;
+    }
+
+    public void setTargetScore(Integer targetScore) {
+        this.targetScore = targetScore;
     }
 
     public Integer getGapScore() {

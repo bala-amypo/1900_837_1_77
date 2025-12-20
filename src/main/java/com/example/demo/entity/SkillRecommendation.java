@@ -15,6 +15,8 @@ public class SkillRecommendation {
     @ManyToOne
     private Skill skill;
 
+    private Integer gapScore;
+    private String recommendationText;
     private String priority;
     private String generatedBy;
 
@@ -37,6 +39,22 @@ public class SkillRecommendation {
 
     public void setSkill(Skill skill) {
         this.skill = skill;
+    }
+
+    public Integer getGapScore() {
+        return gapScore;
+    }
+
+    public void setGapScore(Integer gapScore) {
+        this.gapScore = gapScore;
+    }
+
+    public String getRecommendationText() {
+        return recommendationText;
+    }
+
+    public void setRecommendationText(String recommendationText) {
+        this.recommendationText = recommendationText;
     }
 
     public String getPriority() {
