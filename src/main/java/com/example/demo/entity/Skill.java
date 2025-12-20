@@ -3,33 +3,40 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "skills")
 public class Skill {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String skillName;
+    @Column(nullable = false, unique = true)
+    private String name;
 
-    private double minCompetencyScore;
+    // 🔹 REQUIRED: No-arg constructor
+    public Skill() {
+    }
+
+    // 🔹 Optional constructor
+    public Skill(String name) {
+        this.name = name;
+    }
+
+    // 🔹 GETTERS & SETTERS (THIS FIXES YOUR ERROR)
 
     public Long getId() {
         return id;
     }
 
-    public String getSkillName() {
-        return skillName;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setSkillName(String skillName) {
-        this.skillName = skillName;
+    public String getName() {   // ✅ REQUIRED
+        return name;
     }
 
-    public double getMinCompetencyScore() {
-        return minCompetencyScore;
-    }
-
-    public void setMinCompetencyScore(double minCompetencyScore) {
-        this.minCompetencyScore = minCompetencyScore;
+    public void setName(String name) {   // ✅ REQUIRED
+        this.name = name;
     }
 }
