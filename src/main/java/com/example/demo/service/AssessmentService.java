@@ -6,9 +6,13 @@ import java.util.List;
 
 public interface AssessmentService {
 
-    AssessmentResult recordAssessment(AssessmentResult result);
+    AssessmentResult saveAssessment(AssessmentResult assessmentResult);
 
-    List<AssessmentResult> getResultsByStudent(Long studentId);
+    List<AssessmentResult> getAllAssessments();
 
-    List<AssessmentResult> getResultsByStudentAndSkill(Long studentId, Long skillId);
+    AssessmentResult getAssessmentById(Long id);
+
+    AssessmentResult updateAssessment(Long id, AssessmentResult assessmentResult);
+
+    void deleteAssessment(Long id);
 }
