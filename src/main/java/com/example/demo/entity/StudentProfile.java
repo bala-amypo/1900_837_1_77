@@ -1,34 +1,44 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.sql.Timestamp;
 
 @Entity
-@Table(uniqueConstraints = {
-        @UniqueConstraint(columnNames = "enrollmentId")
-})
 public class StudentProfile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    private User user;
-
     private String enrollmentId;
-    private String cohort;
-    private Integer yearLevel;
-    private Boolean active = true;
+    private String department;
+    private Integer year;
 
-    private Timestamp lastUpdatedAt;
-
-    @PreUpdate
-    public void onUpdate() {
-        this.lastUpdatedAt = new Timestamp(System.currentTimeMillis());
+    // 🔹 Getters & Setters
+    public Long getId() {
+        return id;
     }
 
-    public StudentProfile() {}
+    public String getEnrollmentId() {
+        return enrollmentId;
+    }
 
-    // getters and setters
+    public void setEnrollmentId(String enrollmentId) {
+        this.enrollmentId = enrollmentId;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    public Integer getYear() {
+        return year;
+    }
+
+    public void setYear(Integer year) {
+        this.year = year;
+    }
 }

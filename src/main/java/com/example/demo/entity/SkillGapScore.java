@@ -1,7 +1,6 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.sql.Timestamp;
 
 @Entity
 public class SkillGapScore {
@@ -16,18 +15,34 @@ public class SkillGapScore {
     @ManyToOne
     private Skill skill;
 
-    private Double currentScore;
-    private Double targetScore;
-    private Double gapScore;
+    private Integer gapScore;
 
-    private Timestamp calculatedAt;
-
-    @PrePersist
-    public void onCreate() {
-        this.calculatedAt = new Timestamp(System.currentTimeMillis());
+    // 🔹 Getters & Setters
+    public Long getId() {
+        return id;
     }
 
-    public SkillGapScore() {}
+    public StudentProfile getStudentProfile() {
+        return studentProfile;
+    }
 
-    // getters and setters
+    public void setStudentProfile(StudentProfile studentProfile) {
+        this.studentProfile = studentProfile;
+    }
+
+    public Skill getSkill() {
+        return skill;
+    }
+
+    public void setSkill(Skill skill) {
+        this.skill = skill;
+    }
+
+    public Integer getGapScore() {
+        return gapScore;
+    }
+
+    public void setGapScore(Integer gapScore) {
+        this.gapScore = gapScore;
+    }
 }
