@@ -3,21 +3,27 @@ package com.example.demo.serviceimpl;
 import com.example.demo.entity.Skill;
 import com.example.demo.repository.SkillRepository;
 import com.example.demo.service.SkillService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class SkillServiceImpl implements SkillService {
 
     private final SkillRepository skillRepository;
 
+    public SkillServiceImpl(SkillRepository skillRepository) {
+        this.skillRepository = skillRepository;
+    }
+
     @Override
     public Skill createSkill(Skill skill) {
-        skill.setActive(true);
         return skillRepository.save(skill);
+    }
+
+    @Override
+    public Skill getById(Long id) {
+        return skillRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -31,27 +37,12 @@ public class SkillServiceImpl implements SkillService {
     }
 
     @Override
-    public Skill getById(Long id) {
-        return skillRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Skill not found"));
-    }
-
-    @Override
-    public Skill updateSkill(Long id, Skill skill) {
-        Skill existing = getById(id);
-
-        existing.setSkillName(skill.getSkillName());
-        existing.setCategory(skill.getCategory());
-        existing.setDescription(skill.getDescription());
-        existing.setMinCompetencyScore(skill.getMinCompetencyScore());
-
-        return skillRepository.save(existing);
-    }
-
-    @Override
-    public void deactivateSkill(Long id) {
+    public Skill deactivateSkill(Long id) {
         Skill skill = getById(id);
-        skill.setActive(false);
-        skillRepository.save(skill);
+        if (skill != null) {
+            skill.setActive(false);
+            return skillRepository.save(skill);
+        }
+        return null;
     }
 }

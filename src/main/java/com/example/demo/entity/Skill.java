@@ -15,13 +15,9 @@ public class Skill {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String skillName;
+    private String code;
+    private String name;
 
-    private String category;
-
-    private String description;
-
-    private double minCompetencyScore;
-
-    private boolean active;
+    @Builder.Default
+    private boolean active = true;
 }
