@@ -1,5 +1,6 @@
 package com.example.demo.config;
 
+import com.example.demo.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -10,32 +11,26 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    private final String secret;
-    private final int expirationMs;
-
-    public JwtUtil() {
-        this.secret = "secret-key";
-        this.expirationMs = 3600000;
-    }
-
-    public JwtUtil(String secret, int expirationMs) {
-        this.secret = secret;
-        this.expirationMs = expirationMs;
-    }
+    private static final String SECRET_KEY = "secret123";
+    private static final long EXPIRATION_TIME = 1000 * 60 * 60; // 1 hour
 
     public String generateToken(String email, String role) {
         return Jwts.builder()
                 .setSubject(email)
                 .claim("role", role)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expirationMs))
-                .signWith(SignatureAlgorithm.HS256, secret)
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
+    }
+
+    public String generateToken(User user) {
+        return generateToken(user.getEmail(), user.getRole().name());
     }
 
     public Claims validateAndParse(String token) {
         return Jwts.parser()
-                .setSigningKey(secret)
+                .setSigningKey(SECRET_KEY)
                 .parseClaimsJws(token)
                 .getBody();
     }

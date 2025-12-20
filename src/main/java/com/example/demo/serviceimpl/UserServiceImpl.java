@@ -1,7 +1,7 @@
 package com.example.demo.serviceimpl;
 
 import com.example.demo.entity.User;
-import com.example.demo.entity.User.Role;
+import com.example.demo.entity.Role;   
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
 import org.springframework.stereotype.Service;
@@ -36,6 +36,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> listInstructors() {
-        return userRepository.findByRole(Role.INSTRUCTOR);
+        return userRepository.findByRole(Role.INSTRUCTOR); 
     }
 }
