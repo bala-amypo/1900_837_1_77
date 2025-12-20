@@ -11,5 +11,7 @@ public interface SkillService {
 
     List<Skill> getAllSkills();
 
+    Skill updateSkill(Long id, Skill skill);  
+
     void deactivateSkill(Long id);
 }
