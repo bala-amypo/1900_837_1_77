@@ -1,13 +1,19 @@
 package com.example.demo.serviceimpl;
 
+import com.example.demo.entity.Skill;
 import com.example.demo.entity.SkillGapScore;
 import com.example.demo.entity.SkillRecommendation;
-import com.example.demo.repository.*;
+import com.example.demo.repository.AssessmentResultRepository;
+import com.example.demo.repository.SkillGapScoreRepository;
+import com.example.demo.repository.SkillRepository;
+import com.example.demo.repository.StudentProfileRepository;
 import com.example.demo.service.RecommendationService;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class RecommendationServiceImpl implements RecommendationService {
 
     private final AssessmentResultRepository assessmentResultRepository;
@@ -37,7 +43,6 @@ public class RecommendationServiceImpl implements RecommendationService {
 
         for (SkillGapScore gap : gaps) {
             SkillRecommendation rec = new SkillRecommendation();
-
             rec.setStudentProfile(gap.getStudentProfile());
             rec.setSkill(gap.getSkill());
             rec.setGapScore(gap.getGapScore());
@@ -45,15 +50,13 @@ public class RecommendationServiceImpl implements RecommendationService {
 
             if (gap.getGapScore() >= 20) {
                 rec.setPriority("HIGH");
-                rec.setRecommendationText("Immediate training required");
             } else if (gap.getGapScore() >= 10) {
                 rec.setPriority("MEDIUM");
-                rec.setRecommendationText("Practice recommended");
             } else {
                 rec.setPriority("LOW");
-                rec.setRecommendationText("Minor improvement needed");
             }
 
+            rec.setRecommendationText("Improve skill: " + gap.getSkill().getSkillName());
             recommendations.add(rec);
         }
         return recommendations;
@@ -61,13 +64,6 @@ public class RecommendationServiceImpl implements RecommendationService {
 
     @Override
     public List<SkillRecommendation> getRecommendationsByStudent(Long studentId) {
-        return skillGapScoreRepository.findByStudentProfileIdOrderByGapScoreDesc(studentId)
-                .stream()
-                .map(g -> {
-                    SkillRecommendation r = new SkillRecommendation();
-                    r.setSkill(g.getSkill());
-                    r.setGapScore(g.getGapScore());
-                    return r;
-                }).toList();
+        return new ArrayList<>();
     }
 }
