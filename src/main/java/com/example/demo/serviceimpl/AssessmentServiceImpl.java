@@ -1,13 +1,14 @@
 package com.example.demo.serviceimpl;
 
 import com.example.demo.entity.AssessmentResult;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.AssessmentResultRepository;
 import com.example.demo.service.AssessmentService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service   // 🔥 THIS WAS MISSING OR WRONG
+@Service
 public class AssessmentServiceImpl implements AssessmentService {
 
     private final AssessmentResultRepository repository;
@@ -17,31 +18,20 @@ public class AssessmentServiceImpl implements AssessmentService {
     }
 
     @Override
-    public AssessmentResult saveAssessment(AssessmentResult assessmentResult) {
-        return repository.save(assessmentResult);
+    public AssessmentResult recordResult(AssessmentResult result) {
+        if (result.getScoreObtained() < 0 || result.getScoreObtained() > result.getMaxScore()) {
+            throw new IllegalArgumentException("Score must be between 0 and " + result.getMaxScore());
+        }
+        return repository.save(result);
     }
 
     @Override
-    public List<AssessmentResult> getAllAssessments() {
-        return repository.findAll();
+    public List<AssessmentResult> getResultsByStudent(Long studentId) {
+        return repository.findByStudentProfileId(studentId);
     }
 
     @Override
-    public AssessmentResult getAssessmentById(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Assessment not found"));
-    }
-
-    @Override
-    public AssessmentResult updateAssessment(Long id, AssessmentResult assessmentResult) {
-        AssessmentResult existing = getAssessmentById(id);
-        existing.setScore(assessmentResult.getScore());
-        existing.setSkill(assessmentResult.getSkill());
-        return repository.save(existing);
-    }
-
-    @Override
-    public void deleteAssessment(Long id) {
-        repository.deleteById(id);
+    public List<AssessmentResult> getResultByStudentAndSkill(Long studentId, Long skillId) {
+        return repository.findByStudentProfileIdAndSkillId(studentId, skillId);
     }
 }

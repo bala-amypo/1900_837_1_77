@@ -2,10 +2,10 @@ package com.example.demo.service;
 
 import com.example.demo.entity.StudentProfile;
 import java.util.List;
-import java.util.Optional;
 
 public interface StudentProfileService {
+    StudentProfile createProfile(StudentProfile profile);
+    StudentProfile getProfileById(Long id);
+    StudentProfile getProfileByEnrollmentId(String enrollmentId);
     List<StudentProfile> getAllProfiles();
-    Optional<StudentProfile> getProfileById(Long id);
-    StudentProfile saveProfile(StudentProfile profile);
 }
