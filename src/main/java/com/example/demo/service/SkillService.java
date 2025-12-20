@@ -4,14 +4,7 @@ import com.example.demo.entity.Skill;
 import java.util.List;
 
 public interface SkillService {
-
-    Skill createSkill(Skill skill);
-
-    Skill getSkillById(Long id);
-
     List<Skill> getAllSkills();
-
-    Skill updateSkill(Long id, Skill skill);
-
-    void deleteSkill(Long id);
+    Skill getSkillById(Long id);
+    Skill createSkill(Skill skill);
 }

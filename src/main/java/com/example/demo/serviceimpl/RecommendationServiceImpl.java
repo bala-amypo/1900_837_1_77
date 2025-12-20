@@ -4,9 +4,7 @@ import com.example.demo.repository.AssessmentResultRepository;
 import com.example.demo.service.RecommendationService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
-@Service   // ✅ THIS ANNOTATION IS REQUIRED
+@Service
 public class RecommendationServiceImpl implements RecommendationService {
 
     private final AssessmentResultRepository assessmentRepository;
@@ -16,7 +14,8 @@ public class RecommendationServiceImpl implements RecommendationService {
     }
 
     @Override
-    public List<String> getRecommendations(Long studentProfileId) {
-        return List.of("Practice Java", "Improve Spring Boot", "Learn SQL");
+    public String recommendSkills(Long studentProfileId) {
+        // simple mock implementation
+        return "Recommended skills for student " + studentProfileId;
     }
 }
