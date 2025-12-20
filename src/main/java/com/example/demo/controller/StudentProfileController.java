@@ -11,29 +11,31 @@ import java.util.List;
 @RequestMapping("/api/students")
 public class StudentProfileController {
 
-    private final StudentProfileService service;
+    private final StudentProfileService studentProfileService;
 
-    public StudentProfileController(StudentProfileService service) {
-        this.service = service;
+    public StudentProfileController(StudentProfileService studentProfileService) {
+        this.studentProfileService = studentProfileService;
     }
 
     @PostMapping
-    public ResponseEntity<StudentProfile> create(@RequestBody StudentProfile profile) {
-        return ResponseEntity.ok(service.createProfile(profile));
+    public ResponseEntity<StudentProfile> createProfile(@RequestBody StudentProfile profile) {
+        return ResponseEntity.ok(studentProfileService.createProfile(profile));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<StudentProfile> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(service.getProfileById(id));
+        return ResponseEntity.ok(studentProfileService.getProfileById(id));
     }
 
     @GetMapping("/enrollment/{enrollmentId}")
     public ResponseEntity<StudentProfile> getByEnrollment(@PathVariable String enrollmentId) {
-        return ResponseEntity.ok(service.getProfileByEnrollmentId(enrollmentId));
+        return ResponseEntity.ok(
+                studentProfileService.getProfileByEnrollmentId(enrollmentId)
+        );
     }
 
     @GetMapping
     public ResponseEntity<List<StudentProfile>> getAll() {
-        return ResponseEntity.ok(service.getAllProfiles());
+        return ResponseEntity.ok(studentProfileService.getAllProfiles());
     }
 }
