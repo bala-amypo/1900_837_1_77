@@ -2,9 +2,17 @@ package com.example.demo.repository;
 
 import com.example.demo.entity.StudentProfile;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
-@Repository
+import java.util.Optional;
+import java.util.List;
+
 public interface StudentProfileRepository extends JpaRepository<StudentProfile, Long> {
-    // Spring Data JPA automatically provides basic CRUD methods
+
+    Optional<StudentProfile> findByEnrollmentId(String enrollmentId);
+
+    Optional<StudentProfile> findByUserId(Long userId);
+
+    boolean existsByEnrollmentId(String enrollmentId);
+
+    List<StudentProfile> findAll();
 }
