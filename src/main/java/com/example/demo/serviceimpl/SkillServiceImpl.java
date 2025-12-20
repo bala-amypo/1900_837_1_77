@@ -16,7 +16,14 @@ public class SkillServiceImpl implements SkillService {
 
     @Override
     public Skill createSkill(Skill skill) {
+        skill.setActive(true);
         return skillRepository.save(skill);
+    }
+
+    // ✅ REQUIRED BY INTERFACE
+    @Override
+    public List<Skill> getAllSkills() {
+        return skillRepository.findAll();
     }
 
     @Override
@@ -35,5 +42,14 @@ public class SkillServiceImpl implements SkillService {
         existing.setMinCompetencyScore(skill.getMinCompetencyScore());
 
         return skillRepository.save(existing);
+    }
+
+    @Override
+    public void deactivateSkill(Long id) {
+        Skill skill = skillRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Skill not found"));
+
+        skill.setActive(false);
+        skillRepository.save(skill);
     }
 }
