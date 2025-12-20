@@ -20,7 +20,6 @@ public class SkillServiceImpl implements SkillService {
         return skillRepository.save(skill);
     }
 
-    // ✅ REQUIRED BY INTERFACE
     @Override
     public List<Skill> getAllSkills() {
         return skillRepository.findAll();
@@ -32,9 +31,14 @@ public class SkillServiceImpl implements SkillService {
     }
 
     @Override
-    public Skill updateSkill(Long id, Skill skill) {
-        Skill existing = skillRepository.findById(id)
+    public Skill getById(Long id) {
+        return skillRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Skill not found"));
+    }
+
+    @Override
+    public Skill updateSkill(Long id, Skill skill) {
+        Skill existing = getById(id);
 
         existing.setSkillName(skill.getSkillName());
         existing.setCategory(skill.getCategory());
@@ -46,9 +50,7 @@ public class SkillServiceImpl implements SkillService {
 
     @Override
     public void deactivateSkill(Long id) {
-        Skill skill = skillRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Skill not found"));
-
+        Skill skill = getById(id);
         skill.setActive(false);
         skillRepository.save(skill);
     }
