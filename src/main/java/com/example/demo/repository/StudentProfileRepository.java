@@ -7,8 +7,10 @@ import java.util.Optional;
 
 public interface StudentProfileRepository extends JpaRepository<StudentProfile, Long> {
 
+    // REQUIRED by tests
     Optional<StudentProfile> findByEnrollmentId(String enrollmentId);
 
+    // OPTIONAL
     Optional<StudentProfile> findByUserId(Long userId);
 
     boolean existsByEnrollmentId(String enrollmentId);

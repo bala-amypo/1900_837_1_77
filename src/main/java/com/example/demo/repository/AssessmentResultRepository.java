@@ -5,9 +5,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface AssessmentResultRepository extends JpaRepository<AssessmentResult, Long> {
+public interface AssessmentResultRepository
+        extends JpaRepository<AssessmentResult, Long> {
 
+    // REQUIRED by tests
     List<AssessmentResult> findByStudentProfileId(Long studentProfileId);
 
-    List<AssessmentResult> findByStudentProfileIdAndSkillId(Long studentProfileId, Long skillId);
+    // REQUIRED by tests
+    List<AssessmentResult> findByStudentProfileIdAndSkillId(
+            Long studentProfileId,
+            Long skillId
+    );
 }
