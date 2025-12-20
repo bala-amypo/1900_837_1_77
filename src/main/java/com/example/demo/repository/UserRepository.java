@@ -7,9 +7,9 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    // REQUIRED by tests
+    // Used during login
     Optional<User> findByEmail(String email);
 
-    // OPTIONAL but commonly used
+    // Used during register (duplicate check)
     boolean existsByEmail(String email);
 }
