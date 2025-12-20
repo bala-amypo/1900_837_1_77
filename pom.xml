@@ -20,9 +20,10 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>${spring-boot.version}</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <version>3.3.2</version> <!-- Directly set a valid version -->
+         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
 
     <!-- Dependencies -->
     <dependencies>
