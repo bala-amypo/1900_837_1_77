@@ -11,7 +11,7 @@ public class StudentProfile {
 
     private String enrollmentId;
     private String department;
-    private Integer year;
+    private Integer studyYear;
 
     // 🔹 Getters & Setters
     public Long getId() {
@@ -38,7 +38,7 @@ public class StudentProfile {
         return year;
     }
 
-    public void setYear(Integer year) {
+    public void setYear(Integer studyYear) {
         this.year = year;
     }
 }
