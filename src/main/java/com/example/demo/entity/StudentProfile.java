@@ -10,6 +10,7 @@ public class StudentProfile {
     private Long id;
 
     private String name;
+    private String enrollmentId; // Add this field
 
     // getters and setters
     public Long getId() { return id; }
@@ -17,4 +18,7 @@ public class StudentProfile {
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
+
+    public String getEnrollmentId() { return enrollmentId; }
+    public void setEnrollmentId(String enrollmentId) { this.enrollmentId = enrollmentId; }
 }
