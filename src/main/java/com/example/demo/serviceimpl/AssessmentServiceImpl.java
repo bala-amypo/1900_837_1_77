@@ -4,34 +4,36 @@ import com.example.demo.entity.AssessmentResult;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.AssessmentResultRepository;
 import com.example.demo.service.AssessmentService;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public class AssessmentServiceImpl implements AssessmentService {
 
-    private final AssessmentResultRepository repository;
+    private final AssessmentResultRepository assessmentResultRepository;
 
-    public AssessmentServiceImpl(AssessmentResultRepository repository) {
-        this.repository = repository;
+    public AssessmentServiceImpl(AssessmentResultRepository assessmentResultRepository) {
+        this.assessmentResultRepository = assessmentResultRepository;
     }
 
     @Override
     public AssessmentResult recordResult(AssessmentResult result) {
         if (result.getScoreObtained() < 0 || result.getScoreObtained() > result.getMaxScore()) {
-            throw new IllegalArgumentException("Score must be between 0 and " + result.getMaxScore());
+            throw new IllegalArgumentException("Invalid score");
         }
-        return repository.save(result);
+        return assessmentResultRepository.save(result);
     }
 
     @Override
     public List<AssessmentResult> getResultsByStudent(Long studentId) {
-        return repository.findByStudentProfileId(studentId);
+        return assessmentResultRepository.findByStudentProfileId(studentId);
     }
 
     @Override
-    public List<AssessmentResult> getResultByStudentAndSkill(Long studentId, Long skillId) {
-        return repository.findByStudentProfileIdAndSkillId(studentId, skillId);
+    public AssessmentResult getResultByStudentAndSkill(Long studentId, Long skillId) {
+        return assessmentResultRepository
+                .findByStudentProfileIdAndSkillId(studentId, skillId)
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException("Not Found"));
     }
 }

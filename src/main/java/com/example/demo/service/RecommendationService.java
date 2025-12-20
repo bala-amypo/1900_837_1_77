@@ -1,10 +1,12 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.SkillGapRecommendation;
+import com.example.demo.entity.SkillRecommendation;
+
 import java.util.List;
 
 public interface RecommendationService {
-    SkillGapRecommendation computeRecommendationForStudentSkill(Long studentId, Long skillId);
-    List<SkillGapRecommendation> computeRecommendationsForStudent(Long studentId);
-    List<SkillGapRecommendation> getRecommendationsForStudent(Long studentId);
+
+    List<SkillRecommendation> generateRecommendations(Long studentProfileId);
+
+    List<SkillRecommendation> getRecommendationsByStudent(Long studentId);
 }
