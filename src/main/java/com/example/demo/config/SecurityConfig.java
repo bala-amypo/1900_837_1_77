@@ -12,18 +12,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SecurityConfig {
 
-    // 🔹 STEP 2: Define JwtUtil as a Spring Bean
-    @Bean
-    public JwtUtil jwtUtil() {
-        return new JwtUtil(
-                "my-secret-key-my-secret-key-my-secret-key",
-                86400000   // 1 day validity
-        );
-    }
-
     private final JwtUtil jwtUtil;
 
-    // 🔹 STEP 3: Constructor injection now works
+    // ✅ This now works because JwtUtil is a @Component
     public SecurityConfig(JwtUtil jwtUtil) {
         this.jwtUtil = jwtUtil;
     }
