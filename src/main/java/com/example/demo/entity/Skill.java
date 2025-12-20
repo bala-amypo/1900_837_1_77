@@ -13,17 +13,15 @@ public class Skill {
     @Column(nullable = false, unique = true)
     private String name;
 
-    // 🔹 REQUIRED: No-arg constructor
-    public Skill() {
-    }
+    // No-arg constructor
+    public Skill() {}
 
-    // 🔹 Optional constructor
+    // Constructor with name
     public Skill(String name) {
         this.name = name;
     }
 
-    // 🔹 GETTERS & SETTERS (THIS FIXES YOUR ERROR)
-
+    // Getters and setters
     public Long getId() {
         return id;
     }
@@ -32,11 +30,11 @@ public class Skill {
         this.id = id;
     }
 
-    public String getName() {   // ✅ REQUIRED
+    public String getName() {   // ✅ Fix for your compilation error
         return name;
     }
 
-    public void setName(String name) {   // ✅ REQUIRED
+    public void setName(String name) {
         this.name = name;
     }
 }
