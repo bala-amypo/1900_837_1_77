@@ -31,6 +31,16 @@ public class SkillServiceImpl implements SkillService {
     }
 
     @Override
+    public Skill updateSkill(Long id, Skill skill) {
+        Skill existing = getById(id);
+
+        existing.setName(skill.getName());
+        existing.setActive(skill.isActive());
+
+        return skillRepository.save(existing);
+    }
+
+    @Override
     public void deactivateSkill(Long id) {
         Skill skill = getById(id);
         skill.setActive(false);
