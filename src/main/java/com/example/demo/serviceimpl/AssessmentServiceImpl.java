@@ -15,6 +15,11 @@ public class AssessmentServiceImpl implements AssessmentService {
     private final AssessmentResultRepository repository;
 
     @Override
+    public AssessmentResult recordAssessment(AssessmentResult result) {
+        return repository.save(result);
+    }
+
+    @Override
     public List<AssessmentResult> getResultsByStudent(Long studentProfileId) {
         return repository.findByStudentProfileId(studentProfileId);
     }
