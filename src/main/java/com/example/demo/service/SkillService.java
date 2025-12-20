@@ -7,9 +7,9 @@ public interface SkillService {
 
     Skill createSkill(Skill skill);
 
-    List<Skill> getAllSkills();
-
     Skill getSkillById(Long id);
+
+    List<Skill> getAllSkills();
 
     Skill updateSkill(Long id, Skill skill);
 

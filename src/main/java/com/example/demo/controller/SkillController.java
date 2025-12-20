@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Skill;
 import com.example.demo.service.SkillService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,37 +10,34 @@ import java.util.List;
 @RequestMapping("/api/skills")
 public class SkillController {
 
-    private final SkillService service;
+    private final SkillService skillService;
 
-    public SkillController(SkillService service) {
-        this.service = service;
+    public SkillController(SkillService skillService) {
+        this.skillService = skillService;
     }
 
     @PostMapping
-    public ResponseEntity<Skill> create(@RequestBody Skill skill) {
-        return ResponseEntity.ok(service.createSkill(skill));
-    }
-
-    @GetMapping
-    public ResponseEntity<List<Skill>> getAll() {
-        return ResponseEntity.ok(service.getAllSkills());
+    public Skill createSkill(@RequestBody Skill skill) {
+        return skillService.createSkill(skill);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Skill> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(service.getSkillById(id));
+    public Skill getSkill(@PathVariable Long id) {
+        return skillService.getSkillById(id);
+    }
+
+    @GetMapping
+    public List<Skill> getAllSkills() {
+        return skillService.getAllSkills();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Skill> update(
-            @PathVariable Long id,
-            @RequestBody Skill skill) {
-        return ResponseEntity.ok(service.updateSkill(id, skill));
+    public Skill updateSkill(@PathVariable Long id, @RequestBody Skill skill) {
+        return skillService.updateSkill(id, skill);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        service.deleteSkill(id);
-        return ResponseEntity.noContent().build();
+    public void deleteSkill(@PathVariable Long id) {
+        skillService.deleteSkill(id);
     }
 }
