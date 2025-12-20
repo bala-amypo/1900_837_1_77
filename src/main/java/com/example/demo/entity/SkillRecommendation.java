@@ -1,15 +1,11 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-
-import java.time.Instant;
+import java.sql.Timestamp;
 
 @Entity
-@Getter
-@Setter
-public class SkillGapRecommendation {
+public class SkillRecommendation {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,9 +16,19 @@ public class SkillGapRecommendation {
     @ManyToOne
     private Skill skill;
 
-    private String recommendedAction;
+    private String recommendationText;
     private String priority;
     private Double gapScore;
     private String generatedBy;
-    private Instant generatedAt = Instant.now();
+
+    private Timestamp generatedAt;
+
+    @PrePersist
+    public void onCreate() {
+        this.generatedAt = new Timestamp(System.currentTimeMillis());
+    }
+
+    public SkillRecommendation() {}
+
+    // getters and setters
 }

@@ -1,14 +1,11 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import java.time.Instant;
+import java.sql.Timestamp;
 
 @Entity
-@Getter
-@Setter
-public class SkillGapRecord {
+public class SkillGapScore {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,5 +19,15 @@ public class SkillGapRecord {
     private Double currentScore;
     private Double targetScore;
     private Double gapScore;
-    private Instant calculatedAt = Instant.now();
+
+    private Timestamp calculatedAt;
+
+    @PrePersist
+    public void onCreate() {
+        this.calculatedAt = new Timestamp(System.currentTimeMillis());
+    }
+
+    public SkillGapScore() {}
+
+    // getters and setters
 }

@@ -4,7 +4,6 @@ import com.example.demo.entity.StudentProfile;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
-import java.util.List;
 
 public interface StudentProfileRepository extends JpaRepository<StudentProfile, Long> {
 
@@ -13,6 +12,4 @@ public interface StudentProfileRepository extends JpaRepository<StudentProfile, 
     Optional<StudentProfile> findByUserId(Long userId);
 
     boolean existsByEnrollmentId(String enrollmentId);
-
-    List<StudentProfile> findAll();
 }

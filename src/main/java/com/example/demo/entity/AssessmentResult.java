@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 public class AssessmentResult {
@@ -16,21 +17,16 @@ public class AssessmentResult {
     private Skill skill;
 
     private Double scoreObtained;
-    private Double maxScore;
+    private Double maxScore = 100.0;
 
-    // Getters and setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    private Timestamp assessedAt;
 
-    public StudentProfile getStudentProfile() { return studentProfile; }
-    public void setStudentProfile(StudentProfile studentProfile) { this.studentProfile = studentProfile; }
+    @PrePersist
+    public void onCreate() {
+        this.assessedAt = new Timestamp(System.currentTimeMillis());
+    }
 
-    public Skill getSkill() { return skill; }
-    public void setSkill(Skill skill) { this.skill = skill; }
+    public AssessmentResult() {}
 
-    public Double getScoreObtained() { return scoreObtained; }
-    public void setScoreObtained(Double scoreObtained) { this.scoreObtained = scoreObtained; }
-
-    public Double getMaxScore() { return maxScore; }
-    public void setMaxScore(Double maxScore) { this.maxScore = maxScore; }
+    // getters and setters
 }

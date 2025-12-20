@@ -11,6 +11,4 @@ public interface SkillRepository extends JpaRepository<Skill, Long> {
     Optional<Skill> findBySkillName(String skillName);
 
     List<Skill> findByActiveTrue();
-
-    List<Skill> findAll();
 }
