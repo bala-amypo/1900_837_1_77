@@ -3,10 +3,8 @@ package com.example.demo.controller;
 import com.example.demo.service.RecommendationService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/api/recommendations")
+@RequestMapping("/recommendations")
 public class RecommendationController {
 
     private final RecommendationService recommendationService;
@@ -16,7 +14,7 @@ public class RecommendationController {
     }
 
     @GetMapping("/{studentId}")
-    public List<String> getRecommendations(@PathVariable Long studentId) {
-        return recommendationService.getRecommendations(studentId);
+    public String getRecommendations(@PathVariable Long studentId) {
+        return recommendationService.recommendSkills(studentId);
     }
 }

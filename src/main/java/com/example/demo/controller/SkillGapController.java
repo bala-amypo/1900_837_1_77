@@ -1,29 +1,20 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.SkillGapRecord;
 import com.example.demo.service.SkillGapService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/api/gaps")
+@RequestMapping("/skill-gap")
 public class SkillGapController {
 
-    private final SkillGapService service;
+    private final SkillGapService skillGapService;
 
-    public SkillGapController(SkillGapService service) {
-        this.service = service;
+    public SkillGapController(SkillGapService skillGapService) {
+        this.skillGapService = skillGapService;
     }
 
-    @PostMapping("/compute/{studentId}")
-    public ResponseEntity<List<SkillGapRecord>> compute(@PathVariable Long studentId) {
-        return ResponseEntity.ok(service.computeGaps(studentId));
-    }
-
-    @GetMapping("/student/{studentId}")
-    public ResponseEntity<List<SkillGapRecord>> getGaps(@PathVariable Long studentId) {
-        return ResponseEntity.ok(service.getGapsByStudent(studentId));
+    @GetMapping("/{studentId}")
+    public String analyzeSkillGap(@PathVariable Long studentId) {
+        return skillGapService.analyzeSkillGap(studentId);
     }
 }
