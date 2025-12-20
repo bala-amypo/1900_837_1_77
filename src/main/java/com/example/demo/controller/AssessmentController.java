@@ -11,25 +11,35 @@ import java.util.List;
 @RequestMapping("/api/assessments")
 public class AssessmentController {
 
-    private final AssessmentService service;
+    private final AssessmentService assessmentService;
 
-    public AssessmentController(AssessmentService service) {
-        this.service = service;
+    public AssessmentController(AssessmentService assessmentService) {
+        this.assessmentService = assessmentService;
     }
 
     @PostMapping
-    public ResponseEntity<AssessmentResult> record(@RequestBody AssessmentResult result) {
-        return ResponseEntity.ok(service.recordResult(result));
+    public ResponseEntity<AssessmentResult> record(
+            @RequestBody AssessmentResult result
+    ) {
+        return ResponseEntity.ok(assessmentService.recordResult(result));
     }
 
     @GetMapping("/student/{studentId}")
-    public ResponseEntity<List<AssessmentResult>> getByStudent(@PathVariable Long studentId) {
-        return ResponseEntity.ok(service.getResultsByStudent(studentId));
+    public ResponseEntity<List<AssessmentResult>> getByStudent(
+            @PathVariable Long studentId
+    ) {
+        return ResponseEntity.ok(
+                assessmentService.getResultsByStudent(studentId)
+        );
     }
 
     @GetMapping("/student/{studentId}/skill/{skillId}")
-    public ResponseEntity<List<AssessmentResult>> getByStudentAndSkill(@PathVariable Long studentId,
-                                                                       @PathVariable Long skillId) {
-        return ResponseEntity.ok(service.getResultByStudentAndSkill(studentId, skillId));
+    public ResponseEntity<AssessmentResult> getByStudentAndSkill(
+            @PathVariable Long studentId,
+            @PathVariable Long skillId
+    ) {
+        return ResponseEntity.ok(
+                assessmentService.getResultByStudentAndSkill(studentId, skillId)
+        );
     }
 }
