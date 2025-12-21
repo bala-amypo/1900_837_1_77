@@ -8,24 +8,18 @@ import java.time.Instant;
 @Entity
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class AssessmentResult {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String assessmentId;
+
     private double score;
 
-    private double maxScore;
-
     private Instant attemptedAt;
-
-    @ManyToOne
-    private StudentProfile studentProfile;
-
-    @ManyToOne
-    private Skill skill;
 }
