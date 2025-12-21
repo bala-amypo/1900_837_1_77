@@ -1,57 +1,31 @@
-package com.example.demo.serviceimpl;
+package com.example.demo.exception;
 
-import com.example.demo.entity.UserEntity;
-import com.example.demo.repository.UserRepository;
-import com.example.demo.service.AuthService;
-import com.example.demo.config.JwtUtil;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@Service
-public class AuthServiceImpl implements AuthService {
+@RestControllerAdvice
+public class ApiExceptionHandler {
 
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final JwtUtil jwtUtil;
-
-    public AuthServiceImpl(
-            UserRepository userRepository,
-            PasswordEncoder passwordEncoder,
-            JwtUtil jwtUtil
-    ) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtUtil = jwtUtil;
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<String> handleNotFound(ResourceNotFoundException ex) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(ex.getMessage());
     }
 
-    @Override
-    public UserEntity register(RegisterRequest request) {
-
-        if (userRepository.existsByEmail(request.getEmail())) {
-            throw new IllegalArgumentException("Email already exists");
-        }
-
-        UserEntity user = new UserEntity();
-        user.setEmail(request.getEmail());
-        user.setFullName(request.getFullName());
-        user.setRole(request.getRole());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-
-        return userRepository.save(user);
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleBadRequest(IllegalArgumentException ex) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ex.getMessage());
     }
 
-    @Override
-    public String login(LoginRequest request) {
-
-        UserEntity user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new IllegalArgumentException("Not Found"));
-
-        if (!passwordEncoder.matches(
-                request.getPassword(),
-                user.getPassword())) {
-            throw new IllegalArgumentException("Not Found");
-        }
-
-        return jwtUtil.generateToken(user);
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleGeneric(Exception ex) {
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Something went wrong");
     }
 }

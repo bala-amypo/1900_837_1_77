@@ -1,31 +1,31 @@
-package com.example.demo.controller;
+package com.example.demo.exception;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.example.demo.entity.UserEntity;
-import com.example.demo.service.AuthService;
+@RestControllerAdvice
+public class ApiExceptionHandler {
 
-import io.swagger.v3.oas.annotations.tags.Tag;
-
-@RestController
-@RequestMapping("/auth")
-@Tag(name = "Auth")
-public class AuthController {
-
-    private final AuthService service;
-
-    public AuthController(AuthService service) {
-        this.service = service;
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<String> handleNotFound(ResourceNotFoundException ex) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(ex.getMessage());
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<UserEntity> register(@RequestBody UserEntity user) {
-        return ResponseEntity.ok(service.register(user));
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleBadRequest(IllegalArgumentException ex) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ex.getMessage());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserEntity> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(service.getById(id));
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleGeneric(Exception ex) {
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Something went wrong");
     }
 }
