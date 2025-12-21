@@ -1,58 +1,41 @@
 package com.example.demo.serviceimpl;
 
 import com.example.demo.config.JwtUtil;
-import com.example.demo.dto.AuthResponse;
 import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.RegisterRequest;
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.AuthService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
-    @Override
-    public AuthResponse register(RegisterRequest request) {
+    public AuthServiceImpl(UserRepository userRepository, JwtUtil jwtUtil) {
+        this.userRepository = userRepository;
+        this.jwtUtil = jwtUtil;
+    }
 
+    @Override
+    public String register(RegisterRequest request) {
         User user = User.builder()
-                .username(request.getEmail())   // ✅ FIX
-                .password(passwordEncoder.encode(request.getPassword()))
+                .email(request.getEmail())
+                .password(request.getPassword())
                 .role(request.getRole())
                 .build();
 
         userRepository.save(user);
-
-        String token = jwtUtil.generateToken(
-                user.getUsername(),             // ✅ FIX
-                user.getRole().name()
-        );
-
-        return new AuthResponse(token);
+        return "User registered successfully";
     }
 
     @Override
-    public AuthResponse login(LoginRequest request) {
-
-        User user = userRepository.findByUsername(request.getEmail()) // ✅ FIX
+    public String login(LoginRequest request) {
+        User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid credentials");
-        }
-
-        String token = jwtUtil.generateToken(
-                user.getUsername(),             // ✅ FIX
-                user.getRole().name()
-        );
-
-        return new AuthResponse(token);
+        return jwtUtil.generateToken(user.getEmail(), user.getRole().name());
     }
 }

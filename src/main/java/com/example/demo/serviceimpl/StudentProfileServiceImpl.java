@@ -3,31 +3,31 @@ package com.example.demo.serviceimpl;
 import com.example.demo.entity.StudentProfile;
 import com.example.demo.repository.StudentProfileRepository;
 import com.example.demo.service.StudentProfileService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
-@RequiredArgsConstructor
 public class StudentProfileServiceImpl implements StudentProfileService {
 
-    private final StudentProfileRepository repository;
+    private final StudentProfileRepository studentProfileRepository;
+
+    public StudentProfileServiceImpl(StudentProfileRepository studentProfileRepository) {
+        this.studentProfileRepository = studentProfileRepository;
+    }
 
     @Override
-    public StudentProfile getProfileById(Long id) {   // ✅ REQUIRED METHOD
-        return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Profile not found"));
+    public StudentProfile createOrUpdateProfile(StudentProfile profile) {
+        return studentProfileRepository.save(profile);
+    }
+
+    @Override
+    public StudentProfile getProfileById(Long id) {
+        return studentProfileRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("StudentProfile not found"));
     }
 
     @Override
     public StudentProfile getProfileByEnrollmentId(String enrollmentId) {
-        return repository.findByEnrollmentId(enrollmentId)
-                .orElseThrow(() -> new RuntimeException("Profile not found"));
-    }
-
-    @Override
-    public List<StudentProfile> getAllProfiles() {
-        return repository.findAll();
+        return studentProfileRepository.findByEnrollmentId(enrollmentId)
+                .orElseThrow(() -> new RuntimeException("StudentProfile not found"));
     }
 }
