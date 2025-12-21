@@ -1,16 +1,9 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
-
 import java.time.Instant;
 
 @Entity
-@Getter
-@Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class StudentProfile {
 
     @Id
@@ -18,13 +11,41 @@ public class StudentProfile {
     private Long id;
 
     private String enrollmentId;
-
-    private String grade;
-
-    private Instant createdAt;
-
+    private String name;
     private Instant lastUpdatedAt;
 
-    @ManyToOne
-    private User user;
+    public StudentProfile() {}
+
+    // ---------- Getters & Setters ----------
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getEnrollmentId() {
+        return enrollmentId;
+    }
+
+    public void setEnrollmentId(String enrollmentId) {
+        this.enrollmentId = enrollmentId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Instant getLastUpdatedAt() {
+        return lastUpdatedAt;
+    }
+
+    public void setLastUpdatedAt(Instant lastUpdatedAt) {
+        this.lastUpdatedAt = lastUpdatedAt;
+    }
 }
