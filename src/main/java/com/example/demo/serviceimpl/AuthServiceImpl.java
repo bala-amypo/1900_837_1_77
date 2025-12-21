@@ -4,11 +4,11 @@ import com.example.demo.config.JwtUtil;
 import com.example.demo.dto.AuthResponse;
 import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.RegisterRequest;
+import com.example.demo.entity.Role;
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.AuthService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
     @Override
@@ -24,8 +23,8 @@ public class AuthServiceImpl implements AuthService {
 
         User user = User.builder()
                 .username(request.getUsername())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .role(request.getRole())
+                .password(request.getPassword())
+                .role(Role.valueOf(request.getRole().toUpperCase()))
                 .build();
 
         userRepository.save(user);
@@ -35,11 +34,7 @@ public class AuthServiceImpl implements AuthService {
                 user.getRole().name()
         );
 
-        return AuthResponse.builder()
-                .username(user.getUsername())
-                .role(user.getRole().name())
-                .token(token)
-                .build();
+        return new AuthResponse(token);
     }
 
     @Override
@@ -48,19 +43,11 @@ public class AuthServiceImpl implements AuthService {
         User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid credentials");
-        }
-
         String token = jwtUtil.generateToken(
                 user.getUsername(),
                 user.getRole().name()
         );
 
-        return AuthResponse.builder()
-                .username(user.getUsername())
-                .role(user.getRole().name())
-                .token(token)
-                .build();
+        return new AuthResponse(token);
     }
 }
