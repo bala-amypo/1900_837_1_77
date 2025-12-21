@@ -1,19 +1,19 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "skill_gap_records")
-@IdClass(SkillGapKey.class)
 public class SkillGapRecordEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @ManyToOne
     private StudentProfileEntity studentProfile;
 
-    @Id
     @ManyToOne
     private SkillEntity skill;
 
@@ -21,51 +21,31 @@ public class SkillGapRecordEntity {
     private Double targetScore;
     private Double gapScore;
 
-    private Timestamp calculatedAt = new Timestamp(System.currentTimeMillis());
+    private LocalDateTime calculatedAt;
 
-    // ===== Getters & Setters =====
-
-    public StudentProfileEntity getStudentProfile() {
-        return studentProfile;
+    @PrePersist
+    protected void onCreate() {
+        this.calculatedAt = LocalDateTime.now();
     }
 
-    public void setStudentProfile(StudentProfileEntity studentProfile) {
-        this.studentProfile = studentProfile;
-    }
+    // Getters & Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public SkillEntity getSkill() {
-        return skill;
-    }
+    public StudentProfileEntity getStudentProfile() { return studentProfile; }
+    public void setStudentProfile(StudentProfileEntity studentProfile) { this.studentProfile = studentProfile; }
 
-    public void setSkill(SkillEntity skill) {
-        this.skill = skill;
-    }
+    public SkillEntity getSkill() { return skill; }
+    public void setSkill(SkillEntity skill) { this.skill = skill; }
 
-    public Double getCurrentScore() {
-        return currentScore;
-    }
+    public Double getCurrentScore() { return currentScore; }
+    public void setCurrentScore(Double currentScore) { this.currentScore = currentScore; }
 
-    public void setCurrentScore(Double currentScore) {
-        this.currentScore = currentScore;
-    }
+    public Double getTargetScore() { return targetScore; }
+    public void setTargetScore(Double targetScore) { this.targetScore = targetScore; }
 
-    public Double getTargetScore() {
-        return targetScore;
-    }
+    public Double getGapScore() { return gapScore; }
+    public void setGapScore(Double gapScore) { this.gapScore = gapScore; }
 
-    public void setTargetScore(Double targetScore) {
-        this.targetScore = targetScore;
-    }
-
-    public Double getGapScore() {
-        return gapScore;
-    }
-
-    public void setGapScore(Double gapScore) {
-        this.gapScore = gapScore;
-    }
-
-    public Timestamp getCalculatedAt() {
-        return calculatedAt;
-    }
+    public LocalDateTime getCalculatedAt() { return calculatedAt; }
 }

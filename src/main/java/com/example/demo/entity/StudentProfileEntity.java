@@ -1,76 +1,59 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "student_profiles")
+@Table(name = "student_profiles", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "enrollmentId")
+})
 public class StudentProfileEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserEntity user;
+
     @Column(nullable = false, unique = true)
     private String enrollmentId;
 
-    @OneToOne
-    private UserEntity user;
-
+    @Column(nullable = false)
     private String cohort;
 
+    @Column(nullable = false)
     private Integer yearLevel;
 
     private Boolean active = true;
 
-    private Timestamp lastUpdatedAt;
+    private LocalDateTime lastUpdatedAt;
 
+    @PrePersist
     @PreUpdate
-    public void onUpdate() {
-        this.lastUpdatedAt = new Timestamp(System.currentTimeMillis());
+    protected void onUpdate() {
+        this.lastUpdatedAt = LocalDateTime.now();
     }
 
-    // ===== Getters & Setters =====
+    // Getters & Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public String getEnrollmentId() {
-        return enrollmentId;
-    }
+    public UserEntity getUser() { return user; }
+    public void setUser(UserEntity user) { this.user = user; }
 
-    public void setEnrollmentId(String enrollmentId) {
-        this.enrollmentId = enrollmentId;
-    }
+    public String getEnrollmentId() { return enrollmentId; }
+    public void setEnrollmentId(String enrollmentId) { this.enrollmentId = enrollmentId; }
 
-    public UserEntity getUser() {
-        return user;
-    }
+    public String getCohort() { return cohort; }
+    public void setCohort(String cohort) { this.cohort = cohort; }
 
-    public void setUser(UserEntity user) {
-        this.user = user;
-    }
+    public Integer getYearLevel() { return yearLevel; }
+    public void setYearLevel(Integer yearLevel) { this.yearLevel = yearLevel; }
 
-    public String getCohort() {
-        return cohort;
-    }
+    public Boolean getActive() { return active; }
+    public void setActive(Boolean active) { this.active = active; }
 
-    public void setCohort(String cohort) {
-        this.cohort = cohort;
-    }
-
-    public Integer getYearLevel() {
-        return yearLevel;
-    }
-
-    public void setYearLevel(Integer yearLevel) {
-        this.yearLevel = yearLevel;
-    }
-
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-
-    public Timestamp getLastUpdatedAt() {
-        return lastUpdatedAt;
-    }
+    public LocalDateTime getLastUpdatedAt() { return lastUpdatedAt; }
 }

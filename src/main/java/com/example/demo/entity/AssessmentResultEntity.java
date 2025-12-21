@@ -1,63 +1,55 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "assessment_results")
-@IdClass(AssessmentResultKey.class)
 public class AssessmentResultEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @ManyToOne
     private StudentProfileEntity studentProfile;
 
-    @Id
     @ManyToOne
     private SkillEntity skill;
 
+    @Column(nullable = false)
+    private String assessmentId;
+
+    @Column(nullable = false)
     private Double scoreObtained;
 
     private Double maxScore = 100.0;
 
-    private Timestamp assessedAt = new Timestamp(System.currentTimeMillis());
+    private LocalDateTime attemptedAt;
 
-    // ===== Getters & Setters =====
-
-    public StudentProfileEntity getStudentProfile() {
-        return studentProfile;
+    @PrePersist
+    protected void onCreate() {
+        this.attemptedAt = LocalDateTime.now();
     }
 
-    public void setStudentProfile(StudentProfileEntity studentProfile) {
-        this.studentProfile = studentProfile;
-    }
+    // Getters & Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public SkillEntity getSkill() {
-        return skill;
-    }
+    public StudentProfileEntity getStudentProfile() { return studentProfile; }
+    public void setStudentProfile(StudentProfileEntity studentProfile) { this.studentProfile = studentProfile; }
 
-    public void setSkill(SkillEntity skill) {
-        this.skill = skill;
-    }
+    public SkillEntity getSkill() { return skill; }
+    public void setSkill(SkillEntity skill) { this.skill = skill; }
 
-    public Double getScoreObtained() {
-        return scoreObtained;
-    }
+    public String getAssessmentId() { return assessmentId; }
+    public void setAssessmentId(String assessmentId) { this.assessmentId = assessmentId; }
 
-    public void setScoreObtained(Double scoreObtained) {
-        this.scoreObtained = scoreObtained;
-    }
+    public Double getScoreObtained() { return scoreObtained; }
+    public void setScoreObtained(Double scoreObtained) { this.scoreObtained = scoreObtained; }
 
-    public Double getMaxScore() {
-        return maxScore;
-    }
+    public Double getMaxScore() { return maxScore; }
+    public void setMaxScore(Double maxScore) { this.maxScore = maxScore; }
 
-    public void setMaxScore(Double maxScore) {
-        this.maxScore = maxScore;
-    }
-
-    public Timestamp getAssessedAt() {
-        return assessedAt;
-    }
+    public LocalDateTime getAttemptedAt() { return attemptedAt; }
 }
