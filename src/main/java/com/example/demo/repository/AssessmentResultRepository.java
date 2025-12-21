@@ -1,21 +1,16 @@
 package com.example.demo.repository;
 
-import com.example.demo.entity.AssessmentResultEntity;
-import com.example.demo.entity.StudentProfileEntity;
-import com.example.demo.entity.SkillEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import java.util.List;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.example.demo.entity.AssessmentResultEntity;
+
 public interface AssessmentResultRepository
-        extends JpaRepository<AssessmentResultEntity, Object> {
+        extends JpaRepository<AssessmentResultEntity, Long> {
 
-    List<AssessmentResultEntity> findByStudentProfile(
-            StudentProfileEntity studentProfile
-    );
+    List<AssessmentResultEntity> findByStudentProfileId(Long studentProfileId);
 
-    List<AssessmentResultEntity> findByStudentProfileAndSkill(
-            StudentProfileEntity studentProfile,
-            SkillEntity skill
-    );
+    List<AssessmentResultEntity> findByStudentProfileIdAndSkillId(
+            Long studentProfileId, Long skillId);
 }

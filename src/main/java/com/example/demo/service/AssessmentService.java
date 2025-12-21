@@ -1,17 +1,14 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.AssessmentResultEntity;
-
 import java.util.List;
+import com.example.demo.entity.AssessmentResultEntity;
 
 public interface AssessmentService {
 
-    AssessmentResultEntity recordResult(AssessmentResultEntity result);
+    AssessmentResultEntity recordAssessment(AssessmentResultEntity assessment);
 
-    List<AssessmentResultEntity> getResultsByStudent(String enrollmentId);
+    List<AssessmentResultEntity> getResultsByStudent(Long studentProfileId);
 
-    List<AssessmentResultEntity> getResultByStudentAndSkill(
-            String enrollmentId,
-            String skillName
-    );
+    List<AssessmentResultEntity> getResultsByStudentAndSkill(
+            Long studentProfileId, Long skillId);
 }

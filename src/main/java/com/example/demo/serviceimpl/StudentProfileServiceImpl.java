@@ -1,40 +1,59 @@
 package com.example.demo.serviceimpl;
 
-import com.example.demo.entity.StudentProfileEntity;
-import com.example.demo.repository.StudentProfileRepository;
-import com.example.demo.service.StudentProfileService;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.example.demo.entity.StudentProfileEntity;
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.repository.StudentProfileRepository;
+import com.example.demo.service.StudentProfileService;
 
 @Service
 public class StudentProfileServiceImpl implements StudentProfileService {
 
     private final StudentProfileRepository repository;
 
+    // Constructor Injection
     public StudentProfileServiceImpl(StudentProfileRepository repository) {
         this.repository = repository;
     }
 
     @Override
-    public StudentProfileEntity createProfile(StudentProfileEntity profile) {
-
-        if (repository.existsByEnrollmentId(profile.getEnrollmentId())) {
-            throw new IllegalArgumentException("Email already exists");
+    public StudentProfileEntity createStudent(StudentProfileEntity student) {
+        if (repository.existsByEnrollmentId(student.getEnrollmentId())) {
+            throw new IllegalArgumentException("Enrollment ID already exists");
         }
-
-        return repository.save(profile);
+        return repository.save(student);
     }
 
     @Override
-    public StudentProfileEntity getProfileByEnrollmentId(String enrollmentId) {
-
-        return repository.findByEnrollmentId(enrollmentId)
-                .orElseThrow(() -> new IllegalArgumentException("Not Found"));
+    public StudentProfileEntity getStudentById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Student not found"));
     }
 
     @Override
-    public List<StudentProfileEntity> getAllProfiles() {
+    public List<StudentProfileEntity> getAllStudents() {
         return repository.findAll();
+    }
+
+    @Override
+    public StudentProfileEntity updateStudent(Long id, StudentProfileEntity student) {
+        StudentProfileEntity existing = getStudentById(id);
+
+        existing.setEnrollmentId(student.getEnrollmentId());
+        existing.setCohort(student.getCohort());
+        existing.setYearLevel(student.getYearLevel());
+        existing.setActive(student.getActive());
+
+        return repository.save(existing);
+    }
+
+    @Override
+    public void deleteStudent(Long id) {
+        StudentProfileEntity existing = getStudentById(id);
+        repository.delete(existing);
     }
 }

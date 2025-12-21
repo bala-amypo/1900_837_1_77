@@ -1,18 +1,19 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.SkillEntity;
-
 import java.util.List;
+import com.example.demo.entity.SkillEntity;
 
 public interface SkillService {
 
     SkillEntity createSkill(SkillEntity skill);
 
-    SkillEntity updateSkill(String skillName, SkillEntity skill);
-
-    SkillEntity getSkillByName(String skillName);
+    SkillEntity getSkillById(Long id);
 
     List<SkillEntity> getAllSkills();
 
-    void deactivateSkill(String skillName);
+    List<SkillEntity> getActiveSkills();
+
+    SkillEntity updateSkill(Long id, SkillEntity skill);
+
+    void deactivateSkill(Long id);
 }

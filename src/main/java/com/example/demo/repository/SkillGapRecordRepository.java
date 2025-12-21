@@ -1,15 +1,13 @@
 package com.example.demo.repository;
 
-import com.example.demo.entity.SkillGapRecordEntity;
-import com.example.demo.entity.StudentProfileEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import java.util.List;
 
-public interface SkillGapRecordRepository
-        extends JpaRepository<SkillGapRecordEntity, Object> {
+import org.springframework.data.jpa.repository.JpaRepository;
 
-    List<SkillGapRecordEntity> findByStudentProfile(
-            StudentProfileEntity studentProfile
-    );
+import com.example.demo.entity.SkillGapRecordEntity;
+
+public interface SkillGapRecordRepository
+        extends JpaRepository<SkillGapRecordEntity, Long> {
+
+    List<SkillGapRecordEntity> findByStudentProfileId(Long studentProfileId);
 }

@@ -4,7 +4,9 @@ import com.example.demo.entity.UserEntity;
 
 public interface AuthService {
 
-    UserEntity register(RegisterRequest request);
+    UserEntity register(UserEntity user);
 
-    String login(LoginRequest request);
+    UserEntity getById(Long id);
+
+    UserEntity findByEmail(String email);
 }
