@@ -3,6 +3,8 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.Instant;
+
 @Entity
 @Getter
 @Setter
@@ -17,6 +19,12 @@ public class StudentProfile {
 
     private String enrollmentId;
 
-    @OneToOne
+    private String grade;
+
+    private Instant createdAt;
+
+    private Instant lastUpdatedAt;
+
+    @ManyToOne
     private User user;
 }

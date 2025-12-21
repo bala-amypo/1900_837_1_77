@@ -1,9 +1,9 @@
-package com.example.demo.service;
+List<AssessmentResult> findByStudentProfileIdAndSkillId(Long studentId, Long skillId);
 
-import com.example.demo.entity.SkillGapRecommendation;
-import java.util.List;
+List<AssessmentResult> findResultsForStudentBetween(
+        Long studentId,
+        Instant start,
+        Instant end
+);
 
-public interface RecommendationService {
-
-    List<SkillGapRecommendation> getRecommendationsForStudent(Long studentProfileId);
-}
+Double avgScoreByCohortAndSkill(String grade, Long skillId);

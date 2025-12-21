@@ -1,15 +1,9 @@
-package com.example.demo.repository;
+List<AssessmentResult> findByStudentProfileIdAndSkillId(Long studentId, Long skillId);
 
-import com.example.demo.entity.AssessmentResult;
-import org.springframework.data.jpa.repository.JpaRepository;
+List<AssessmentResult> findResultsForStudentBetween(
+        Long studentId,
+        Instant start,
+        Instant end
+);
 
-import java.util.Optional;
-
-public interface AssessmentResultRepository
-        extends JpaRepository<AssessmentResult, Long> {
-
-    Optional<AssessmentResult> findByStudentProfileIdAndSkillId(
-            Long studentProfileId,
-            Long skillId
-    );
-}
+Double avgScoreByCohortAndSkill(String grade, Long skillId);
