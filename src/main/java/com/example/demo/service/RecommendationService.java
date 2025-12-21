@@ -1,9 +1,8 @@
-List<AssessmentResult> findByStudentProfileIdAndSkillId(Long studentId, Long skillId);
+package com.example.demo.service;
 
-List<AssessmentResult> findResultsForStudentBetween(
-        Long studentId,
-        Instant start,
-        Instant end
-);
+public interface RecommendationService {
 
-Double avgScoreByCohortAndSkill(String grade, Long skillId);
+    void computeRecommendationForStudentSkill(Long studentId, Long skillId);
+
+    void computeRecommendationsForStudent(Long studentId);
+}

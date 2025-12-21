@@ -1,38 +1,48 @@
 package com.example.demo.config;
 
-import com.example.demo.entity.Role;
-import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
+import com.example.demo.entity.User;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Component;
 
-import java.security.Key;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class JwtUtil {
 
-    private static final String SECRET = "mysecretkeymysecretkeymysecretkey123";
-    private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 5; // 5 hours
+    private final String SECRET = "secret-key";
 
-    private Key getSigningKey() {
-        return Keys.hmacShaKeyFor(SECRET.getBytes());
+    // REQUIRED: no-args constructor (tests expect this)
+    public JwtUtil() {
     }
 
-    // generate token using email + role
-    public String generateToken(String username, String role){
+    // REQUIRED: generateToken(User)
+    public String generateToken(User user) {
+        return generateToken(user.getUsername(), user.getRole().name());
+    }
+
+    // REQUIRED: generateToken(String, String)
+    public String generateToken(String username, String role) {
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("role", role);
+
         return Jwts.builder()
-                .setSubject(email)
-                .claim("role", role)
+                .setClaims(claims)
+                .setSubject(username)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
+                .signWith(SignatureAlgorithm.HS256, SECRET)
                 .compact();
     }
 
+    // REQUIRED: validateAndParse()
     public Claims validateAndParse(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
-                .build()
+        return Jwts.parser()
+                .setSigningKey(SECRET)
                 .parseClaimsJws(token)
                 .getBody();
     }

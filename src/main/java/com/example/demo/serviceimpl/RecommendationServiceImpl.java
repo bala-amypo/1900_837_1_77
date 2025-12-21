@@ -1,48 +1,57 @@
 package com.example.demo.serviceimpl;
 
-import com.example.demo.entity.SkillGapRecommendation;
-import com.example.demo.entity.SkillGapRecord;
-import com.example.demo.repository.SkillGapRecommendationRepository;
-import com.example.demo.repository.SkillGapRecordRepository;
+import com.example.demo.entity.*;
+import com.example.demo.repository.*;
 import com.example.demo.service.RecommendationService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class RecommendationServiceImpl implements RecommendationService {
 
-    private final SkillGapRecordRepository recordRepository;
+    private final AssessmentResultRepository assessmentResultRepository;
     private final SkillGapRecommendationRepository recommendationRepository;
+    private final StudentProfileRepository studentProfileRepository;
+    private final SkillRepository skillRepository;
 
-    public RecommendationServiceImpl(
-            SkillGapRecordRepository recordRepository,
-            SkillGapRecommendationRepository recommendationRepository) {
-        this.recordRepository = recordRepository;
-        this.recommendationRepository = recommendationRepository;
+    @Override
+    public void computeRecommendationForStudentSkill(Long studentId, Long skillId) {
+
+        List<AssessmentResult> results =
+                assessmentResultRepository.findByStudentProfileIdAndSkillId(studentId, skillId);
+
+        if (results.isEmpty()) return;
+
+        double avgScore = results.stream()
+                .mapToDouble(AssessmentResult::getScore)
+                .average()
+                .orElse(0.0);
+
+        double maxScore = results.get(0).getMaxScore();
+
+        if (avgScore < maxScore * 0.6) {
+            StudentProfile student = studentProfileRepository.findById(studentId).orElseThrow();
+            Skill skill = skillRepository.findById(skillId).orElseThrow();
+
+            SkillGapRecommendation rec = SkillGapRecommendation.builder()
+                    .studentProfile(student)
+                    .skill(skill)
+                    .generatedAt(Instant.now())
+                    .build();
+
+            recommendationRepository.save(rec);
+        }
     }
 
     @Override
-    public List<SkillGapRecommendation> getRecommendationsForStudent(Long studentProfileId) {
-
-        List<SkillGapRecord> gaps =
-                recordRepository.findByStudentProfileId(studentProfileId);
-
-        for (SkillGapRecord gap : gaps) {
-            if (gap.getGapScore() != null && gap.getGapScore() > 0) {
-
-                SkillGapRecommendation rec = SkillGapRecommendation.builder()
-                        .skill(gap.getSkill())
-                        .gapScore(gap.getGapScore())
-                        .priority("MEDIUM")
-                        .recommendationText("Improve " + gap.getSkill().getName())
-                        .generatedBy("SYSTEM")
-                        .build();
-
-                recommendationRepository.save(rec);
-            }
+    public void computeRecommendationsForStudent(Long studentId) {
+        List<Skill> skills = skillRepository.findAll();
+        for (Skill skill : skills) {
+            computeRecommendationForStudentSkill(studentId, skill.getId());
         }
-
-        return recommendationRepository.findByStudentProfileId(studentProfileId);
     }
 }
