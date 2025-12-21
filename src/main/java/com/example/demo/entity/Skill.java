@@ -15,9 +15,9 @@ public class Skill {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String code;
     private String name;
 
-    @Builder.Default
+    private String code;
+
     private boolean active = true;
 }
