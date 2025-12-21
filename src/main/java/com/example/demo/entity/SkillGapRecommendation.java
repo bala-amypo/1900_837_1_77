@@ -2,7 +2,6 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import java.time.Instant;
 
 @Entity
 @Getter
@@ -17,12 +16,10 @@ public class SkillGapRecommendation {
     private Long id;
 
     @ManyToOne
-    private StudentProfile student;
-
-    @ManyToOne
     private Skill skill;
 
     private Double gapScore;
+    private String priority;
     private String recommendationText;
-    private Instant generatedAt;
+    private String generatedBy;
 }

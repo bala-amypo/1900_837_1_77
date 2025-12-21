@@ -12,42 +12,37 @@ import java.util.List;
 @Service
 public class RecommendationServiceImpl implements RecommendationService {
 
-    private final SkillGapRecordRepository skillGapRecordRepository;
+    private final SkillGapRecordRepository recordRepository;
     private final SkillGapRecommendationRepository recommendationRepository;
 
     public RecommendationServiceImpl(
-            SkillGapRecordRepository skillGapRecordRepository,
+            SkillGapRecordRepository recordRepository,
             SkillGapRecommendationRepository recommendationRepository) {
-        this.skillGapRecordRepository = skillGapRecordRepository;
+        this.recordRepository = recordRepository;
         this.recommendationRepository = recommendationRepository;
     }
 
     @Override
-    public List<SkillGapRecommendation> generateRecommendations(Long studentProfileId) {
+    public List<SkillGapRecommendation> getRecommendationsForStudent(Long studentProfileId) {
 
         List<SkillGapRecord> gaps =
-                skillGapRecordRepository.findByStudentProfileId(studentProfileId);
+                recordRepository.findByStudentProfileId(studentProfileId);
 
         for (SkillGapRecord gap : gaps) {
-
             if (gap.getGapScore() != null && gap.getGapScore() > 0) {
 
-                SkillGapRecommendation recommendation = SkillGapRecommendation.builder()
-                        .studentProfile(gap.getStudentProfile())
+                SkillGapRecommendation rec = SkillGapRecommendation.builder()
                         .skill(gap.getSkill())
                         .gapScore(gap.getGapScore())
-                        .priority(gap.getGapScore() > 50 ? "HIGH" : "MEDIUM")
-                        .recommendationText(
-                                "Improve skill: " + gap.getSkill().getName()
-                        )
+                        .priority("MEDIUM")
+                        .recommendationText("Improve " + gap.getSkill().getName())
                         .generatedBy("SYSTEM")
                         .build();
 
-                recommendationRepository.save(recommendation);
+                recommendationRepository.save(rec);
             }
         }
 
-        return recommendationRepository
-                .findByStudentProfileId(studentProfileId);
+        return recommendationRepository.findByStudentProfileId(studentProfileId);
     }
 }
