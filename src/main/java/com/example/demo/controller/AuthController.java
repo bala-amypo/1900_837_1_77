@@ -1,7 +1,5 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.LoginRequest;
-import com.example.demo.dto.RegisterRequest;
 import com.example.demo.entity.UserEntity;
 import com.example.demo.service.AuthService;
 import org.springframework.http.ResponseEntity;
