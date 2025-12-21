@@ -14,7 +14,6 @@ public class StudentProfileServiceImpl implements StudentProfileService {
 
     private final StudentProfileRepository repository;
 
-    // Constructor Injection
     public StudentProfileServiceImpl(StudentProfileRepository repository) {
         this.repository = repository;
     }
@@ -53,7 +52,6 @@ public class StudentProfileServiceImpl implements StudentProfileService {
 
     @Override
     public void deleteStudent(Long id) {
-        StudentProfileEntity existing = getStudentById(id);
-        repository.delete(existing);
+        repository.delete(getStudentById(id));
     }
 }
