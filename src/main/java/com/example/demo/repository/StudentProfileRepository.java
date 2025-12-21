@@ -1,16 +1,17 @@
 package com.example.demo.repository;
 
-import com.example.demo.entity.StudentProfileEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import java.util.Optional;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.example.demo.entity.StudentProfileEntity;
+
 public interface StudentProfileRepository
-        extends JpaRepository<StudentProfileEntity, String> {
+        extends JpaRepository<StudentProfileEntity, Long> {
+
+    boolean existsByEnrollmentId(String enrollmentId);
 
     Optional<StudentProfileEntity> findByEnrollmentId(String enrollmentId);
 
-    Optional<StudentProfileEntity> findByUser_Email(String email);
-
-    boolean existsByEnrollmentId(String enrollmentId);
+    Optional<StudentProfileEntity> findByUserId(Long userId);
 }
