@@ -15,13 +15,19 @@ public class StudentProfileServiceImpl implements StudentProfileService {
     private final StudentProfileRepository repository;
 
     @Override
-    public List<StudentProfile> getAllProfiles() {
-        return repository.findAll();
+    public StudentProfile getProfileById(Long id) {   // ✅ REQUIRED METHOD
+        return repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Profile not found"));
     }
 
     @Override
-    public StudentProfile getByUserId(Long userId) {
-        return repository.findByUserId(userId)
+    public StudentProfile getProfileByEnrollmentId(String enrollmentId) {
+        return repository.findByEnrollmentId(enrollmentId)
                 .orElseThrow(() -> new RuntimeException("Profile not found"));
+    }
+
+    @Override
+    public List<StudentProfile> getAllProfiles() {
+        return repository.findAll();
     }
 }

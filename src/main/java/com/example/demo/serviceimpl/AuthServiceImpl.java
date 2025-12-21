@@ -23,7 +23,7 @@ public class AuthServiceImpl implements AuthService {
     public AuthResponse register(RegisterRequest request) {
 
         User user = User.builder()
-                .username(request.getUsername())   
+                .username(request.getEmail())   // ✅ FIX
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(request.getRole())
                 .build();
@@ -31,7 +31,7 @@ public class AuthServiceImpl implements AuthService {
         userRepository.save(user);
 
         String token = jwtUtil.generateToken(
-                user.getUsername(),               
+                user.getUsername(),             // ✅ FIX
                 user.getRole().name()
         );
 
@@ -41,7 +41,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public AuthResponse login(LoginRequest request) {
 
-        User user = userRepository.findByUsername(request.getUsername())
+        User user = userRepository.findByUsername(request.getEmail()) // ✅ FIX
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
@@ -49,7 +49,7 @@ public class AuthServiceImpl implements AuthService {
         }
 
         String token = jwtUtil.generateToken(
-                user.getUsername(),             
+                user.getUsername(),             // ✅ FIX
                 user.getRole().name()
         );
 
