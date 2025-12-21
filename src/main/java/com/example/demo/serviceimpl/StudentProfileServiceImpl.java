@@ -5,29 +5,36 @@ import com.example.demo.repository.StudentProfileRepository;
 import com.example.demo.service.StudentProfileService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class StudentProfileServiceImpl implements StudentProfileService {
 
-    private final StudentProfileRepository studentProfileRepository;
+    private final StudentProfileRepository repository;
 
-    public StudentProfileServiceImpl(StudentProfileRepository studentProfileRepository) {
-        this.studentProfileRepository = studentProfileRepository;
+    public StudentProfileServiceImpl(StudentProfileRepository repository) {
+        this.repository = repository;
     }
 
     @Override
     public StudentProfile createOrUpdateProfile(StudentProfile profile) {
-        return studentProfileRepository.save(profile);
+        return repository.save(profile);
     }
 
     @Override
     public StudentProfile getProfileById(Long id) {
-        return studentProfileRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("StudentProfile not found"));
+        return repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Profile not found"));
     }
 
     @Override
     public StudentProfile getProfileByEnrollmentId(String enrollmentId) {
-        return studentProfileRepository.findByEnrollmentId(enrollmentId)
-                .orElseThrow(() -> new RuntimeException("StudentProfile not found"));
+        return repository.findByEnrollmentId(enrollmentId)
+                .orElseThrow(() -> new RuntimeException("Profile not found"));
+    }
+
+    @Override
+    public List<StudentProfile> getAllProfiles() {
+        return repository.findAll();
     }
 }
