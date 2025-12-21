@@ -9,6 +9,7 @@ import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.AuthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,23 +17,20 @@ import org.springframework.stereotype.Service;
 public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
     @Override
     public AuthResponse register(RegisterRequest request) {
 
-        User user = User.builder()
-                .email(request.getEmail())
-                .password(request.getPassword())
-                .role(Role.valueOf(request.getRole().toUpperCase()))
-                .build();
+        User user = new User();
+        user.setEmail(request.getEmail());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRole(Role.valueOf(request.getRole()));
 
         userRepository.save(user);
 
-        String token = jwtUtil.generateToken(
-                user.getEmail(),
-                user.getRole().name()
-        );
+        String token = jwtUtil.generateToken(user);
 
         return new AuthResponse(
                 token,
@@ -47,10 +45,7 @@ public class AuthServiceImpl implements AuthService {
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        String token = jwtUtil.generateToken(
-                user.getEmail(),
-                user.getRole().name()
-        );
+        String token = jwtUtil.generateToken(user);
 
         return new AuthResponse(
                 token,

@@ -12,25 +12,29 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StudentProfileServiceImpl implements StudentProfileService {
 
-    private final StudentProfileRepository repository;
+    private final StudentProfileRepository studentProfileRepository;
 
     @Override
     public StudentProfile createOrUpdateProfile(StudentProfile profile) {
-        return repository.save(profile);
+        return studentProfileRepository.save(profile);
     }
 
     @Override
     public StudentProfile getProfileById(Long id) {
-        return repository.findById(id).orElse(null);
+        return studentProfileRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("StudentProfile not found with id: " + id));
     }
 
     @Override
     public StudentProfile getProfileByEnrollmentId(String enrollmentId) {
-        return repository.findByEnrollmentId(enrollmentId);
+        return studentProfileRepository.findByEnrollmentId(enrollmentId)
+                .orElseThrow(() -> new RuntimeException(
+                        "StudentProfile not found with enrollmentId: " + enrollmentId
+                ));
     }
 
     @Override
     public List<StudentProfile> getAllProfiles() {
-        return repository.findAll();
+        return studentProfileRepository.findAll();
     }
 }
