@@ -1,14 +1,18 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.AssessmentResultEntity;
-import com.example.demo.service.AssessmentService;
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import com.example.demo.entity.AssessmentResultEntity;
+import com.example.demo.service.AssessmentService;
+
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/api/assessments")
+@Tag(name = "Assessments")
 public class AssessmentController {
 
     private final AssessmentService service;
@@ -18,23 +22,22 @@ public class AssessmentController {
     }
 
     @PostMapping
-    public ResponseEntity<AssessmentResultEntity> record(
-            @RequestBody AssessmentResultEntity result) {
-        return ResponseEntity.ok(service.recordResult(result));
+    public ResponseEntity<AssessmentResultEntity> create(
+            @RequestBody AssessmentResultEntity assessment) {
+        return ResponseEntity.ok(service.recordAssessment(assessment));
     }
 
-    @GetMapping("/student/{enrollmentId}")
+    @GetMapping("/student/{studentId}")
     public ResponseEntity<List<AssessmentResultEntity>> getByStudent(
-            @PathVariable String enrollmentId) {
-        return ResponseEntity.ok(
-                service.getResultsByStudent(enrollmentId));
+            @PathVariable Long studentId) {
+        return ResponseEntity.ok(service.getResultsByStudent(studentId));
     }
 
-    @GetMapping("/student/{enrollmentId}/skill/{skillName}")
+    @GetMapping("/student/{studentId}/skill/{skillId}")
     public ResponseEntity<List<AssessmentResultEntity>> getByStudentAndSkill(
-            @PathVariable String enrollmentId,
-            @PathVariable String skillName) {
+            @PathVariable Long studentId,
+            @PathVariable Long skillId) {
         return ResponseEntity.ok(
-                service.getResultByStudentAndSkill(enrollmentId, skillName));
+                service.getResultsByStudentAndSkill(studentId, skillId));
     }
 }
