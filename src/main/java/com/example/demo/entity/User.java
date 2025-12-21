@@ -1,26 +1,25 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
 import lombok.*;
+import jakarta.persistence.*;
 
 @Entity
-@Getter
-@Setter
-@Builder
+@Table(name = "users")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "users")
+@Builder
 public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    private String username;
     private String email;
-
+    private String fullName;
     private String password;
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    // add any convenience getters if tests expect getBody() etc (they shouldn't be here)
 }

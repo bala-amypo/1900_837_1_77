@@ -1,12 +1,14 @@
 package com.example.demo.dto;
 
-import com.example.demo.entity.Role;   // ✅ FIX 2
-import lombok.Data;                    // ✅ FIX 1
+import lombok.*;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class RegisterRequest {
-
+    private String username;
     private String email;
     private String password;
-    private Role role;
+    private String fullName;
+    private String role; // or Role if you import enum
 }
