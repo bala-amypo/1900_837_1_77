@@ -1,10 +1,6 @@
-package com.example.demo.dto;
-
-import lombok.*;
+import lombok.Data;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class LoginRequest {
     private String username;
     private String password;
