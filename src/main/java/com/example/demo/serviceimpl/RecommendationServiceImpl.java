@@ -15,7 +15,7 @@ public class RecommendationServiceImpl implements RecommendationService {
     private final SkillGapRecommendationRepository recommendationRepository;
 
     @Override
-    public List<SkillGapRecommendation> getRecommendationsByStudentId(Long studentId) {
+    public List<SkillGapRecommendation> getRecommendationsForStudent(Long studentId) {
         return recommendationRepository.findByStudentId(studentId);
     }
 }

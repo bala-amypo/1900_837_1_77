@@ -6,15 +6,22 @@ import com.example.demo.service.StudentProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class StudentProfileServiceImpl implements StudentProfileService {
 
-    private final StudentProfileRepository studentProfileRepository;
+    private final StudentProfileRepository repository;
 
     @Override
-    public StudentProfile getProfileByEnrollmentId(String enrollmentId) {
-        return studentProfileRepository.findByEnrollmentId(enrollmentId)
-                .orElseThrow(() -> new RuntimeException("Student profile not found"));
+    public List<StudentProfile> getAllProfiles() {
+        return repository.findAll();
+    }
+
+    @Override
+    public StudentProfile getByUserId(Long userId) {
+        return repository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Profile not found"));
     }
 }
