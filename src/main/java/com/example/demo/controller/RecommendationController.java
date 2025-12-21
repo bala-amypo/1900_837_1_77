@@ -1,32 +1,21 @@
 package com.example.demo.controller;
 
+import com.example.demo.entity.SkillGapRecommendation;
 import com.example.demo.service.RecommendationService;
-import org.springframework.http.ResponseEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/recommendations")
+@RequiredArgsConstructor
 public class RecommendationController {
 
     private final RecommendationService recommendationService;
 
-    public RecommendationController(
-            RecommendationService recommendationService
-    ) {
-        this.recommendationService = recommendationService;
-    }
-
-    @PostMapping("/generate/{studentId}")
-    public ResponseEntity<?> generate(@PathVariable Long studentId) {
-        return ResponseEntity.ok(
-                recommendationService.computeRecommendationsForStudent(studentId)
-        );
-    }
-
-    @GetMapping("/student/{studentId}")
-    public ResponseEntity<?> get(@PathVariable Long studentId) {
-        return ResponseEntity.ok(
-                recommendationService.getRecommendationsForStudent(studentId)
-        );
+    @GetMapping("/{studentId}")
+    public List<SkillGapRecommendation> getRecommendations(@PathVariable Long studentId) {
+        return recommendationService.getRecommendationsForStudent(studentId);
     }
 }
