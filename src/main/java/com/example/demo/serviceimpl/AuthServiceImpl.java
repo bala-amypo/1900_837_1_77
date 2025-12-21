@@ -51,4 +51,6 @@ public class AuthServiceImpl implements AuthService {
                 user.getRole().name()
         );
 
-        return new Aut
+        return new AuthResponse(token);
+    }
+}
