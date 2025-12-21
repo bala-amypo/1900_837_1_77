@@ -22,7 +22,7 @@ public class AuthServiceImpl implements AuthService {
     public AuthResponse register(RegisterRequest request) {
 
         User user = User.builder()
-                .username(request.getUsername())
+                .email(request.getEmail())
                 .password(request.getPassword())
                 .role(Role.valueOf(request.getRole().toUpperCase()))
                 .build();
@@ -30,24 +30,32 @@ public class AuthServiceImpl implements AuthService {
         userRepository.save(user);
 
         String token = jwtUtil.generateToken(
-                user.getUsername(),
+                user.getEmail(),
                 user.getRole().name()
         );
 
-        return new AuthResponse(token);
+        return new AuthResponse(
+                token,
+                user.getEmail(),
+                user.getRole().name()
+        );
     }
 
     @Override
     public AuthResponse login(LoginRequest request) {
 
-        User user = userRepository.findByUsername(request.getUsername())
+        User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         String token = jwtUtil.generateToken(
-                user.getUsername(),
+                user.getEmail(),
                 user.getRole().name()
         );
 
-        return new AuthResponse(token);
+        return new AuthResponse(
+                token,
+                user.getEmail(),
+                user.getRole().name()
+        );
     }
 }
