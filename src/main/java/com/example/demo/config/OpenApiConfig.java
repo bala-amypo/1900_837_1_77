@@ -14,7 +14,7 @@ public class OpenApiConfig {
         return new OpenAPI()
                 .addServersItem(
                         new Server()
-                                .url("http://localhost:9001")
+                                .url("https://9457.pro604cr.amypo.ai/")
                                 .description("Local Server")
                 );
     }
