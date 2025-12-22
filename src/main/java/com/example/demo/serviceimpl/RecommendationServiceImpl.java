@@ -1,47 +1,63 @@
-@Service
-public class RecommendationServiceImpl {
+package com.example.demo.serviceimpl;
 
-    private final AssessmentResultRepository aRepo;
-    private final SkillGapRecommendationRepository rRepo;
-    private final StudentProfileRepository sRepo;
+import com.example.demo.entity.Skill;
+import com.example.demo.entity.SkillGapRecommendation;
+import com.example.demo.repository.AssessmentResultRepository;
+import com.example.demo.repository.SkillGapRecommendationRepository;
+import com.example.demo.repository.SkillRepository;
+import com.example.demo.repository.StudentProfileRepository;
+import com.example.demo.service.RecommendationService;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class RecommendationServiceImpl implements RecommendationService {
+
+    private final AssessmentResultRepository assessmentRepo;
+    private final SkillGapRecommendationRepository recommendationRepo;
+    private final StudentProfileRepository profileRepo;
     private final SkillRepository skillRepo;
 
     public RecommendationServiceImpl(
-            AssessmentResultRepository a,
-            SkillGapRecommendationRepository r,
-            StudentProfileRepository s,
-            SkillRepository sk) {
-        this.aRepo = a;
-        this.rRepo = r;
-        this.sRepo = s;
-        this.skillRepo = sk;
+            AssessmentResultRepository assessmentRepo,
+            SkillGapRecommendationRepository recommendationRepo,
+            StudentProfileRepository profileRepo,
+            SkillRepository skillRepo) {
+
+        this.assessmentRepo = assessmentRepo;
+        this.recommendationRepo = recommendationRepo;
+        this.profileRepo = profileRepo;
+        this.skillRepo = skillRepo;
     }
 
+    @Override
     public SkillGapRecommendation computeRecommendationForStudentSkill(
-            Long sid, Long skillId) {
+            Long studentId, Long skillId) {
 
-        SkillGapRecommendation r =
+        SkillGapRecommendation recommendation =
                 SkillGapRecommendation.builder()
                         .gapScore(50.0)
                         .generatedBy("SYSTEM")
                         .build();
 
-        return rRepo.save(r);
+        return recommendationRepo.save(recommendation);
     }
 
-    public List<SkillGapRecommendation> computeRecommendationsForStudent(
-            Long id) {
-
+    @Override
+    public List<SkillGapRecommendation> computeRecommendationsForStudent(Long studentId) {
         List<Skill> skills = skillRepo.findByActiveTrue();
-        List<SkillGapRecommendation> out = new ArrayList<>();
+        List<SkillGapRecommendation> result = new ArrayList<>();
 
-        for (Skill s : skills) {
-            out.add(computeRecommendationForStudentSkill(id, s.getId()));
+        for (Skill skill : skills) {
+            result.add(computeRecommendationForStudentSkill(studentId, skill.getId()));
         }
-        return out;
+        return result;
     }
 
-    public List<SkillGapRecommendation> getRecommendationsForStudent(Long id) {
-        return rRepo.findByStudentOrdered(id);
+    @Override
+    public List<SkillGapRecommendation> getRecommendationsForStudent(Long studentId) {
+        return recommendationRepo.findByStudentOrdered(studentId);
     }
 }

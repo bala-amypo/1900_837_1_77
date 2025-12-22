@@ -1,18 +1,15 @@
 package com.example.demo.controller;
 
-import java.util.List;
+import com.example.demo.entity.Skill;
+import com.example.demo.service.SkillService;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.demo.entity.SkillEntity;
-import com.example.demo.service.SkillService;
-
-import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/skills")
-@Tag(name = "Skill CRUD")
 public class SkillController {
 
     private final SkillService service;
@@ -22,30 +19,24 @@ public class SkillController {
     }
 
     @PostMapping
-    public ResponseEntity<SkillEntity> create(@RequestBody SkillEntity skill) {
+    public ResponseEntity<Skill> create(@RequestBody Skill skill) {
         return ResponseEntity.ok(service.createSkill(skill));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<SkillEntity> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(service.getSkillById(id));
-    }
-
-    @GetMapping
-    public ResponseEntity<List<SkillEntity>> getAll() {
-        return ResponseEntity.ok(service.getAllSkills());
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<SkillEntity> update(
+    @PutMapping("/id/{id}")
+    public ResponseEntity<Skill> update(
             @PathVariable Long id,
-            @RequestBody SkillEntity skill) {
+            @RequestBody Skill skill) {
         return ResponseEntity.ok(service.updateSkill(id, skill));
     }
 
-    @PutMapping("/{id}/deactivate")
-    public ResponseEntity<String> deactivate(@PathVariable Long id) {
-        service.deactivateSkill(id);
-        return ResponseEntity.ok("Skill deactivated");
+    @GetMapping("/id/{id}")
+    public ResponseEntity<Skill> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(service.getById(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Skill>> getActive() {
+        return ResponseEntity.ok(service.getActiveSkills());
     }
 }

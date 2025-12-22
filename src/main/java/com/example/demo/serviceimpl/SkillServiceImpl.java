@@ -1,31 +1,45 @@
+package com.example.demo.serviceimpl;
+
+import com.example.demo.entity.Skill;
+import com.example.demo.repository.SkillRepository;
+import com.example.demo.service.SkillService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
 @Service
-public class SkillServiceImpl {
+public class SkillServiceImpl implements SkillService {
 
-    private final SkillRepository repo;
+    private final SkillRepository repository;
 
-    public SkillServiceImpl(SkillRepository repo) {
-        this.repo = repo;
+    public SkillServiceImpl(SkillRepository repository) {
+        this.repository = repository;
     }
 
-    public Skill createSkill(Skill s) {
-        if (repo.findByCode(s.getCode()).isPresent())
+    @Override
+    public Skill createSkill(Skill skill) {
+        if (repository.findByCode(skill.getCode()).isPresent()) {
             throw new IllegalArgumentException("unique");
-        return repo.save(s);
+        }
+        return repository.save(skill);
     }
 
-    public Skill updateSkill(Long id, Skill s) {
-        Skill ex = repo.findById(id)
+    @Override
+    public Skill updateSkill(Long id, Skill skill) {
+        Skill existing = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("not found"));
-        ex.setName(s.getName());
-        return repo.save(ex);
+        existing.setName(skill.getName());
+        return repository.save(existing);
     }
 
+    @Override
     public Skill getById(Long id) {
-        return repo.findById(id)
+        return repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("not found"));
     }
 
+    @Override
     public List<Skill> getActiveSkills() {
-        return repo.findByActiveTrue();
+        return repository.findByActiveTrue();
     }
 }
