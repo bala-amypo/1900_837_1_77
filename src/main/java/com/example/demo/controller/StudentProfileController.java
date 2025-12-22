@@ -1,27 +1,28 @@
-package com.example.demo.entity;
+package com.example.demo.controller;
 
-import jakarta.persistence.*;
-import lombok.*;
+import com.example.demo.entity.StudentProfile;
+import com.example.demo.service.StudentProfileService;
+import org.springframework.web.bind.annotation.*;
 
-import java.time.Instant;
+import java.util.List;
 
-@Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class StudentProfile {
+@RestController
+@RequestMapping("/api/students")
+public class StudentProfileController {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private final StudentProfileService service;
 
-    private Long userId;
+    public StudentProfileController(StudentProfileService service) {
+        this.service = service;
+    }
 
-    private String enrollmentId;
+    @PostMapping
+    public StudentProfile create(@RequestBody StudentProfile profile) {
+        return service.create(profile);
+    }
 
-    private String cohort;
-
-    private Instant lastUpdatedAt;
+    @GetMapping
+    public List<StudentProfile> getAll() {
+        return service.getAll();
+    }
 }
