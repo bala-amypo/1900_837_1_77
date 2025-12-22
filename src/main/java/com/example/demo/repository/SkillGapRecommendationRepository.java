@@ -10,6 +10,6 @@ import java.util.List;
 public interface SkillGapRecommendationRepository
         extends JpaRepository<SkillGapRecommendation, Long> {
 
-    // ✅ Correct Spring Data JPA method
-    List<SkillGapRecommendation> findByStudentIdOrderByGeneratedAtDesc(Long studentId);
+    List<SkillGapRecommendation>
+    findByStudentIdOrderByGeneratedAtDesc(Long studentId);
 }
