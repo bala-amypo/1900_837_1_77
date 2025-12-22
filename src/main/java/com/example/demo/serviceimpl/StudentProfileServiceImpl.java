@@ -1,11 +1,12 @@
 package com.example.demo.serviceimpl;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import com.example.demo.entity.StudentProfile;
 import com.example.demo.repository.StudentProfileRepository;
 import com.example.demo.service.StudentProfileService;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class StudentProfileServiceImpl implements StudentProfileService {
@@ -24,10 +25,5 @@ public class StudentProfileServiceImpl implements StudentProfileService {
     @Override
     public List<StudentProfile> getAll() {
         return repository.findAll();
-    }
-
-    @Override
-    public StudentProfile findByUserId(Long userId) {
-        return repository.findByUserId(userId).orElse(null);
     }
 }

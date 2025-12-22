@@ -1,7 +1,6 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.time.Instant;
 
 @Entity
 public class SkillGapRecommendation {
@@ -11,36 +10,43 @@ public class SkillGapRecommendation {
     private Long id;
 
     private Long studentId;
+    private Long skillId;
     private String recommendation;
-    private Instant generatedAt;
 
-    public SkillGapRecommendation() {}
-
-    /* REQUIRED BY TEST */
-    public static Builder builder() {
-        return new Builder();
+    public SkillGapRecommendation() {
     }
 
-    public static class Builder {
-        private final SkillGapRecommendation r = new SkillGapRecommendation();
+    public SkillGapRecommendation(Long studentId, Long skillId, String recommendation) {
+        this.studentId = studentId;
+        this.skillId = skillId;
+        this.recommendation = recommendation;
+    }
 
-        public Builder studentId(Long id) {
-            r.studentId = id;
-            return this;
-        }
+    public Long getId() {
+        return id;
+    }
 
-        public Builder recommendation(String rec) {
-            r.recommendation = rec;
-            return this;
-        }
+    public Long getStudentId() {
+        return studentId;
+    }
 
-        public Builder generatedAt(Instant time) {
-            r.generatedAt = time;
-            return this;
-        }
+    public void setStudentId(Long studentId) {
+        this.studentId = studentId;
+    }
 
-        public SkillGapRecommendation build() {
-            return r;
-        }
+    public Long getSkillId() {
+        return skillId;
+    }
+
+    public void setSkillId(Long skillId) {
+        this.skillId = skillId;
+    }
+
+    public String getRecommendation() {
+        return recommendation;
+    }
+
+    public void setRecommendation(String recommendation) {
+        this.recommendation = recommendation;
     }
 }
