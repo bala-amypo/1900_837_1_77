@@ -16,7 +16,15 @@ public class AssessmentServiceImpl implements AssessmentService {
 
     @Override
     public AssessmentResult recordAssessment(AssessmentResult result) {
+
+        if (result.getScore() == null || result.getMaxScore() == null) {
+            throw new IllegalArgumentException("Score cannot be null");
+        }
+
+        if (result.getScore() > result.getMaxScore()) {
+            throw new IllegalArgumentException("Score exceeds maximum");
+        }
+
         return repository.save(result);
     }
 }
- 
