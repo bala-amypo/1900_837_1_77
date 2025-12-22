@@ -10,29 +10,19 @@ import java.util.List;
 @Service
 public class RecommendationServiceImpl implements RecommendationService {
 
-    private final SkillGapRecommendationRepository recommendationRepository;
+    private final SkillGapRecommendationRepository repo;
 
-    public RecommendationServiceImpl(SkillGapRecommendationRepository recommendationRepository) {
-        this.recommendationRepository = recommendationRepository;
+    public RecommendationServiceImpl(SkillGapRecommendationRepository repo) {
+        this.repo = repo;
     }
 
     @Override
     public List<SkillGapRecommendation> computeRecommendationsForStudent(Long studentId) {
-        return recommendationRepository.findByStudentOrdered(studentId);
-    }
-
-    @Override
-    public SkillGapRecommendation computeRecommendationForStudentSkill(Long studentId, Long skillId) {
-        return SkillGapRecommendation.builder()
-                .studentProfileId(studentId)
-                .skillId(skillId)
-                .gapScore(0.5)
-                .recommendation("Improve this skill")
-                .build();
+        return repo.findByStudentOrdered(studentId);
     }
 
     @Override
     public List<SkillGapRecommendation> getRecommendationsForStudent(Long studentId) {
-        return recommendationRepository.findByStudentOrdered(studentId);
+        return repo.findByStudentOrdered(studentId);
     }
 }
