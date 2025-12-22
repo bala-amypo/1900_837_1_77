@@ -19,18 +19,20 @@ public class SkillGapRecommendation {
     private String generatedBy;
     private Instant generatedAt = Instant.now();
 
-    public Long getId(){ return id; }
-    public Long getStudentId(){ return studentId; }
-    public Skill getSkill(){ return skill; }
-    public Double getGapScore(){ return gapScore; }
-    public String getGeneratedBy(){ return generatedBy; }
-    public Instant getGeneratedAt(){ return generatedAt; }
+    // ---------- getters ----------
+    public Long getId() { return id; }
+    public Long getStudentId() { return studentId; }
+    public Skill getSkill() { return skill; }
+    public Double getGapScore() { return gapScore; }
+    public String getGeneratedBy() { return generatedBy; }
+    public Instant getGeneratedAt() { return generatedAt; }
 
-    public void setId(Long id){ this.id = id; }
-    public void setStudentId(Long s){ this.studentId = s; }
-    public void setSkill(Skill skill){ this.skill = skill; }
-    public void setGapScore(Double g){ this.gapScore = g; }
-    public void setGeneratedBy(String g){ this.generatedBy = g; }
+    // ---------- setters ----------
+    public void setId(Long id) { this.id = id; }
+    public void setStudentId(Long studentId) { this.studentId = studentId; }
+    public void setSkill(Skill skill) { this.skill = skill; }
+    public void setGapScore(Double gapScore) { this.gapScore = gapScore; }
+    public void setGeneratedBy(String generatedBy) { this.generatedBy = generatedBy; }
 
     // ---------- builder (TEST REQUIRED) ----------
     public static Builder builder() {
@@ -39,11 +41,34 @@ public class SkillGapRecommendation {
 
     public static class Builder {
         private final SkillGapRecommendation r = new SkillGapRecommendation();
-        public Builder id(Long id){ r.setId(id); return this; }
-        public Builder studentId(Long s){ r.setStudentId(s); return this; }
-        public Builder skill(Skill s){ r.setSkill(s); return this; }
-        public Builder gapScore(Double g){ r.setGapScore(g); return this; }
-        public Builder generatedBy(String g){ r.setGeneratedBy(g); return this; }
-        public SkillGapRecommendation build(){ return r; }
+
+        public Builder id(Long id) {
+            r.setId(id);
+            return this;
+        }
+
+        public Builder studentId(Long studentId) {
+            r.setStudentId(studentId);
+            return this;
+        }
+
+        public Builder skill(Skill skill) {
+            r.setSkill(skill);
+            return this;
+        }
+
+        public Builder gapScore(Double gapScore) {
+            r.setGapScore(gapScore);
+            return this;
+        }
+
+        public Builder generatedBy(String generatedBy) {
+            r.setGeneratedBy(generatedBy);
+            return this;
+        }
+
+        public SkillGapRecommendation build() {
+            return r;
+        }
     }
 }
