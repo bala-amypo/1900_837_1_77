@@ -1,11 +1,13 @@
 package com.example.demo.serviceimpl;
 
 import com.example.demo.entity.*;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.*;
+import com.example.demo.service.RecommendationService;
 
 import java.util.*;
 
-public class RecommendationServiceImpl {
+public class RecommendationServiceImpl implements RecommendationService {
 
     private final AssessmentResultRepository assessmentRepo;
     private final SkillGapRecommendationRepository recRepo;
@@ -23,12 +25,13 @@ public class RecommendationServiceImpl {
         this.skillRepo = skillRepo;
     }
 
+    @Override
     public SkillGapRecommendation computeRecommendationForStudentSkill(Long studentId, Long skillId) {
 
         StudentProfile sp = profileRepo.findById(studentId)
-                .orElseThrow(() -> new RuntimeException("not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("not found"));
         Skill skill = skillRepo.findById(skillId)
-                .orElseThrow(() -> new RuntimeException("not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("not found"));
 
         List<AssessmentResult> results =
                 assessmentRepo.findByStudentProfileIdAndSkillId(studentId, skillId);
@@ -47,10 +50,11 @@ public class RecommendationServiceImpl {
         return recRepo.save(rec);
     }
 
+    @Override
     public List<SkillGapRecommendation> computeRecommendationsForStudent(Long studentId) {
 
         profileRepo.findById(studentId)
-                .orElseThrow(() -> new RuntimeException("not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("not found"));
 
         List<Skill> skills = skillRepo.findByActiveTrue();
         List<SkillGapRecommendation> out = new ArrayList<>();
@@ -61,6 +65,7 @@ public class RecommendationServiceImpl {
         return out;
     }
 
+    @Override
     public List<SkillGapRecommendation> getRecommendationsForStudent(Long studentId) {
         return recRepo.findByStudentOrdered(studentId);
     }

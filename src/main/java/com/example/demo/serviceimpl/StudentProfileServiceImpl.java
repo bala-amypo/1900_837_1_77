@@ -1,22 +1,33 @@
 package com.example.demo.serviceimpl;
 
 import com.example.demo.entity.StudentProfile;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.StudentProfileRepository;
+import com.example.demo.service.StudentProfileService;
 
-public class StudentProfileServiceImpl {
+import java.util.List;
 
-    private final StudentProfileRepository repo;
+public class StudentProfileServiceImpl implements StudentProfileService {
 
-    public StudentProfileServiceImpl(StudentProfileRepository repo) {
-        this.repo = repo;
+    private final StudentProfileRepository repository;
+
+    public StudentProfileServiceImpl(StudentProfileRepository repository) {
+        this.repository = repository;
     }
 
+    @Override
     public StudentProfile createOrUpdateProfile(StudentProfile profile) {
-        return repo.save(profile);
+        return repository.save(profile);
     }
 
+    @Override
     public StudentProfile getByUserId(Long userId) {
-        return repo.findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("profile not found"));
+        return repository.findByUserId(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("profile not found"));
+    }
+
+    @Override
+    public List<StudentProfile> getAllProfiles() {
+        return repository.findAll();
     }
 }
