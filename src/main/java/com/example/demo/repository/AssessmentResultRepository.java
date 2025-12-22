@@ -11,17 +11,13 @@ import java.util.List;
 public interface AssessmentResultRepository
         extends JpaRepository<AssessmentResult, Long> {
 
-    // =====================================================
-    // ✅ REQUIRED BY TESTCASE (used 5 times)
-    // =====================================================
-    List<AssessmentResult> findByStudentProfileIdAndSkillId(
+    // ✅ REQUIRED BY TESTCASE (FIXED)
+    List<AssessmentResult> findByStudentProfile_IdAndSkill_Id(
             long studentProfileId,
             long skillId
     );
 
-    // =====================================================
     // ✅ REQUIRED BY TESTCASE
-    // =====================================================
     @Query("""
         SELECT AVG(ar.score)
         FROM AssessmentResult ar
@@ -32,23 +28,19 @@ public interface AssessmentResultRepository
             @Param("skillId") Long skillId
     );
 
-    // =====================================================
     // ✅ REQUIRED BY TESTCASE
-    // =====================================================
     @Query("""
         SELECT ar
         FROM AssessmentResult ar
-        ORDER BY ar.attemptedAt DESC
+        ORDER BY ar.assessedAt DESC
     """)
     List<AssessmentResult> findRecentByStudent(Long studentId);
 
-    // =====================================================
     // ✅ REQUIRED BY TESTCASE
-    // =====================================================
     @Query("""
         SELECT ar
         FROM AssessmentResult ar
-        WHERE ar.attemptedAt BETWEEN :start AND :end
+        WHERE ar.assessedAt BETWEEN :start AND :end
     """)
     List<AssessmentResult> findResultsForStudentBetween(
             Long studentId,

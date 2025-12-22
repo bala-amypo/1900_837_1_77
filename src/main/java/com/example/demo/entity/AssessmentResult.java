@@ -4,22 +4,26 @@ import jakarta.persistence.*;
 import java.time.Instant;
 
 @Entity
-@Table(name = "assessment_results")
 public class AssessmentResult {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String assessmentId;
+    @ManyToOne
+    private StudentProfile studentProfile;
 
-    private Double score;
+    @ManyToOne
+    private Skill skill;
 
-    private Double maxScore = 100.0;
+    private double score;
 
-    private Instant attemptedAt = Instant.now();
+    // ✅ REQUIRED BY TESTCASE
+    private double maxScore;
 
-    // -------- getters & setters --------
+    private Instant assessedAt;
+
+    // ---------- getters & setters ----------
 
     public Long getId() {
         return id;
@@ -29,73 +33,43 @@ public class AssessmentResult {
         this.id = id;
     }
 
-    public String getAssessmentId() {
-        return assessmentId;
+    public StudentProfile getStudentProfile() {
+        return studentProfile;
     }
 
-    public void setAssessmentId(String assessmentId) {
-        this.assessmentId = assessmentId;
+    public void setStudentProfile(StudentProfile studentProfile) {
+        this.studentProfile = studentProfile;
     }
 
-    public Double getScore() {
+    public Skill getSkill() {
+        return skill;
+    }
+
+    public void setSkill(Skill skill) {
+        this.skill = skill;
+    }
+
+    public double getScore() {
         return score;
     }
 
-    public void setScore(Double score) {
+    public void setScore(double score) {
         this.score = score;
     }
 
-    public Double getMaxScore() {
+    public double getMaxScore() {
         return maxScore;
     }
 
-    public void setMaxScore(Double maxScore) {
+    public void setMaxScore(double maxScore) {
         this.maxScore = maxScore;
     }
 
-    public Instant getAttemptedAt() {
-        return attemptedAt;
+    public Instant getAssessedAt() {
+        return assessedAt;
     }
 
-    public void setAttemptedAt(Instant attemptedAt) {
-        this.attemptedAt = attemptedAt;
-    }
-
-    // -------- builder (keeps TestNG safe) --------
-    public static Builder builder() {
-        return new Builder();
-    }
-
-    public static class Builder {
-        private final AssessmentResult r = new AssessmentResult();
-
-        public Builder id(Long id) {
-            r.setId(id);
-            return this;
-        }
-
-        public Builder assessmentId(String assessmentId) {
-            r.setAssessmentId(assessmentId);
-            return this;
-        }
-
-        public Builder score(Double score) {
-            r.setScore(score);
-            return this;
-        }
-
-        public Builder maxScore(Double maxScore) {
-            r.setMaxScore(maxScore);
-            return this;
-        }
-
-        public Builder attemptedAt(Instant attemptedAt) {
-            r.setAttemptedAt(attemptedAt);
-            return this;
-        }
-
-        public AssessmentResult build() {
-            return r;
-        }
+    public void setAssessedAt(Instant assessedAt) {
+        this.assessedAt = assessedAt;
     }
 }
