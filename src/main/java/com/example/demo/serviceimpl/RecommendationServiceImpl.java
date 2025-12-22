@@ -2,12 +2,9 @@ package com.example.demo.serviceimpl;
 
 import com.example.demo.entity.Skill;
 import com.example.demo.entity.SkillGapRecommendation;
-import com.example.demo.repository.AssessmentResultRepository;
 import com.example.demo.repository.SkillGapRecommendationRepository;
 import com.example.demo.repository.SkillRepository;
-import com.example.demo.repository.StudentProfileRepository;
 import com.example.demo.service.RecommendationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -17,27 +14,14 @@ import java.util.List;
 @Service
 public class RecommendationServiceImpl implements RecommendationService {
 
-    private AssessmentResultRepository assessmentResultRepository;
-    private SkillGapRecommendationRepository recommendationRepository;
-    private SkillRepository skillRepository;
-    private StudentProfileRepository studentProfileRepository;
+    private final SkillGapRecommendationRepository recommendationRepository;
+    private final SkillRepository skillRepository;
 
-    // ✅ REQUIRED BY SPRING BOOT
-    public RecommendationServiceImpl() {
-    }
-
-    // ✅ REQUIRED BY TESTCASES
-    @Autowired
     public RecommendationServiceImpl(
-            AssessmentResultRepository assessmentResultRepository,
             SkillGapRecommendationRepository recommendationRepository,
-            SkillRepository skillRepository,
-            StudentProfileRepository studentProfileRepository) {
-
-        this.assessmentResultRepository = assessmentResultRepository;
+            SkillRepository skillRepository) {
         this.recommendationRepository = recommendationRepository;
         this.skillRepository = skillRepository;
-        this.studentProfileRepository = studentProfileRepository;
     }
 
     @Override
@@ -47,13 +31,13 @@ public class RecommendationServiceImpl implements RecommendationService {
         Skill skill = skillRepository.findById(skillId)
                 .orElseThrow(() -> new RuntimeException("Skill not found"));
 
-        SkillGapRecommendation rec = SkillGapRecommendation.builder()
-                .studentId(studentId)
-                .skill(skill)
-                .gapScore(50.0)
-                .generatedBy("SYSTEM")
-                .generatedAt(Instant.now())
-                .build();
+        // ✅ FIX 1: NO builder(), use setters
+        SkillGapRecommendation rec = new SkillGapRecommendation();
+        rec.setStudentId(studentId);
+        rec.setSkill(skill);
+        rec.setGapScore(50.0);
+        rec.setGeneratedBy("SYSTEM");
+        rec.setGeneratedAt(Instant.now());
 
         return recommendationRepository.save(rec);
     }
@@ -61,7 +45,7 @@ public class RecommendationServiceImpl implements RecommendationService {
     @Override
     public List<SkillGapRecommendation> computeRecommendationsForStudent(Long studentId) {
 
-        List<Skill> skills = skillRepository.findByActiveTrue();
+        List<Skill> skills = skillRepository.findAll();
         List<SkillGapRecommendation> result = new ArrayList<>();
 
         for (Skill skill : skills) {
@@ -74,6 +58,9 @@ public class RecommendationServiceImpl implements RecommendationService {
 
     @Override
     public List<SkillGapRecommendation> getRecommendationsForStudent(Long studentId) {
-        return recommendationRepository.findByStudentOrdered(studentId);
+
+        // ✅ FIX 2: call the CORRECT repository method
+        return recommendationRepository
+                .findByStudentIdOrderByGeneratedAtDesc(studentId);
     }
 }
