@@ -17,22 +17,22 @@ import java.util.List;
 public class RecommendationServiceImpl implements RecommendationService {
 
     private final AssessmentResultRepository assessmentResultRepository;
-    private final StudentProfileRepository studentProfileRepository;
     private final SkillGapRecommendationRepository recommendationRepository;
+    private final StudentProfileRepository studentProfileRepository;
     private final SkillRepository skillRepository;
 
     // =====================================================
-    // ✅ CONSTRUCTOR REQUIRED BY TESTNG (EXACT ORDER)
+    // ✅ EXACT CONSTRUCTOR USED BY TESTNG (LINE 90)
     // =====================================================
     public RecommendationServiceImpl(
             AssessmentResultRepository assessmentResultRepository,
-            StudentProfileRepository studentProfileRepository,
             SkillGapRecommendationRepository recommendationRepository,
+            StudentProfileRepository studentProfileRepository,
             SkillRepository skillRepository) {
 
         this.assessmentResultRepository = assessmentResultRepository;
-        this.studentProfileRepository = studentProfileRepository;
         this.recommendationRepository = recommendationRepository;
+        this.studentProfileRepository = studentProfileRepository;
         this.skillRepository = skillRepository;
     }
 
@@ -44,7 +44,7 @@ public class RecommendationServiceImpl implements RecommendationService {
             SkillGapRecommendationRepository recommendationRepository,
             SkillRepository skillRepository) {
 
-        this(assessmentResultRepository, null, recommendationRepository, skillRepository);
+        this(assessmentResultRepository, recommendationRepository, null, skillRepository);
     }
 
     @Override
@@ -69,20 +69,16 @@ public class RecommendationServiceImpl implements RecommendationService {
     public List<SkillGapRecommendation> computeRecommendationsForStudent(Long studentId) {
 
         List<Skill> skills = skillRepository.findByActiveTrue();
-        List<SkillGapRecommendation> result = new ArrayList<>();
+        List<SkillGapRecommendation> list = new ArrayList<>();
 
         for (Skill skill : skills) {
-            result.add(
-                    computeRecommendationForStudentSkill(studentId, skill.getId())
-            );
+            list.add(computeRecommendationForStudentSkill(studentId, skill.getId()));
         }
-        return result;
+        return list;
     }
 
     @Override
     public List<SkillGapRecommendation> getRecommendationsForStudent(Long studentId) {
-
-        // ⚠️ REQUIRED BY TESTCASE
         return recommendationRepository.findByStudentOrdered(studentId);
     }
 }
