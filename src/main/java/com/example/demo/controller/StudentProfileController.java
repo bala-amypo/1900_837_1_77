@@ -23,7 +23,8 @@ public class StudentProfileController {
     }
 
     @GetMapping
-    public List<StudentProfile> getAll() {
-        return service.getAll();
-    }
+public List<StudentProfile> getAllProfiles() {
+    return service.getAll(); // ✅ NOW VALID
+}
+
 }
