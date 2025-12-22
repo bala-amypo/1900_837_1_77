@@ -1,26 +1,11 @@
-package com.example.demo.serviceimpl;
+package com.example.demo.service;
 
 import com.example.demo.entity.StudentProfile;
-import com.example.demo.repository.StudentProfileRepository;
-import com.example.demo.service.StudentProfileService;
-import org.springframework.stereotype.Service;
+import java.util.List;
 
-@Service
-public class StudentProfileServiceImpl implements StudentProfileService {
+public interface StudentProfileService {
 
-    private final StudentProfileRepository repository;
+    StudentProfile create(StudentProfile profile);
 
-    public StudentProfileServiceImpl(StudentProfileRepository repository) {
-        this.repository = repository;
-    }
-
-    @Override
-    public StudentProfile getByUserId(Long userId) {
-        return repository.findByUserId(userId).orElse(null);
-    }
-
-    @Override
-    public StudentProfile save(StudentProfile profile) {
-        return repository.save(profile);
-    }
+    List<StudentProfile> getAll();
 }

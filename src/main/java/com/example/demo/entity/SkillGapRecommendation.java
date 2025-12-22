@@ -10,60 +10,49 @@ public class SkillGapRecommendation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long studentProfileId;
-    private Long skillId;
+    private Long studentId;
     private String recommendation;
-    private Instant createdAt;
+    private Instant generatedAt;
 
     public SkillGapRecommendation() {}
 
-    private SkillGapRecommendation(Builder builder) {
-        this.studentProfileId = builder.studentProfileId;
-        this.skillId = builder.skillId;
-        this.recommendation = builder.recommendation;
-        this.createdAt = builder.createdAt;
-    }
-
-    // ===== BUILDER (REQUIRED FOR TEST CASES) =====
+    // 🔴 REQUIRED BY TESTCASES
     public static Builder builder() {
         return new Builder();
     }
 
     public static class Builder {
-        private Long studentProfileId;
-        private Long skillId;
-        private String recommendation;
-        private Instant createdAt = Instant.now();
+        private final SkillGapRecommendation obj = new SkillGapRecommendation();
 
-        public Builder studentProfileId(Long studentProfileId) {
-            this.studentProfileId = studentProfileId;
-            return this;
-        }
-
-        public Builder skillId(Long skillId) {
-            this.skillId = skillId;
+        public Builder studentId(Long studentId) {
+            obj.studentId = studentId;
             return this;
         }
 
         public Builder recommendation(String recommendation) {
-            this.recommendation = recommendation;
+            obj.recommendation = recommendation;
             return this;
         }
 
-        public Builder createdAt(Instant createdAt) {
-            this.createdAt = createdAt;
+        public Builder generatedAt(Instant generatedAt) {
+            obj.generatedAt = generatedAt;
             return this;
         }
 
         public SkillGapRecommendation build() {
-            return new SkillGapRecommendation(this);
+            return obj;
         }
     }
 
-    // ===== Getters =====
-    public Long getId() { return id; }
-    public Long getStudentProfileId() { return studentProfileId; }
-    public Long getSkillId() { return skillId; }
-    public String getRecommendation() { return recommendation; }
-    public Instant getCreatedAt() { return createdAt; }
+    public Long getStudentId() {
+        return studentId;
+    }
+
+    public String getRecommendation() {
+        return recommendation;
+    }
+
+    public Instant getGeneratedAt() {
+        return generatedAt;
+    }
 }

@@ -16,18 +16,17 @@ public class RecommendationServiceImpl {
         this.recommendationRepository = recommendationRepository;
     }
 
-    public SkillGapRecommendation create(Long studentId, Long skillId, String text) {
-        return recommendationRepository.save(
-                SkillGapRecommendation.builder()
-                        .studentProfileId(studentId)
-                        .skillId(skillId)
-                        .recommendation(text)
-                        .generatedAt(Instant.now())
-                        .build()
-        );
+    public SkillGapRecommendation generate(Long studentId, String text) {
+        SkillGapRecommendation rec = SkillGapRecommendation.builder()
+                .studentId(studentId)
+                .recommendation(text)
+                .generatedAt(Instant.now())
+                .build();
+
+        return recommendationRepository.save(rec);
     }
 
-    public List<SkillGapRecommendation> getForStudent(Long studentId) {
+    public List<SkillGapRecommendation> getByStudent(Long studentId) {
         return recommendationRepository.findByStudentOrdered(studentId);
     }
 }
