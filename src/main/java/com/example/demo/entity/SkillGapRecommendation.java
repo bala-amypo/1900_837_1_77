@@ -16,43 +16,31 @@ public class SkillGapRecommendation {
 
     public SkillGapRecommendation() {}
 
-    // 🔴 REQUIRED BY TESTCASES
+    /* REQUIRED BY TEST */
     public static Builder builder() {
         return new Builder();
     }
 
     public static class Builder {
-        private final SkillGapRecommendation obj = new SkillGapRecommendation();
+        private final SkillGapRecommendation r = new SkillGapRecommendation();
 
-        public Builder studentId(Long studentId) {
-            obj.studentId = studentId;
+        public Builder studentId(Long id) {
+            r.studentId = id;
             return this;
         }
 
-        public Builder recommendation(String recommendation) {
-            obj.recommendation = recommendation;
+        public Builder recommendation(String rec) {
+            r.recommendation = rec;
             return this;
         }
 
-        public Builder generatedAt(Instant generatedAt) {
-            obj.generatedAt = generatedAt;
+        public Builder generatedAt(Instant time) {
+            r.generatedAt = time;
             return this;
         }
 
         public SkillGapRecommendation build() {
-            return obj;
+            return r;
         }
-    }
-
-    public Long getStudentId() {
-        return studentId;
-    }
-
-    public String getRecommendation() {
-        return recommendation;
-    }
-
-    public Instant getGeneratedAt() {
-        return generatedAt;
     }
 }

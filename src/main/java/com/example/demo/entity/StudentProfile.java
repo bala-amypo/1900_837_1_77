@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import java.time.Instant;
 
 @Entity
 public class StudentProfile {
@@ -9,37 +10,43 @@ public class StudentProfile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long userId;
     private String enrollmentId;
-    private String name;
-    private String cohort;
+    private Instant lastUpdatedAt;
 
     public StudentProfile() {}
 
-    public Long getId() {
-        return id;
+    /* ---------- BUILDER (REQUIRED BY TEST) ---------- */
+    public static Builder builder() {
+        return new Builder();
     }
 
-    public String getEnrollmentId() {
-        return enrollmentId;
+    public static class Builder {
+        private final StudentProfile p = new StudentProfile();
+
+        public Builder userId(Long userId) {
+            p.userId = userId;
+            return this;
+        }
+
+        public Builder enrollmentId(String enrollmentId) {
+            p.enrollmentId = enrollmentId;
+            return this;
+        }
+
+        public Builder lastUpdatedAt(Instant time) {
+            p.lastUpdatedAt = time;
+            return this;
+        }
+
+        public StudentProfile build() {
+            return p;
+        }
     }
 
-    public void setEnrollmentId(String enrollmentId) {
-        this.enrollmentId = enrollmentId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCohort() {
-        return cohort;
-    }
-
-    public void setCohort(String cohort) {
-        this.cohort = cohort;
-    }
+    /* ---------- GETTERS ---------- */
+    public Long getId() { return id; }
+    public Long getUserId() { return userId; }
+    public String getEnrollmentId() { return enrollmentId; }
+    public Instant getLastUpdatedAt() { return lastUpdatedAt; }
 }

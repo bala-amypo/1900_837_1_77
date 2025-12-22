@@ -8,11 +8,5 @@ import java.util.List;
 public interface SkillGapRecommendationRepository
         extends JpaRepository<SkillGapRecommendation, Long> {
 
-    // 🔴 REQUIRED BY TESTCASE
-    List<SkillGapRecommendation> findByStudentIdOrderByGeneratedAtDesc(Long studentId);
-
-    // alias expected by test
-    default List<SkillGapRecommendation> findByStudentOrdered(Long studentId) {
-        return findByStudentIdOrderByGeneratedAtDesc(studentId);
-    }
+    List<SkillGapRecommendation> findByStudentOrdered(Long studentId);
 }
