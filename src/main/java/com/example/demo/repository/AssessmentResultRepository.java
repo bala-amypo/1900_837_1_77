@@ -2,23 +2,19 @@ package com.example.demo.repository;
 
 import com.example.demo.entity.AssessmentResult;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 
-@Repository
-public interface AssessmentResultRepository
-        extends JpaRepository<AssessmentResult, Long> {
+import java.time.Instant;
+import java.util.List;
 
-    // ✅ FIXED JPQL (FIELD EXISTS)
-    @Query("""
-        SELECT AVG(ar.score)
-        FROM AssessmentResult ar
-        WHERE ar.studentProfile.groupName = :groupName
-          AND ar.skill.id = :skillId
-    """)
-    Double avgScoreByGroupAndSkill(
-            @Param("groupName") String groupName,
-            @Param("skillId") Long skillId
+public interface AssessmentResultRepository extends JpaRepository<AssessmentResult, Long> {
+
+    List<AssessmentResult> findByStudentProfileIdAndSkillId(Long studentId, Long skillId);
+
+    List<AssessmentResult> findByStudentProfileId(Long studentId);
+
+    List<AssessmentResult> findResultsForStudentBetween(
+            Long studentId, Instant start, Instant end
     );
+
+    Double avgScoreByCohortAndSkill(String cohort, Long skillId);
 }

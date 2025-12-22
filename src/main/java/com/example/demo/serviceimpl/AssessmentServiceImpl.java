@@ -14,18 +14,9 @@ public class AssessmentServiceImpl implements AssessmentService {
         this.repository = repository;
     }
 
-    // ✅ EXACT MATCH WITH INTERFACE
     @Override
     public AssessmentResult recordAssessment(AssessmentResult result) {
-
-        if (result.getMaxScore() == null || result.getMaxScore() <= 0) {
-            result.setMaxScore(100.0);
-        }
-
-        if (result.getScore() == null || result.getScore() < 0) {
-            result.setScore(0.0);
-        }
-
         return repository.save(result);
     }
 }
+ 
