@@ -17,7 +17,7 @@ public class SkillGapRecommendation {
 
     private Double gapScore;
     private String generatedBy;
-    private Instant generatedAt = Instant.now();
+    private Instant generatedAt;
 
     // ---------- getters ----------
     public Long getId() { return id; }
@@ -33,6 +33,7 @@ public class SkillGapRecommendation {
     public void setSkill(Skill skill) { this.skill = skill; }
     public void setGapScore(Double gapScore) { this.gapScore = gapScore; }
     public void setGeneratedBy(String generatedBy) { this.generatedBy = generatedBy; }
+    public void setGeneratedAt(Instant generatedAt) { this.generatedAt = generatedAt; }
 
     // ---------- builder (TEST REQUIRED) ----------
     public static Builder builder() {
@@ -64,6 +65,12 @@ public class SkillGapRecommendation {
 
         public Builder generatedBy(String generatedBy) {
             r.setGeneratedBy(generatedBy);
+            return this;
+        }
+
+        // 🔴 THIS WAS MISSING (TEST NEEDS IT)
+        public Builder generatedAt(Instant generatedAt) {
+            r.setGeneratedAt(generatedAt);
             return this;
         }
 

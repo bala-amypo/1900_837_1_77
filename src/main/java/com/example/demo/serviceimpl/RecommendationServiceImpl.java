@@ -2,23 +2,30 @@ package com.example.demo.serviceimpl;
 
 import com.example.demo.entity.Skill;
 import com.example.demo.entity.SkillGapRecommendation;
+import com.example.demo.repository.AssessmentResultRepository;
 import com.example.demo.repository.SkillGapRecommendationRepository;
 import com.example.demo.repository.SkillRepository;
 import com.example.demo.service.RecommendationService;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class RecommendationServiceImpl implements RecommendationService {
 
+    private final AssessmentResultRepository assessmentResultRepository;
     private final SkillGapRecommendationRepository recommendationRepository;
     private final SkillRepository skillRepository;
 
+    // 🔴 TEST EXPECTS THIS CONSTRUCTOR (3 ARGS)
     public RecommendationServiceImpl(
+            AssessmentResultRepository assessmentResultRepository,
             SkillGapRecommendationRepository recommendationRepository,
             SkillRepository skillRepository) {
+
+        this.assessmentResultRepository = assessmentResultRepository;
         this.recommendationRepository = recommendationRepository;
         this.skillRepository = skillRepository;
     }
@@ -35,6 +42,7 @@ public class RecommendationServiceImpl implements RecommendationService {
                 .skill(skill)
                 .gapScore(50.0)
                 .generatedBy("SYSTEM")
+                .generatedAt(Instant.now())
                 .build();
 
         return recommendationRepository.save(rec);
@@ -57,7 +65,7 @@ public class RecommendationServiceImpl implements RecommendationService {
     @Override
     public List<SkillGapRecommendation> getRecommendationsForStudent(Long studentId) {
 
-        // ✅ TESTCASE EXPECTS THIS METHOD
+        // TESTCASE EXPECTS THIS METHOD NAME
         return recommendationRepository.findByStudentOrdered(studentId);
     }
 }
