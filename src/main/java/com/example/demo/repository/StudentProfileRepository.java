@@ -1,15 +1,14 @@
 package com.example.demo.repository;
 
 import com.example.demo.entity.StudentProfile;
-import java.util.*;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface StudentProfileRepository {
+import java.util.Optional;
 
-    Optional<StudentProfile> findById(Long id);
+public interface StudentProfileRepository
+        extends JpaRepository<StudentProfile, Long> {
 
-    Optional<StudentProfile> findByEnrollmentId(String enrollmentId);
+    Optional<StudentProfile> findByUserId(Long userId);
 
     boolean existsByEnrollmentId(String enrollmentId);
-
-    StudentProfile save(StudentProfile profile);
 }

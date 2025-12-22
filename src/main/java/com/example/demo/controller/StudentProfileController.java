@@ -1,14 +1,13 @@
 package com.example.demo.controller;
 
-import java.util.List;
-
-import org.springframework.web.bind.annotation.*;
-
 import com.example.demo.entity.StudentProfile;
 import com.example.demo.service.StudentProfileService;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("/students")
+@RequestMapping("/profiles")
 public class StudentProfileController {
 
     private final StudentProfileService service;
@@ -17,14 +16,21 @@ public class StudentProfileController {
         this.service = service;
     }
 
+    // ✅ CREATE or UPDATE profile
     @PostMapping
-    public StudentProfile create(@RequestBody StudentProfile profile) {
-        return service.create(profile);
+    public StudentProfile createProfile(@RequestBody StudentProfile profile) {
+        return service.createOrUpdateProfile(profile);
     }
 
-    @GetMapping
-public List<StudentProfile> getAllProfiles() {
-    return service.getAll(); // ✅ NOW VALID
-}
+    // ✅ GET profile by userId
+    @GetMapping("/{userId}")
+    public StudentProfile getByUserId(@PathVariable Long userId) {
+        return service.getByUserId(userId);
+    }
 
+    // ✅ GET all profiles
+    @GetMapping
+    public List<StudentProfile> getAllProfiles() {
+        return service.getAll();
+    }
 }

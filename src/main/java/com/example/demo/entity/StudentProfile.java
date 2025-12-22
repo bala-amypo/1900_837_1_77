@@ -17,15 +17,18 @@ public class StudentProfile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long userId;
+
+    @Column(unique = true)
     private String enrollmentId;
 
     private String grade;
 
     private Instant lastUpdatedAt;
 
-    // ✅ REQUIRED BY SERVICE + TESTS
-    @PreUpdate
+    // ✅ Required by service + tests
     @PrePersist
+    @PreUpdate
     public void preUpdate() {
         this.lastUpdatedAt = Instant.now();
     }
