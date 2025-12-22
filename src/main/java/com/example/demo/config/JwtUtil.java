@@ -1,3 +1,10 @@
+package com.example.demo.config;
+
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
+import java.security.Key;
+import java.util.Date;
+
 public class JwtUtil {
 
     private final Key key;
@@ -8,11 +15,10 @@ public class JwtUtil {
         this.validity = validityMs;
     }
 
-    public String generateToken(User user) {
+    public String generateToken(com.example.demo.entity.User user) {
         return Jwts.builder()
                 .claim("userId", user.getId())
                 .claim("email", user.getEmail())
-                .claim("role", user.getRole().name())
                 .setExpiration(new Date(System.currentTimeMillis() + validity))
                 .signWith(key)
                 .compact();
