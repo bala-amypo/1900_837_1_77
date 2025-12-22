@@ -1,11 +1,16 @@
 package com.example.demo.repository;
 
 import com.example.demo.entity.StudentProfile;
-import java.util.*;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface StudentProfileRepository {
+import java.util.Optional;
+
+@Repository
+public interface StudentProfileRepository
+        extends JpaRepository<StudentProfile, Long> {
+
     Optional<StudentProfile> findByUserId(Long userId);
-    Optional<StudentProfile> findById(Long id);
+
     boolean existsByEnrollmentId(String enrollmentId);
-    StudentProfile save(StudentProfile profile);
 }
