@@ -7,6 +7,7 @@ import com.example.demo.repository.SkillGapRecommendationRepository;
 import com.example.demo.repository.SkillRepository;
 import com.example.demo.repository.StudentProfileRepository;
 import com.example.demo.service.RecommendationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -16,35 +17,27 @@ import java.util.List;
 @Service
 public class RecommendationServiceImpl implements RecommendationService {
 
-    private final AssessmentResultRepository assessmentResultRepository;
-    private final SkillGapRecommendationRepository recommendationRepository;
-    private final StudentProfileRepository studentProfileRepository;
-    private final SkillRepository skillRepository;
+    private AssessmentResultRepository assessmentResultRepository;
+    private SkillGapRecommendationRepository recommendationRepository;
+    private SkillRepository skillRepository;
+    private StudentProfileRepository studentProfileRepository;
 
-    // =====================================================
-    // ✅ EXACT CONSTRUCTOR USED BY TESTNG (LINE 90)
-    // =====================================================
+    // ✅ REQUIRED BY SPRING BOOT
+    public RecommendationServiceImpl() {
+    }
+
+    // ✅ REQUIRED BY TESTCASES
+    @Autowired
     public RecommendationServiceImpl(
             AssessmentResultRepository assessmentResultRepository,
             SkillGapRecommendationRepository recommendationRepository,
-            StudentProfileRepository studentProfileRepository,
-            SkillRepository skillRepository) {
+            SkillRepository skillRepository,
+            StudentProfileRepository studentProfileRepository) {
 
         this.assessmentResultRepository = assessmentResultRepository;
         this.recommendationRepository = recommendationRepository;
-        this.studentProfileRepository = studentProfileRepository;
         this.skillRepository = skillRepository;
-    }
-
-    // =====================================================
-    // ✅ SPRING BOOT AUTOWIRING CONSTRUCTOR
-    // =====================================================
-    public RecommendationServiceImpl(
-            AssessmentResultRepository assessmentResultRepository,
-            SkillGapRecommendationRepository recommendationRepository,
-            SkillRepository skillRepository) {
-
-        this(assessmentResultRepository, recommendationRepository, null, skillRepository);
+        this.studentProfileRepository = studentProfileRepository;
     }
 
     @Override
@@ -69,12 +62,14 @@ public class RecommendationServiceImpl implements RecommendationService {
     public List<SkillGapRecommendation> computeRecommendationsForStudent(Long studentId) {
 
         List<Skill> skills = skillRepository.findByActiveTrue();
-        List<SkillGapRecommendation> list = new ArrayList<>();
+        List<SkillGapRecommendation> result = new ArrayList<>();
 
         for (Skill skill : skills) {
-            list.add(computeRecommendationForStudentSkill(studentId, skill.getId()));
+            result.add(
+                    computeRecommendationForStudentSkill(studentId, skill.getId())
+            );
         }
-        return list;
+        return result;
     }
 
     @Override
