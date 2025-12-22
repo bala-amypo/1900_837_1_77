@@ -1,13 +1,10 @@
 package com.example.demo.repository;
 
 import com.example.demo.entity.AssessmentResult;
-import java.time.Instant;
-import java.util.*;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface AssessmentResultRepository {
-    AssessmentResult save(AssessmentResult result);
-    List<AssessmentResult> findByStudentProfileIdAndSkillId(Long studentId, Long skillId);
-    Double avgScoreByCohortAndSkill(String cohort, Long skillId);
-    List<AssessmentResult> findRecentByStudent(Long studentId);
-    List<AssessmentResult> findResultsForStudentBetween(Long studentId, Instant from, Instant to);
+@Repository
+public interface AssessmentResultRepository
+        extends JpaRepository<AssessmentResult, Long> {
 }
