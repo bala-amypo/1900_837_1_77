@@ -16,16 +16,11 @@ public class AssessmentServiceImpl implements AssessmentService {
 
     @Override
     public AssessmentResult recordAssessment(AssessmentResult result) {
-
-        // default values required by testcase
-        if (result.getMaxScore() <= 0) {
-            result.setMaxScore(100.0);
-        }
-
-        if (result.getScore() < 0) {
-            result.setScore(0);
-        }
-
         return assessmentResultRepository.save(result);
+    }
+
+    @Override
+    public Double getAverageScore(String cohort, Long skillId) {
+        return assessmentResultRepository.avgScoreByCohortAndSkill(cohort, skillId);
     }
 }
