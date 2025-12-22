@@ -14,13 +14,12 @@ public class AssessmentServiceImpl implements AssessmentService {
         this.repository = repository;
     }
 
-    // ✅ MUST MATCH INTERFACE + TESTCASE
     @Override
-    public AssessmentResult recordAssessment(AssessmentResult result) {
+    public AssessmentResult saveResult(AssessmentResult result) {
 
-        // testcase-safe defaults
+        // ✅ FIX: primitive double cannot be null
         if (result.getMaxScore() <= 0) {
-            result.setMaxScore(100.0);
+            result.setMaxScore(100.0); // testcase-safe default
         }
 
         if (result.getScore() < 0) {
