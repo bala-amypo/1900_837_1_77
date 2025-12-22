@@ -9,9 +9,11 @@ public class StudentProfile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // ✅ REQUIRED BY REPOSITORY + TESTCASE
+    private Long userId;
+
     private String name;
 
-    // ✅ USED IN TESTCASES (NOT "cohort")
     private String groupName;
 
     public StudentProfile() {}
@@ -22,6 +24,14 @@ public class StudentProfile {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getName() {
