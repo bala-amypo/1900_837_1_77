@@ -1,58 +1,38 @@
 package com.example.demo.serviceimpl;
 
+import com.example.demo.entity.Skill;
+import com.example.demo.repository.SkillRepository;
+
 import java.util.List;
 
-import org.springframework.stereotype.Service;
+public class SkillServiceImpl {
 
-import com.example.demo.entity.SkillEntity;
-import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.repository.SkillRepository;
-import com.example.demo.service.SkillService;
+    private final SkillRepository repo;
 
-@Service
-public class SkillServiceImpl implements SkillService {
-
-    private final SkillRepository repository;
-
-    public SkillServiceImpl(SkillRepository repository) {
-        this.repository = repository;
+    public SkillServiceImpl(SkillRepository repo) {
+        this.repo = repo;
     }
 
-    @Override
-    public SkillEntity createSkill(SkillEntity skill) {
-        return repository.save(skill);
+    public Skill createSkill(Skill skill) {
+        if (repo.findByCode(skill.getCode()).isPresent()) {
+            throw new IllegalArgumentException("unique");
+        }
+        return repo.save(skill);
     }
 
-    @Override
-    public SkillEntity getSkillById(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Skill not found"));
+    public Skill updateSkill(Long id, Skill skill) {
+        Skill existing = repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("not found"));
+        existing.setName(skill.getName());
+        return repo.save(existing);
     }
 
-    @Override
-    public List<SkillEntity> getAllSkills() {
-        return repository.findAll();
+    public Skill getById(Long id) {
+        return repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("not found"));
     }
 
-    @Override
-    public List<SkillEntity> getActiveSkills() {
-        return repository.findByActiveTrue();
-    }
-
-    @Override
-    public SkillEntity updateSkill(Long id, SkillEntity skill) {
-        SkillEntity existing = getSkillById(id);
-        existing.setSkillName(skill.getSkillName());
-        existing.setCategory(skill.getCategory());
-        existing.setDescription(skill.getDescription());
-        return repository.save(existing);
-    }
-
-    @Override
-    public void deactivateSkill(Long id) {
-        SkillEntity skill = getSkillById(id);
-        skill.setActive(false);
-        repository.save(skill);
+    public List<Skill> getActiveSkills() {
+        return repo.findByActiveTrue();
     }
 }
