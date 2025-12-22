@@ -1,23 +1,22 @@
-package com.example.demo.entity;
-
-import lombok.*;
-import java.time.Instant;
-
-@Getter
-@Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Entity
+@Getter @Setter @Builder
+@NoArgsConstructor @AllArgsConstructor
 public class User {
 
-    public enum Role {
-        ADMIN, INSTRUCTOR, STUDENT
-    }
+    public enum Role { ADMIN, INSTRUCTOR, STUDENT }
 
+    @Id @GeneratedValue
     private Long id;
+
     private String fullName;
+
+    @Column(unique = true)
     private String email;
+
     private String password;
-    private Role role;
+
+    @Enumerated(EnumType.STRING)
+    private Role role = Role.STUDENT;
+
     private Instant createdAt = Instant.now();
 }

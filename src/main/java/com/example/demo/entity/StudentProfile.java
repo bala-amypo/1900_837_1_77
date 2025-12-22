@@ -1,23 +1,20 @@
-package com.example.demo.entity;
-
-import lombok.*;
-import java.time.Instant;
-
-@Getter
-@Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Entity
+@Getter @Setter @Builder
+@NoArgsConstructor @AllArgsConstructor
 public class StudentProfile {
 
+    @Id @GeneratedValue
     private Long id;
-    private User user;
+
+    @Column(unique = true)
     private String enrollmentId;
+
     private String grade;
-    private boolean active = true;
+
     private Instant lastUpdatedAt = Instant.now();
 
+    @PreUpdate
     public void preUpdate() {
-        this.lastUpdatedAt = Instant.now();
+        lastUpdatedAt = Instant.now();
     }
 }
