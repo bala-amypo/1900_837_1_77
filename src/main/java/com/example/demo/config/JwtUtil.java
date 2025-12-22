@@ -1,27 +1,19 @@
-package com.example.demo.config;
-
-import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
-
-import java.security.Key;
-import java.util.Date;
-
 public class JwtUtil {
 
     private final Key key;
-    private final long validityMs;
+    private final long validity;
 
     public JwtUtil(String secret, long validityMs) {
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
-        this.validityMs = validityMs;
+        this.validity = validityMs;
     }
 
-    public String generateToken(com.example.demo.entity.User user) {
+    public String generateToken(User user) {
         return Jwts.builder()
-                .claim("userId", user.getId().intValue())
+                .claim("userId", user.getId())
                 .claim("email", user.getEmail())
                 .claim("role", user.getRole().name())
-                .setExpiration(new Date(System.currentTimeMillis() + validityMs))
+                .setExpiration(new Date(System.currentTimeMillis() + validity))
                 .signWith(key)
                 .compact();
     }

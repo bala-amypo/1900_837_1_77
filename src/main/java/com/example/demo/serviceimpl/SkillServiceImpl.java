@@ -1,47 +1,31 @@
-package com.example.demo.serviceimpl;
+@Service
+public class SkillServiceImpl {
 
-import com.example.demo.entity.Skill;
-import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.repository.SkillRepository;
-import com.example.demo.service.SkillService;
+    private final SkillRepository repo;
 
-import java.util.List;
-
-public class SkillServiceImpl implements SkillService {
-
-    private final SkillRepository repository;
-
-    public SkillServiceImpl(SkillRepository repository) {
-        this.repository = repository;
+    public SkillServiceImpl(SkillRepository repo) {
+        this.repo = repo;
     }
 
-    @Override
-    public Skill createSkill(Skill skill) {
-
-        if (repository.findByCode(skill.getCode()).isPresent()) {
+    public Skill createSkill(Skill s) {
+        if (repo.findByCode(s.getCode()).isPresent())
             throw new IllegalArgumentException("unique");
-        }
-        return repository.save(skill);
+        return repo.save(s);
     }
 
-    @Override
-    public Skill updateSkill(Long id, Skill skill) {
-
-        Skill existing = repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("not found"));
-
-        existing.setName(skill.getName());
-        return repository.save(existing);
+    public Skill updateSkill(Long id, Skill s) {
+        Skill ex = repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("not found"));
+        ex.setName(s.getName());
+        return repo.save(ex);
     }
 
-    @Override
     public Skill getById(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("not found"));
+        return repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("not found"));
     }
 
-    @Override
     public List<Skill> getActiveSkills() {
-        return repository.findByActiveTrue();
+        return repo.findByActiveTrue();
     }
 }

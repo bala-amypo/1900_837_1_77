@@ -1,37 +1,18 @@
-package com.example.demo.serviceimpl;
+@Service
+public class AssessmentServiceImpl {
 
-import com.example.demo.entity.AssessmentResult;
-import com.example.demo.repository.AssessmentResultRepository;
-import com.example.demo.service.AssessmentService;
+    private final AssessmentResultRepository repo;
 
-import java.util.List;
-
-public class AssessmentServiceImpl implements AssessmentService {
-
-    private final AssessmentResultRepository repository;
-
-    public AssessmentServiceImpl(AssessmentResultRepository repository) {
-        this.repository = repository;
+    public AssessmentServiceImpl(AssessmentResultRepository repo) {
+        this.repo = repo;
     }
 
-    @Override
-    public AssessmentResult recordAssessment(AssessmentResult result) {
+    public AssessmentResult recordAssessment(AssessmentResult r) {
+        if (r.getScore() == null ||
+            r.getScore() < 0 ||
+            r.getScore() > r.getMaxScore())
+            throw new IllegalArgumentException("Score");
 
-        if (result.getScore() == null ||
-            result.getScore() < 0 ||
-            result.getScore() > result.getMaxScore()) {
-            throw new IllegalArgumentException("Score must be between 0 and 100");
-        }
-        return repository.save(result);
-    }
-
-    @Override
-    public List<AssessmentResult> getResultsByStudent(Long studentId) {
-        return repository.findByStudentProfileId(studentId);
-    }
-
-    @Override
-    public List<AssessmentResult> getResultsByStudentAndSkill(Long studentId, Long skillId) {
-        return repository.findByStudentProfileIdAndSkillId(studentId, skillId);
+        return repo.save(r);
     }
 }
