@@ -10,6 +10,6 @@ import java.util.List;
 public interface SkillGapRecommendationRepository
         extends JpaRepository<SkillGapRecommendation, Long> {
 
-    List<SkillGapRecommendation>
-    findByStudentIdOrderByGeneratedAtDesc(Long studentId);
+    // REQUIRED BY TEST
+    List<SkillGapRecommendation> findByStudentOrdered(Long studentId);
 }
