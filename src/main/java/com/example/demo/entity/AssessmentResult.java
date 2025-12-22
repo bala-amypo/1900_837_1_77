@@ -10,20 +10,19 @@ public class AssessmentResult {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private StudentProfile studentProfile;
+    private Double score;
+
+    private Double maxScore;
 
     @ManyToOne
     private Skill skill;
 
-    private double score;
-
-    // ✅ REQUIRED BY TESTCASE
-    private double maxScore;
+    @ManyToOne
+    private StudentProfile studentProfile;
 
     private Instant assessedAt;
 
-    // ---------- getters & setters ----------
+    public AssessmentResult() {}
 
     public Long getId() {
         return id;
@@ -33,12 +32,20 @@ public class AssessmentResult {
         this.id = id;
     }
 
-    public StudentProfile getStudentProfile() {
-        return studentProfile;
+    public Double getScore() {
+        return score;
     }
 
-    public void setStudentProfile(StudentProfile studentProfile) {
-        this.studentProfile = studentProfile;
+    public void setScore(Double score) {
+        this.score = score;
+    }
+
+    public Double getMaxScore() {
+        return maxScore;
+    }
+
+    public void setMaxScore(Double maxScore) {
+        this.maxScore = maxScore;
     }
 
     public Skill getSkill() {
@@ -49,20 +56,12 @@ public class AssessmentResult {
         this.skill = skill;
     }
 
-    public double getScore() {
-        return score;
+    public StudentProfile getStudentProfile() {
+        return studentProfile;
     }
 
-    public void setScore(double score) {
-        this.score = score;
-    }
-
-    public double getMaxScore() {
-        return maxScore;
-    }
-
-    public void setMaxScore(double maxScore) {
-        this.maxScore = maxScore;
+    public void setStudentProfile(StudentProfile studentProfile) {
+        this.studentProfile = studentProfile;
     }
 
     public Instant getAssessedAt() {
