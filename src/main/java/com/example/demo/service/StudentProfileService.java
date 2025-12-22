@@ -8,4 +8,6 @@ public interface StudentProfileService {
     StudentProfile create(StudentProfile profile);
 
     List<StudentProfile> getAll();
+
+    StudentProfile findByUserId(Long userId);
 }
