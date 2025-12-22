@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/recommendations")
+@RequestMapping("/recommendations")
 public class RecommendationController {
 
     private final RecommendationService service;
@@ -17,7 +17,7 @@ public class RecommendationController {
     }
 
     @GetMapping("/{studentId}")
-    public List<SkillGapRecommendation> getRecommendations(@PathVariable Long studentId) {
+    public List<SkillGapRecommendation> get(@PathVariable Long studentId) {
         return service.computeRecommendationsForStudent(studentId);
     }
 }

@@ -5,9 +5,9 @@ import java.util.List;
 
 public interface RecommendationService {
 
-    // REQUIRED by Controller & TestNG
     List<SkillGapRecommendation> computeRecommendationsForStudent(Long studentId);
 
-    // REQUIRED by TestNG
+    SkillGapRecommendation computeRecommendationForStudentSkill(Long studentId, Long skillId);
+
     List<SkillGapRecommendation> getRecommendationsForStudent(Long studentId);
 }

@@ -1,26 +1,21 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.Instant;
 
-@Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AssessmentResult {
+public class StudentProfile {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String enrollmentId;
+    private String name;
+    private String cohort;
+    private Instant lastUpdated;
 
-    private Long studentProfileId;
-    private Long skillId;
-    private double score;
-    private double maxScore;
-
-    private Instant attemptedAt;
+    public void preUpdate() {
+        this.lastUpdated = Instant.now();
+    }
 }

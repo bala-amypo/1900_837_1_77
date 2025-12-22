@@ -1,12 +1,9 @@
 package com.example.demo.serviceimpl;
 
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
 import com.example.demo.entity.StudentProfile;
 import com.example.demo.repository.StudentProfileRepository;
 import com.example.demo.service.StudentProfileService;
+import org.springframework.stereotype.Service;
 
 @Service
 public class StudentProfileServiceImpl implements StudentProfileService {
@@ -19,11 +16,12 @@ public class StudentProfileServiceImpl implements StudentProfileService {
 
     @Override
     public StudentProfile create(StudentProfile profile) {
+        profile.preUpdate();
         return repository.save(profile);
     }
 
     @Override
-    public List<StudentProfile> getAll() {
-        return repository.findAll();
+    public StudentProfile getByUserId(Long id) {
+        return repository.findById(id).orElse(null);
     }
 }
