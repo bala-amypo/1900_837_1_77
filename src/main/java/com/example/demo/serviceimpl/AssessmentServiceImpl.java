@@ -8,19 +8,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class AssessmentServiceImpl implements AssessmentService {
 
-    private final AssessmentResultRepository assessmentResultRepository;
+    private final AssessmentResultRepository repository;
 
-    public AssessmentServiceImpl(AssessmentResultRepository assessmentResultRepository) {
-        this.assessmentResultRepository = assessmentResultRepository;
+    public AssessmentServiceImpl(AssessmentResultRepository repository) {
+        this.repository = repository;
     }
 
     @Override
     public AssessmentResult recordAssessment(AssessmentResult result) {
-        return assessmentResultRepository.save(result);
-    }
-
-    @Override
-    public Double getAverageScore(String cohort, Long skillId) {
-        return assessmentResultRepository.avgScoreByCohortAndSkill(cohort, skillId);
+        return repository.save(result);
     }
 }
