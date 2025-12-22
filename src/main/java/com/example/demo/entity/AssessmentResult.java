@@ -29,7 +29,6 @@ public class AssessmentResult {
     @JoinColumn(name = "student_profile_id")
     private StudentProfile studentProfile;
 
-    // ✅ THIS FIELD FIXES YOUR ERROR
     @ManyToOne
     @JoinColumn(name = "skill_id")
     private Skill skill;
