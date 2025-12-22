@@ -1,14 +1,9 @@
 package com.example.demo.repository;
 
-import java.util.List;
+import com.example.demo.entity.SkillGapRecommendation;
+import java.util.*;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-
-import com.example.demo.entity.SkillGapRecommendationEntity;
-
-public interface SkillGapRecommendationRepository
-        extends JpaRepository<SkillGapRecommendationEntity, Long> {
-
-    List<SkillGapRecommendationEntity>
-        findByStudentProfileIdOrderByGeneratedAtDesc(Long studentProfileId);
+public interface SkillGapRecommendationRepository {
+    SkillGapRecommendation save(SkillGapRecommendation rec);
+    List<SkillGapRecommendation> findByStudentOrdered(Long studentId);
 }
