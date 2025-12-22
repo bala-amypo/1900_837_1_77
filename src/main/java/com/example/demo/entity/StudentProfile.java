@@ -26,7 +26,6 @@ public class StudentProfile {
 
     private Instant lastUpdatedAt;
 
-    // ✅ Required by service + tests
     @PrePersist
     @PreUpdate
     public void preUpdate() {

@@ -11,7 +11,9 @@ import java.util.List;
 public interface AssessmentResultRepository
         extends JpaRepository<AssessmentResult, Long> {
 
-    List<AssessmentResult> findByStudentProfileIdAndSkillId(Long studentId, Long skillId);
+    // ✅ VALID NOW
+    List<AssessmentResult> findByStudentProfileIdAndSkillId(
+            Long studentId, Long skillId);
 
     List<AssessmentResult> findRecentByStudent(Long studentId);
 
