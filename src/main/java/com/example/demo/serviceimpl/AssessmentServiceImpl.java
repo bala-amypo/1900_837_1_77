@@ -8,24 +8,24 @@ import org.springframework.stereotype.Service;
 @Service
 public class AssessmentServiceImpl implements AssessmentService {
 
-    private final AssessmentResultRepository repository;
+    private final AssessmentResultRepository assessmentResultRepository;
 
-    public AssessmentServiceImpl(AssessmentResultRepository repository) {
-        this.repository = repository;
+    public AssessmentServiceImpl(AssessmentResultRepository assessmentResultRepository) {
+        this.assessmentResultRepository = assessmentResultRepository;
     }
 
     @Override
-    public AssessmentResult saveResult(AssessmentResult result) {
+    public AssessmentResult recordAssessment(AssessmentResult result) {
 
-        // ✅ FIX: primitive double cannot be null
+        // default values required by testcase
         if (result.getMaxScore() <= 0) {
-            result.setMaxScore(100.0); // testcase-safe default
+            result.setMaxScore(100.0);
         }
 
         if (result.getScore() < 0) {
             result.setScore(0);
         }
 
-        return repository.save(result);
+        return assessmentResultRepository.save(result);
     }
 }
