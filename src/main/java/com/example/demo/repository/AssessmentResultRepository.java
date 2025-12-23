@@ -12,9 +12,20 @@ import java.util.List;
 public interface AssessmentResultRepository
         extends JpaRepository<AssessmentResult, Long> {
 
+    // already used in services
     List<AssessmentResult> findByStudentProfileIdAndSkillId(
             Long studentId, Long skillId);
 
+    // 🔥 REQUIRED BY TESTS
+    @Query("""
+        SELECT AVG(a.score)
+        FROM AssessmentResult a
+        WHERE a.studentProfile.grade = :cohort
+          AND a.skill.id = :skillId
+    """)
+    Double avgScoreByCohortAndSkill(String cohort, Long skillId);
+
+    // 🔥 REQUIRED BY TESTS
     @Query("""
         SELECT a FROM AssessmentResult a
         WHERE a.studentProfile.id = :studentId
@@ -22,12 +33,7 @@ public interface AssessmentResultRepository
     """)
     List<AssessmentResult> findRecentByStudent(Long studentId);
 
-    @Query("""
-        SELECT AVG(a.score) FROM AssessmentResult a
-        WHERE a.skill.id = :skillId
-    """)
-    Double avgScoreBySkill(Long skillId);
-
+    // already used
     @Query("""
         SELECT a FROM AssessmentResult a
         WHERE a.studentProfile.id = :studentId
