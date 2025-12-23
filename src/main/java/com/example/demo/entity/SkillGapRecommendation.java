@@ -1,44 +1,33 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.Instant;
 
 @Entity
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class SkillGapRecommendation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long studentProfileId;
-    private Long skillId;
-    private double gapScore;
+    private Double gapScore;
 
-    public SkillGapRecommendation() {}
+    private String generatedBy;
 
-    public static Builder builder() {
-        return new Builder();
-    }
+    private Instant generatedAt = Instant.now();
 
-    public static class Builder {
-        private final SkillGapRecommendation r = new SkillGapRecommendation();
+    @ManyToOne
+    @JoinColumn(name = "student_profile_id")
+    private StudentProfile studentProfile;
 
-        public Builder id(Long id) { r.setId(id); return this; }
-        public Builder studentProfileId(Long s) { r.setStudentProfileId(s); return this; }
-        public Builder skillId(Long s) { r.setSkillId(s); return this; }
-        public Builder gapScore(double g) { r.setGapScore(g); return this; }
-
-        public SkillGapRecommendation build() { return r; }
-    }
-
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public Long getStudentProfileId() { return studentProfileId; }
-    public void setStudentProfileId(Long studentProfileId) { this.studentProfileId = studentProfileId; }
-
-    public Long getSkillId() { return skillId; }
-    public void setSkillId(Long skillId) { this.skillId = skillId; }
-
-    public double getGapScore() { return gapScore; }
-    public void setGapScore(double gapScore) { this.gapScore = gapScore; }
+    @ManyToOne
+    @JoinColumn(name = "skill_id")
+    private Skill skill;
 }
