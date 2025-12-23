@@ -15,7 +15,7 @@ public class StudentProfile {
 
     public StudentProfile() {}
 
-    /* ===== BUILDER ===== */
+    // Builder
     public static Builder builder() {
         return new Builder();
     }
@@ -23,32 +23,15 @@ public class StudentProfile {
     public static class Builder {
         private final StudentProfile p = new StudentProfile();
 
-        public Builder id(Long id) {
-            p.id = id;
-            return this;
-        }
+        public Builder id(Long id) { p.id = id; return this; }
+        public Builder enrollmentId(String v) { p.enrollmentId = v; return this; }
+        public Builder name(String v) { p.name = v; return this; }
+        public Builder cohort(String v) { p.cohort = v; return this; }
 
-        public Builder enrollmentId(String eid) {
-            p.enrollmentId = eid;
-            return this;
-        }
-
-        public Builder name(String name) {
-            p.name = name;
-            return this;
-        }
-
-        public Builder cohort(String c) {
-            p.cohort = c;
-            return this;
-        }
-
-        public StudentProfile build() {
-            return p;
-        }
+        public StudentProfile build() { return p; }
     }
 
-    /* ===== GET / SET ===== */
+    // Getters & Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
