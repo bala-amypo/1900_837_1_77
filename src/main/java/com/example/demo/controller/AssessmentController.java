@@ -1,8 +1,9 @@
 package com.example.demo.controller;
 
+import org.springframework.web.bind.annotation.*;
+
 import com.example.demo.entity.AssessmentResult;
 import com.example.demo.service.AssessmentService;
-import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/assessments")
@@ -15,7 +16,7 @@ public class AssessmentController {
     }
 
     @PostMapping
-    public AssessmentResult record(@RequestBody AssessmentResult result) {
+    public AssessmentResult create(@RequestBody AssessmentResult result) {
         return service.recordAssessment(result);
     }
 }

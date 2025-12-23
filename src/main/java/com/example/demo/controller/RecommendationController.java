@@ -1,10 +1,10 @@
 package com.example.demo.controller;
 
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+
 import com.example.demo.entity.SkillGapRecommendation;
 import com.example.demo.service.RecommendationService;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/recommendations")
