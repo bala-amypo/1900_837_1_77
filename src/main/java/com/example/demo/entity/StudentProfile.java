@@ -1,46 +1,43 @@
-package com.example.demo.entity;
+package com.example.demo.controller;
 
-import jakarta.persistence.*;
+import com.example.demo.entity.StudentProfile;
+import com.example.demo.service.StudentProfileService;
+import org.springframework.web.bind.annotation.*;
 
-@Entity
-public class StudentProfile {
+import java.util.List;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@RestController
+@RequestMapping("/students")
+public class StudentProfileController {
 
-    private String enrollmentId;
-    private String name;
-    private String cohort;
+    private final StudentProfileService service;
 
-    public StudentProfile() {}
-
-    // Builder
-    public static Builder builder() {
-        return new Builder();
+    public StudentProfileController(StudentProfileService service) {
+        this.service = service;
     }
 
-    public static class Builder {
-        private final StudentProfile p = new StudentProfile();
-
-        public Builder id(Long id) { p.id = id; return this; }
-        public Builder enrollmentId(String v) { p.enrollmentId = v; return this; }
-        public Builder name(String v) { p.name = v; return this; }
-        public Builder cohort(String v) { p.cohort = v; return this; }
-
-        public StudentProfile build() { return p; }
+    @PostMapping
+    public StudentProfile create(@RequestBody StudentProfile student) {
+        return service.create(student);
     }
 
-    // Getters & Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    @GetMapping
+    public List<StudentProfile> getAll() {
+        return service.getAll();
+    }
 
-    public String getEnrollmentId() { return enrollmentId; }
-    public void setEnrollmentId(String enrollmentId) { this.enrollmentId = enrollmentId; }
+    @GetMapping("/{id}")
+    public StudentProfile getById(@PathVariable Long id) {
+        return service.getById(id);
+    }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    @PutMapping("/{id}")
+    public StudentProfile update(@PathVariable Long id, @RequestBody StudentProfile student) {
+        return service.update(id, student);
+    }
 
-    public String getCohort() { return cohort; }
-    public void setCohort(String cohort) { this.cohort = cohort; }
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        service.delete(id);
+    }
 }
