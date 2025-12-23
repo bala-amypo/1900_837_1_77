@@ -96,24 +96,13 @@
         </dependency>
 
         <!-- ========================= -->
-        <!-- TEST DEPENDENCIES -->
+        <!-- TEST DEPENDENCIES (JUnit 5) -->
         <!-- ========================= -->
-
-        <!-- Spring Boot Test (JUnit Jupiter EXCLUDED) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.junit.jupiter</groupId>
-                    <artifactId>junit-jupiter</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
-
-        <!-- TestNG -->
-        
 
         <!-- Mockito -->
         <dependency>
@@ -135,19 +124,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-
-            <!-- ✅ Surefire Plugin (TestNG ENABLED PROPERLY) -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.5</version>
-                <configuration>
-                    <!-- IMPORTANT: Tell Maven to use TestNG -->
-                    <suiteXmlFiles>
-                        <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
-                    </suiteXmlFiles>
-                </configuration>
             </plugin>
 
         </plugins>
