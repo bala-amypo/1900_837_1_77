@@ -1,9 +1,9 @@
 package com.example.demo.serviceimpl;
 
-import org.springframework.stereotype.Service;
 import com.example.demo.entity.StudentProfile;
 import com.example.demo.repository.StudentProfileRepository;
 import com.example.demo.service.StudentProfileService;
+import org.springframework.stereotype.Service;
 
 @Service
 public class StudentProfileServiceImpl implements StudentProfileService {

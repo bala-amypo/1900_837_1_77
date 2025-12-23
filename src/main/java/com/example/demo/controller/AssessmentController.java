@@ -1,9 +1,8 @@
 package com.example.demo.controller;
 
-import org.springframework.web.bind.annotation.*;
-
 import com.example.demo.entity.AssessmentResult;
 import com.example.demo.service.AssessmentService;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/assessments")
