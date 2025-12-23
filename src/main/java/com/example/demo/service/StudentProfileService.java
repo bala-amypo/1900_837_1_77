@@ -5,9 +5,13 @@ import java.util.List;
 
 public interface StudentProfileService {
 
-    StudentProfile create(StudentProfile s);
+    StudentProfile create(StudentProfile profile);
+
     List<StudentProfile> getAll();
+
     StudentProfile getById(Long id);
-    StudentProfile update(Long id, StudentProfile s);
+
+    StudentProfile update(Long id, StudentProfile updated);
+
     void delete(Long id);
 }

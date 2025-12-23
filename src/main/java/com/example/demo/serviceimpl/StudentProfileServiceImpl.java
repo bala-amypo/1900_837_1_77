@@ -10,35 +10,44 @@ import java.util.List;
 @Service
 public class StudentProfileServiceImpl implements StudentProfileService {
 
-    private final StudentProfileRepository repo;
+    private final StudentProfileRepository repository;
 
-    public StudentProfileServiceImpl(StudentProfileRepository repo) {
-        this.repo = repo;
+    public StudentProfileServiceImpl(StudentProfileRepository repository) {
+        this.repository = repository;
     }
 
     @Override
-    public StudentProfile create(StudentProfile s) {
-        return repo.save(s);
+    public StudentProfile create(StudentProfile profile) {
+        return repository.save(profile);
     }
 
     @Override
     public List<StudentProfile> getAll() {
-        return repo.findAll();
+        return repository.findAll();
     }
 
     @Override
     public StudentProfile getById(Long id) {
-        return repo.findById(id).orElse(null);
+        return repository.findById(id).orElse(null);
     }
 
     @Override
-    public StudentProfile update(Long id, StudentProfile s) {
-        s.setId(id);
-        return repo.save(s);
+    public StudentProfile update(Long id, StudentProfile updated) {
+        StudentProfile existing = repository.findById(id).orElse(null);
+
+        if (existing == null) {
+            return null;
+        }
+
+        existing.setName(updated.getName());
+        existing.setDepartment(updated.getDepartment());
+        existing.setEmail(updated.getEmail());
+
+        return repository.save(existing);
     }
 
     @Override
     public void delete(Long id) {
-        repo.deleteById(id);
+        repository.deleteById(id);
     }
 }
