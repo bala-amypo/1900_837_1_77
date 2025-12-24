@@ -20,14 +20,9 @@ public class SkillServiceImpl implements SkillService {
     @Override
     public Skill createSkill(Skill skill) {
 
-        // FIX for t006 (duplicate code)
+        // t006: duplicate code check
         if (repo.findByCode(skill.getCode()).isPresent()) {
             throw new IllegalArgumentException("Duplicate skill code");
-        }
-
-        // FIX for t016 (default active=true)
-        if (skill.getActive() == null) {
-            skill.setActive(true);
         }
 
         return repo.save(skill);
@@ -42,7 +37,9 @@ public class SkillServiceImpl implements SkillService {
         s.setDescription(updated.getDescription());
         s.setCategory(updated.getCategory());
         s.setMinCompetencyScore(updated.getMinCompetencyScore());
-        s.setActive(updated.getActive() != null ? updated.getActive() : s.isActive());
+
+        // FIX: boolean getter is isActive(), not getActive()
+        s.setActive(updated.isActive());
 
         return repo.save(s);
     }
