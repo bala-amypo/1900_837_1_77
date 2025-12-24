@@ -23,5 +23,6 @@ public class Skill {
     private String description;
     private Double minCompetencyScore;
 
-    private Boolean active = true;   // ⭐ must be Boolean (tests expect null check)
+    @Builder.Default
+    private boolean active = true;  // ⭐ FIX TEST CASE t016, t017
 }
