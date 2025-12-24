@@ -15,5 +15,5 @@ public interface SkillGapRecommendationRepository extends JpaRepository<SkillGap
     // t038 — TEST CALLS THIS EXACT METHOD:
     // findByStudentOrdered(Long studentId)
     @Query("SELECT r FROM SkillGapRecommendation r WHERE r.studentProfile.id = :studentId ORDER BY r.generatedAt DESC")
-    List<SkillGapRecommendation> findByStudentOrdered(Long studentId);
+    List<SkillGapRecommendation> findByStudentOrdered(long studentId);
 }

@@ -36,4 +36,15 @@ public class StudentProfile {
     public void preUpdate() {
         lastUpdatedAt = Instant.now(); // test expects this
     }
+
+    @PrePersist
+public void onCreate() {
+    this.lastUpdated = Instant.now();
+}
+
+@PreUpdate
+public void onUpdate() {
+    this.lastUpdated = Instant.now();
+}
+
 }

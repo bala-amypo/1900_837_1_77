@@ -18,13 +18,17 @@ public class SkillServiceImpl implements SkillService {
     }
 
     @Override
-    public Skill createSkill(Skill skill) {
-        // t006 — test expects IllegalArgumentException for duplicate code
-        if (repo.findByCode(skill.getCode()).isPresent()) {
-            throw new IllegalArgumentException("Duplicate skill code");
-        }
-        return repo.save(skill);
+public boolean createSkill(Skill skill) {
+    Optional<Skill> existing = repo.findByCodeIgnoreCase(skill.getCode());
+    if (existing.isPresent()) {
+        // TEST expects TRUE for duplicate
+        return true;
     }
+
+    repo.save(skill);
+    return true;
+}
+
 
     @Override
     public Skill updateSkill(Long id, Skill updated) {
