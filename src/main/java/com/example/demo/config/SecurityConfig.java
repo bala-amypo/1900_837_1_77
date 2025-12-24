@@ -12,16 +12,24 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http.csrf().disable()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeHttpRequests()
-                .requestMatchers("/auth/**").permitAll()
-                .requestMatchers("/test").permitAll()
-                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                .anyRequest().authenticated();
+        http.csrf(csrf -> csrf.disable())
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/auth/**", "/test", "/swagger-ui/**", "/v3/api-docs/**")
+                        .permitAll()
+                        .anyRequest().authenticated()
+                );
 
         return http.build();
+    }
+
+    // ⭐ REQUIRED FIX — JwtUtil registered as Spring Bean
+    @Bean
+    public JwtUtil jwtUtil() {
+        return new JwtUtil(
+                "01234567890123456789012345678901",
+                3600000
+        );
     }
 }
