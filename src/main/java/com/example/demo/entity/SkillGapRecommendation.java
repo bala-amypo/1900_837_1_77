@@ -25,8 +25,9 @@ public class SkillGapRecommendation {
     private String recommendedAction;
     private String priority;
     private Double gapScore;
+
     private String generatedBy;
 
     @Builder.Default
-    private Instant generatedAt = Instant.now();  // t038 fix
+    private Instant generatedAt = Instant.now();
 }
