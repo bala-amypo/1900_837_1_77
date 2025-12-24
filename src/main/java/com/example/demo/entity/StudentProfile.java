@@ -5,46 +5,32 @@ import lombok.*;
 import java.time.Instant;
 
 @Entity
-@Data
-@Builder
+@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class StudentProfile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @OneToOne
+    private User user;
+
+    @Column(nullable=false, unique=true)
     private String enrollmentId;
-    private Long userId;
-    private String name;
-    private String department;
+
     private String cohort;
-    private String grade;
 
-    private Instant createdAt;
-    private Instant lastUpdatedAt;
+    private Integer yearLevel;
 
-    @PrePersist
-    public void prePersist() {
-        Instant now = Instant.now();
-        createdAt = now;
-        lastUpdatedAt = now;
-    }
+    private Boolean active = true;
+
+    private Instant lastUpdatedAt = Instant.now();
 
     @PreUpdate
     public void preUpdate() {
-        lastUpdatedAt = Instant.now(); // test expects this
+        this.lastUpdatedAt = Instant.now();
     }
-
-    @PrePersist
-public void onCreate() {
-    this.lastUpdated = Instant.now();
-}
-
-@PreUpdate
-public void onUpdate() {
-    this.lastUpdated = Instant.now();
-}
-
 }

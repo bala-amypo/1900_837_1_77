@@ -8,19 +8,14 @@ import java.util.List;
 
 public interface AssessmentResultRepository extends JpaRepository<AssessmentResult, Long> {
 
-    List<AssessmentResult> findByStudentProfileId(Long studentId);
+    List<AssessmentResult> findByStudentProfileId(Long studentProfileId);
 
-    List<AssessmentResult> findByStudentProfileIdAndSkillId(Long studentId, Long skillId);
+    List<AssessmentResult> findByStudentProfileIdAndSkillId(Long studentProfileId, Long skillId);
 
-    // ⭐ TEST EXPECTS DOUBLE
-    default Double avgScoreByCohortAndSkill(String cohort, Long skillId) { return null; }
+    // mocked in tests
+    Double avgScoreByCohortAndSkill(String cohort, Long skillId);
 
-    // ⭐ TEST EXPECTS LIST<AssessmentResult>
-    default List<AssessmentResult> findRecentByStudent(Long studentId) { return null; }
+    List<AssessmentResult> findRecentByStudent(Long studentId);
 
-    // ⭐ TEST EXPECTS LIST<AssessmentResult>
-    default List<AssessmentResult> findResultsForStudentBetween(Long studentId, Instant start, Instant end) { return null; }
-
-    // ⭐ TEST EXPECTS LIST<AssessmentResult>
-    default List<AssessmentResult> findResultsForStudentBetween(Long studentId, Long skillId, Instant start, Instant end) { return null; }
+    List<AssessmentResult> findResultsForStudentBetween(Long studentId, Instant from, Instant to);
 }

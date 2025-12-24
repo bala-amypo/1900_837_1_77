@@ -5,11 +5,10 @@ import lombok.*;
 import java.time.Instant;
 
 @Entity
-@Getter
-@Setter
-@Builder
+@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class SkillGapRecommendation {
 
     @Id
@@ -23,11 +22,12 @@ public class SkillGapRecommendation {
     private Skill skill;
 
     private String recommendedAction;
+
     private String priority;
+
     private Double gapScore;
 
     private String generatedBy;
 
-    @Builder.Default
     private Instant generatedAt = Instant.now();
 }

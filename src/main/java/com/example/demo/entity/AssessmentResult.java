@@ -5,11 +5,10 @@ import lombok.*;
 import java.time.Instant;
 
 @Entity
-@Getter
-@Setter
-@Builder
+@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class AssessmentResult {
 
     @Id
@@ -22,12 +21,12 @@ public class AssessmentResult {
     @ManyToOne
     private Skill skill;
 
+    @Column(nullable=false)
     private String assessmentId;
 
     private Double score;
 
-    @Builder.Default
-    private Double maxScore = 100.0;   // test expects this default
+    private Double maxScore = 100.0;
 
-    private Instant attemptedAt;       // test expects null before save
+    private Instant attemptedAt = Instant.now();
 }

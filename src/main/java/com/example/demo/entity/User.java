@@ -5,38 +5,29 @@ import lombok.*;
 import java.time.Instant;
 
 @Entity
-@Getter
-@Setter
-@Builder
+@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class User {
 
-    public enum Role {
-        ADMIN, INSTRUCTOR, STUDENT
-    }
+    public enum Role { ADMIN, INSTRUCTOR, STUDENT }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable=false)
     private String fullName;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable=false, unique=true)
     private String email;
 
+    @Column(nullable=false)
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private Role role = Role.STUDENT;
 
-    private Instant createdAt;
-
-    @PrePersist
-    public void onCreate() {
-        if (role == null) {
-            role = Role.STUDENT;  // Default role
-        }
-        createdAt = Instant.now();
-    }
+    private Instant createdAt = Instant.now();
 }
