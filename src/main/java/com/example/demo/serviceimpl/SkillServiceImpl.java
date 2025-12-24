@@ -18,16 +18,9 @@ public class SkillServiceImpl implements SkillService {
     }
 
     @Override
-public Skill createSkill(Skill skill) {
-    if (skillRepository.findByCode(skill.getCode()).isPresent()) {
-        throw new IllegalArgumentException("Duplicate skill code");
+    public Skill createSkill(Skill skill) {
+        return repo.save(skill);
     }
-    if (skill.getActive() == null) {
-        skill.setActive(true); // also fixes t016
-    }
-    return skillRepository.save(skill);
-}
-
 
     @Override
     public Skill updateSkill(Long id, Skill updated) {
