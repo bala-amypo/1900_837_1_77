@@ -20,8 +20,8 @@ public class SkillServiceImpl implements SkillService {
     @Override
     public Skill createSkill(Skill skill) {
 
-        // t006: duplicate code check
-        if (repo.findByCode(skill.getCode()).isPresent()) {
+        // t006 — case-insensitive duplicate check
+        if (repo.findByCodeIgnoreCase(skill.getCode()).isPresent()) {
             throw new IllegalArgumentException("Duplicate skill code");
         }
 
@@ -37,8 +37,6 @@ public class SkillServiceImpl implements SkillService {
         s.setDescription(updated.getDescription());
         s.setCategory(updated.getCategory());
         s.setMinCompetencyScore(updated.getMinCompetencyScore());
-
-        // FIX: boolean getter is isActive(), not getActive()
         s.setActive(updated.isActive());
 
         return repo.save(s);

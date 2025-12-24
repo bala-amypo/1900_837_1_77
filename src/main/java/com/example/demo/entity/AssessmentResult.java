@@ -26,7 +26,9 @@ public class AssessmentResult {
 
     private Double score;
 
-    private Double maxScore = 100.0;  // ⭐ Fix for t017
+    @Builder.Default
+    private Double maxScore = 100.0;   // t017 fix
 
-    private Instant attemptedAt;      // ⭐ must be null initially
+    @Builder.Default
+    private Instant attemptedAt = null;  // t050 fix
 }
