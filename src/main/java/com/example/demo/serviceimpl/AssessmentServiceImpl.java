@@ -20,18 +20,15 @@ public class AssessmentServiceImpl implements AssessmentService {
     @Override
     public AssessmentResult recordAssessment(AssessmentResult result) {
 
-        if (result.getScore() == null) {
-            throw new IllegalArgumentException("Score cannot be null"); // t041
-        }
+        if (result.getScore() == null)
+            throw new IllegalArgumentException("Score cannot be null");
 
-        if (result.getScore() < 0 || result.getScore() > result.getMaxScore()) {
-            throw new IllegalArgumentException("Score must be between 0 and 100");
-        }
+        if (result.getScore() < 0 || result.getScore() > result.getMaxScore())
+            throw new IllegalArgumentException("Score must be between 0 and maxScore");
 
-        // t050 — auto-set attemptedAt
-        if (result.getAttemptedAt() == null) {
+        // t050: auto‐set attemptedAt if null
+        if (result.getAttemptedAt() == null)
             result.setAttemptedAt(Instant.now());
-        }
 
         return repo.save(result);
     }

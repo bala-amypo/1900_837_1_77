@@ -5,8 +5,7 @@ import lombok.*;
 import java.time.Instant;
 
 @Entity
-@Getter
-@Setter
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,12 +28,12 @@ public class StudentProfile {
     @PrePersist
     public void prePersist() {
         Instant now = Instant.now();
-        this.createdAt = now;
-        this.lastUpdatedAt = now;
+        createdAt = now;
+        lastUpdatedAt = now;
     }
 
     @PreUpdate
     public void preUpdate() {
-        this.lastUpdatedAt = Instant.now();
+        lastUpdatedAt = Instant.now(); // test expects this
     }
 }

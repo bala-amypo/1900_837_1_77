@@ -27,7 +27,7 @@ public class AssessmentResult {
     private Double score;
 
     @Builder.Default
-    private Double maxScore = 100.0;
+    private Double maxScore = 100.0;   // test expects this default
 
-    private Instant attemptedAt;
+    private Instant attemptedAt;       // test expects null before save
 }
