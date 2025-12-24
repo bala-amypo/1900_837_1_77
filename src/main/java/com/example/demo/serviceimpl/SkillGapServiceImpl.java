@@ -1,45 +1,48 @@
 package com.example.demo.serviceimpl;
 
 import com.example.demo.entity.*;
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.*;
 import com.example.demo.service.SkillGapService;
+import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
+@Service
 public class SkillGapServiceImpl implements SkillGapService {
 
     private final SkillGapRecordRepository gapRepo;
     private final SkillRepository skillRepo;
-    private final AssessmentResultRepository assessmentRepo;
+    private final AssessmentResultRepository assessRepo;
 
     public SkillGapServiceImpl(
             SkillGapRecordRepository gapRepo,
             SkillRepository skillRepo,
-            AssessmentResultRepository assessmentRepo) {
+            AssessmentResultRepository assessRepo) {
 
         this.gapRepo = gapRepo;
         this.skillRepo = skillRepo;
-        this.assessmentRepo = assessmentRepo;
+        this.assessRepo = assessRepo;
     }
 
     @Override
     public List<SkillGapRecord> computeGaps(Long studentId) {
-        List<Skill> skills = skillRepo.findByActiveTrue();
+
         List<SkillGapRecord> list = new ArrayList<>();
+        List<Skill> skills = skillRepo.findByActiveTrue();
 
-        for (Skill s : skills) {
+        for (Skill skill : skills) {
+
             List<AssessmentResult> results =
-                    assessmentRepo.findByStudentProfileIdAndSkillId(studentId, s.getId());
+                    assessRepo.findByStudentProfileIdAndSkillId(studentId, skill.getId());
 
-            double currentScore = results.isEmpty() ? 0 : results.get(results.size() - 1).getScore();
-            double target = s.getMinCompetencyScore() == null ? 100 : s.getMinCompetencyScore();
-            double gap = target - currentScore;
+            double score = results.isEmpty() ? 0 : results.get(results.size() - 1).getScore();
+            double gap = (skill.getMinCompetencyScore() == null ? 100 : skill.getMinCompetencyScore()) - score;
 
             SkillGapRecord record = SkillGapRecord.builder()
-                    .skill(s)
-                    .currentScore(currentScore)
-                    .targetScore(target)
+                    .skill(skill)
+                    .currentScore(score)
+                    .targetScore(skill.getMinCompetencyScore())
                     .gapScore(gap)
                     .build();
 

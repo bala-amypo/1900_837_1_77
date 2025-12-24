@@ -10,31 +10,27 @@ import java.util.List;
 @Service
 public class AssessmentServiceImpl implements AssessmentService {
 
-    private final AssessmentResultRepository assessmentResultRepository;
+    private final AssessmentResultRepository repo;
 
-    public AssessmentServiceImpl(AssessmentResultRepository assessmentResultRepository) {
-        this.assessmentResultRepository = assessmentResultRepository;
+    public AssessmentServiceImpl(AssessmentResultRepository repo) {
+        this.repo = repo;
     }
 
     @Override
     public AssessmentResult recordAssessment(AssessmentResult result) {
-        if (result.getScore() == null ||
-            result.getScore() < 0 ||
-            result.getMaxScore() == null ||
-            result.getScore() > result.getMaxScore()) {
-
+        if (result.getScore() < 0 || result.getScore() > result.getMaxScore()) {
             throw new IllegalArgumentException("Score must be between 0 and 100");
         }
-        return assessmentResultRepository.save(result);
+        return repo.save(result);
     }
 
     @Override
     public List<AssessmentResult> getResultsByStudent(Long studentId) {
-        return assessmentResultRepository.findByStudentProfileId(studentId);
+        return repo.findByStudentProfileId(studentId);
     }
 
     @Override
     public List<AssessmentResult> getResultsByStudentAndSkill(Long studentId, Long skillId) {
-        return assessmentResultRepository.findByStudentProfileIdAndSkillId(studentId, skillId);
+        return repo.findByStudentProfileIdAndSkillId(studentId, skillId);
     }
 }

@@ -4,46 +4,45 @@ import com.example.demo.entity.*;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.*;
 import com.example.demo.service.RecommendationService;
+import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
+@Service
 public class RecommendationServiceImpl implements RecommendationService {
 
-    private final AssessmentResultRepository assessmentRepo;
-    private final SkillGapRecommendationRepository recommendationRepo;
-    private final StudentProfileRepository studentRepo;
+    private final AssessmentResultRepository assessRepo;
+    private final SkillGapRecommendationRepository recRepo;
+    private final StudentProfileRepository profileRepo;
     private final SkillRepository skillRepo;
 
     public RecommendationServiceImpl(
-            AssessmentResultRepository assessmentRepo,
-            SkillGapRecommendationRepository recommendationRepo,
-            StudentProfileRepository studentRepo,
+            AssessmentResultRepository assessRepo,
+            SkillGapRecommendationRepository recRepo,
+            StudentProfileRepository profileRepo,
             SkillRepository skillRepo) {
 
-        this.assessmentRepo = assessmentRepo;
-        this.recommendationRepo = recommendationRepo;
-        this.studentRepo = studentRepo;
+        this.assessRepo = assessRepo;
+        this.recRepo = recRepo;
+        this.profileRepo = profileRepo;
         this.skillRepo = skillRepo;
     }
 
     @Override
     public SkillGapRecommendation computeRecommendationForStudentSkill(Long studentId, Long skillId) {
 
-        StudentProfile sp = studentRepo.findById(studentId)
+        StudentProfile sp = profileRepo.findById(studentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Profile not found"));
 
         Skill skill = skillRepo.findById(skillId)
                 .orElseThrow(() -> new ResourceNotFoundException("Skill not found"));
 
         List<AssessmentResult> results =
-                assessmentRepo.findByStudentProfileIdAndSkillId(studentId, skillId);
+                assessRepo.findByStudentProfileIdAndSkillId(studentId, skillId);
 
-        double currentScore = 0.0;
-        if (!results.isEmpty()) {
-            currentScore = results.get(results.size() - 1).getScore();
-        }
-
-        double gap = Math.max(0, 100 - currentScore);
+        double score = results.isEmpty() ? 0 : results.get(results.size() - 1).getScore();
+        double gap = 100 - score;
 
         String priority = gap >= 20 ? "HIGH" : gap >= 10 ? "MEDIUM" : "LOW";
 
@@ -52,25 +51,23 @@ public class RecommendationServiceImpl implements RecommendationService {
                 .skill(skill)
                 .gapScore(gap)
                 .priority(priority)
-                .generatedBy("SYSTEM")
                 .recommendedAction("Improve " + skill.getName())
+                .generatedBy("SYSTEM")
                 .build();
 
-        return recommendationRepo.save(rec);
+        return recRepo.save(rec);
     }
 
     @Override
     public List<SkillGapRecommendation> computeRecommendationsForStudent(Long studentId) {
 
-        studentRepo.findById(studentId)
+        profileRepo.findById(studentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Profile not found"));
 
         List<Skill> skills = skillRepo.findByActiveTrue();
         List<SkillGapRecommendation> list = new ArrayList<>();
 
         for (Skill s : skills) {
-            // testcases require this:
-            skillRepo.findById(s.getId());
             list.add(computeRecommendationForStudentSkill(studentId, s.getId()));
         }
 
@@ -79,6 +76,6 @@ public class RecommendationServiceImpl implements RecommendationService {
 
     @Override
     public List<SkillGapRecommendation> getRecommendationsForStudent(Long studentId) {
-        return recommendationRepo.findByStudentOrdered(studentId);
+        return recRepo.findByStudentProfileIdOrderByGeneratedAtDesc(studentId);
     }
 }
