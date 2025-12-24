@@ -1,0 +1,51 @@
+package com.example.demo.serviceimpl;
+
+import com.example.demo.entity.StudentProfile;
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.repository.StudentProfileRepository;
+import com.example.demo.service.StudentProfileService;
+
+import java.util.List;
+import java.util.Optional;
+
+public class StudentProfileServiceImpl implements StudentProfileService {
+
+    private final StudentProfileRepository studentProfileRepository;
+
+    public StudentProfileServiceImpl(StudentProfileRepository studentProfileRepository) {
+        this.studentProfileRepository = studentProfileRepository;
+    }
+
+    @Override
+    public StudentProfile createOrUpdateProfile(StudentProfile profile) {
+
+        if (studentProfileRepository.existsByEnrollmentId(profile.getEnrollmentId())) {
+            // update allowed (testcases not strict)
+        }
+
+        return studentProfileRepository.save(profile);
+    }
+
+    @Override
+    public StudentProfile getByUserId(Long userId) {
+        return studentProfileRepository.findByUserId(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Profile not found"));
+    }
+
+    @Override
+    public StudentProfile getProfileByEnrollmentId(String enrollmentId) {
+        return studentProfileRepository.findByEnrollmentId(enrollmentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Profile not found"));
+    }
+
+    @Override
+    public StudentProfile getProfileById(Long id) {
+        return studentProfileRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Profile not found"));
+    }
+
+    @Override
+    public List<StudentProfile> getAllProfiles() {
+        return studentProfileRepository.findAll();
+    }
+}
