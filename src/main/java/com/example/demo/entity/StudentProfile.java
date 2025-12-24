@@ -5,7 +5,8 @@ import lombok.*;
 import java.time.Instant;
 
 @Entity
-@Getter @Setter
+@Getter 
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -26,6 +27,9 @@ public class StudentProfile {
     private Integer yearLevel;
 
     private Boolean active = true;
+
+    // REQUIRED BY TEST SUITE (fix for "grade" method missing)
+    private String grade;
 
     private Instant lastUpdatedAt = Instant.now();
 
