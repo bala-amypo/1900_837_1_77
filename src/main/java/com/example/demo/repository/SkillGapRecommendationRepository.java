@@ -2,14 +2,12 @@ package com.example.demo.repository;
 
 import com.example.demo.entity.SkillGapRecommendation;
 import org.springframework.data.jpa.repository.JpaRepository;
-
+import org.springframework.stereotype.Repository;
 import java.util.List;
 
+@Repository
 public interface SkillGapRecommendationRepository extends JpaRepository<SkillGapRecommendation, Long> {
 
-    // TEST t038 expects this EXACT method name
-    List<SkillGapRecommendation> findByStudentProfileIdOrderByGeneratedAtDesc(Long studentId);
-
-    // TEST also calls this method name
-    List<SkillGapRecommendation> findByStudentOrdered(Long studentId);
+    // ✔ REQUIRED by test t038_recommendationHistoryOrdering
+    List<SkillGapRecommendation> findByStudentProfileIdOrderByGeneratedAtDesc(Long studentProfileId);
 }
