@@ -48,14 +48,15 @@ public class RecommendationServiceImpl implements RecommendationService {
         String priority = gap >= 20 ? "HIGH" : gap >= 10 ? "MEDIUM" : "LOW";
 
         SkillGapRecommendation rec = SkillGapRecommendation.builder()
-                .studentProfile(sp)
-                .skill(skill)
-                .gapScore(gap)
-                .priority(priority)
-                .recommendedAction("Improve " + skill.getName())
-                .generatedBy("SYSTEM")
-                .generatedAt(Instant.now())   // ⭐ FIX: must set explicitly because builder ignores defaults
-                .build();
+        .studentProfile(sp)
+        .skill(skill)
+        .gapScore(gap)
+        .priority(priority)
+        .recommendedAction("Improve " + skill.getName())
+        .generatedBy("SYSTEM")
+        .generatedAt(Instant.now())   // FIX
+        .build();
+
 
         return recRepo.save(rec);
     }

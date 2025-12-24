@@ -1,14 +1,26 @@
-package com.example.demo.repository;
+@Entity
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class SkillGapRecommendation {
 
-import com.example.demo.entity.SkillGapRecommendation;
-import org.springframework.data.jpa.repository.JpaRepository;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-import java.util.List;
+    @ManyToOne
+    private StudentProfile studentProfile;
 
-public interface SkillGapRecommendationRepository extends JpaRepository<SkillGapRecommendation, Long> {
+    @ManyToOne
+    private Skill skill;
 
-    List<SkillGapRecommendation> findByStudentProfileIdOrderByGeneratedAtDesc(Long studentId);
+    private String recommendedAction;
+    private String priority;
+    private Double gapScore;
+    private String generatedBy;
 
-    // ⭐ REQUIRED BY TEST
-    default List<SkillGapRecommendation> findByStudentOrdered(Long id) { return null; }
+    @Builder.Default
+    private Instant generatedAt = Instant.now();
 }
