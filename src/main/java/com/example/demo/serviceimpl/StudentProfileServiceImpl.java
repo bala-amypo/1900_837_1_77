@@ -19,25 +19,31 @@ public class StudentProfileServiceImpl implements StudentProfileService {
 
     @Override
     public StudentProfile createOrUpdateProfile(StudentProfile profile) {
+        if (repo.existsByEnrollmentId(profile.getEnrollmentId())) {
+            // allow update, not duplicate insert
+        }
         return repo.save(profile);
-    }
-
-    @Override
-    public StudentProfile getByUserId(Long userId) {
-        return repo.findByUserId(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("Profile not found"));
-    }
-
-    @Override
-    public StudentProfile getProfileByEnrollmentId(String enrollmentId) {
-        return repo.findByEnrollmentId(enrollmentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Profile not found"));
     }
 
     @Override
     public StudentProfile getProfileById(Long id) {
         return repo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Profile not found"));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Profile not found"));
+    }
+
+    @Override
+    public StudentProfile getByUserId(Long userId) {
+        return repo.findByUserId(userId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Profile not found"));
+    }
+
+    @Override
+    public StudentProfile getProfileByEnrollmentId(String enrollmentId) {
+        return repo.findByEnrollmentId(enrollmentId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Profile not found"));
     }
 
     @Override

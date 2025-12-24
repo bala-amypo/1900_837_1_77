@@ -1,11 +1,11 @@
 package com.example.demo.serviceimpl;
 
 import com.example.demo.entity.AssessmentResult;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.AssessmentResultRepository;
 import com.example.demo.service.AssessmentService;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -19,17 +19,11 @@ public class AssessmentServiceImpl implements AssessmentService {
 
     @Override
     public AssessmentResult recordAssessment(AssessmentResult result) {
-
-        if (result.getScore() == null)
-            throw new IllegalArgumentException("Score cannot be null");
-
-        if (result.getScore() < 0 || result.getScore() > result.getMaxScore())
-            throw new IllegalArgumentException("Score must be between 0 and maxScore");
-
-        // t050: auto‐set attemptedAt if null
-        if (result.getAttemptedAt() == null)
-            result.setAttemptedAt(Instant.now());
-
+        if (result.getScore() == null ||
+                result.getScore() < 0 ||
+                result.getScore() > result.getMaxScore()) {
+            throw new IllegalArgumentException("Score must be between 0 and 100");
+        }
         return repo.save(result);
     }
 

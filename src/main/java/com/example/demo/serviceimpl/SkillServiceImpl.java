@@ -18,36 +18,29 @@ public class SkillServiceImpl implements SkillService {
     }
 
     @Override
-public boolean createSkill(Skill skill) {
-    Optional<Skill> existing = repo.findByCodeIgnoreCase(skill.getCode());
-    if (existing.isPresent()) {
-        // TEST expects TRUE for duplicate
-        return true;
+    public Skill createSkill(Skill skill) {
+        if (repo.findByCode(skill.getCode()).isPresent()) {
+            throw new IllegalArgumentException("Skill code must be unique");
+        }
+        return repo.save(skill);
     }
-
-    repo.save(skill);
-    return true;
-}
-
 
     @Override
     public Skill updateSkill(Long id, Skill updated) {
-        Skill s = repo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Skill not found"));
-
-        s.setName(updated.getName());
-        s.setDescription(updated.getDescription());
-        s.setCategory(updated.getCategory());
-        s.setMinCompetencyScore(updated.getMinCompetencyScore());
-        s.setActive(updated.isActive());   // boolean getter isActive()
-
-        return repo.save(s);
+        Skill existing = repo.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Skill not found"));
+        existing.setName(updated.getName());
+        existing.setCategory(updated.getCategory());
+        existing.setDescription(updated.getDescription());
+        return repo.save(existing);
     }
 
     @Override
     public Skill getById(Long id) {
         return repo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Skill not found"));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Skill not found"));
     }
 
     @Override
@@ -62,8 +55,7 @@ public boolean createSkill(Skill skill) {
 
     @Override
     public void deactivateSkill(Long id) {
-        Skill s = repo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Skill not found"));
+        Skill s = getById(id);
         s.setActive(false);
         repo.save(s);
     }
