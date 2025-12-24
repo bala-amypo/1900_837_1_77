@@ -6,6 +6,7 @@ import com.example.demo.repository.*;
 import com.example.demo.service.RecommendationService;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;  // ⭐ REQUIRED IMPORT
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +54,7 @@ public class RecommendationServiceImpl implements RecommendationService {
                 .priority(priority)
                 .recommendedAction("Improve " + skill.getName())
                 .generatedBy("SYSTEM")
-                .generatedAt(Instant.now())
+                .generatedAt(Instant.now())   // ⭐ FIX: must set explicitly because builder ignores defaults
                 .build();
 
         return recRepo.save(rec);
