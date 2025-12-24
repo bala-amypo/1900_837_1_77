@@ -5,7 +5,7 @@ import lombok.*;
 import java.time.Instant;
 
 @Entity
-@Getter 
+@Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,19 +28,19 @@ public class StudentProfile {
 
     private Boolean active = true;
 
-    // REQUIRED BY TEST SUITE (fix for "grade" method missing)
     private String grade;
 
-    private Instant lastUpdatedAt;
+    // IMPORTANT: Builder must initialize the value
+    @Builder.Default
+    private Instant lastUpdatedAt = Instant.now();
 
-@PrePersist
-public void prePersist() {
-    this.lastUpdatedAt = Instant.now();
-}
+    @PrePersist
+    public void prePersist() {
+        this.lastUpdatedAt = Instant.now();
+    }
 
-@PreUpdate
-public void preUpdate() {
-    this.lastUpdatedAt = Instant.now();
-}
-
+    @PreUpdate
+    public void preUpdate() {
+        this.lastUpdatedAt = Instant.now();
+    }
 }
