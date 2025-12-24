@@ -1,50 +1,55 @@
 package com.example.demo.config;
 
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
+import java.util.Collections;
 
-public class JwtAuthenticationFilter implements Filter {
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
 
-    public JwtAuthenticationFilter(JwtUtil jwtUtil) {
-        this.jwtUtil = jwtUtil;
+    public JwtAuthenticationFilter(JwtUtil util) {
+        this.jwtUtil = util;
     }
 
     @Override
-    public void doFilter(
-            ServletRequest request,
-            ServletResponse response,
-            FilterChain chain) throws IOException, ServletException {
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain)
+            throws ServletException, IOException {
 
-        HttpServletRequest http = (HttpServletRequest) request;
-        String authHeader = http.getHeader("Authorization");
+        String header = request.getHeader("Authorization");
 
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            String token = authHeader.substring(7);
+        if (header != null && header.startsWith("Bearer ")) {
+            String token = header.substring(7);
 
             try {
-                Jws<Claims> parsed = jwtUtil.validateAndParse(token);
-                String email = parsed.getBody().get("email", String.class);
+                var parsed = jwtUtil.validateAndParse(token);
+
+                Long userId = parsed.getBody().get("userId", Integer.class).longValue();
 
                 UsernamePasswordAuthenticationToken auth =
-                        new UsernamePasswordAuthenticationToken(email, null, null);
-                auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(http));
+                        new UsernamePasswordAuthenticationToken(
+                                userId, null, Collections.emptyList());
+
+                auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                 SecurityContextHolder.getContext().setAuthentication(auth);
 
-            } catch (Exception ex) {
-                // Invalid token → ignore, user stays unauthenticated
+            } catch (Exception ignored) {
+                // Invalid token → no authentication
             }
         }
 
-        chain.doFilter(request, response);
+        filterChain.doFilter(request, response);
     }
 }

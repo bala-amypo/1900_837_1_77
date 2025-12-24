@@ -16,13 +16,13 @@ public class RecommendationController {
         this.service = service;
     }
 
-    @PostMapping("/generate/{id}")
-    public List<SkillGapRecommendation> generate(@PathVariable Long id) {
-        return service.computeRecommendationsForStudent(id);
+    @PostMapping("/generate/{studentId}")
+    public List<SkillGapRecommendation> generate(@PathVariable Long studentId) {
+        return service.computeRecommendationsForStudent(studentId);
     }
 
-    @GetMapping("/student/{id}")
-    public List<SkillGapRecommendation> get(@PathVariable Long id) {
-        return service.getRecommendationsForStudent(id);
+    @GetMapping("/student/{studentId}")
+    public List<SkillGapRecommendation> getByStudent(@PathVariable Long studentId) {
+        return service.getRecommendationsForStudent(studentId);
     }
 }

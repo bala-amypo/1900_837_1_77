@@ -16,7 +16,7 @@ public class StudentProfileController {
         this.service = service;
     }
 
-    @PostMapping
+    @PostMapping("/")
     public StudentProfile create(@RequestBody StudentProfile profile) {
         return service.createOrUpdateProfile(profile);
     }
@@ -26,12 +26,12 @@ public class StudentProfileController {
         return service.getProfileById(id);
     }
 
-    @GetMapping("/enrollment/{enr}")
-    public StudentProfile getByEnrollment(@PathVariable String enr) {
-        return service.getProfileByEnrollmentId(enr);
+    @GetMapping("/enrollment/{enrollmentId}")
+    public StudentProfile getByEnrollment(@PathVariable String enrollmentId) {
+        return service.getProfileByEnrollmentId(enrollmentId);
     }
 
-    @GetMapping
+    @GetMapping("/")
     public List<StudentProfile> getAll() {
         return service.getAllProfiles();
     }

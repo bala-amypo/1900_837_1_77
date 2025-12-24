@@ -16,7 +16,7 @@ public class SkillController {
         this.service = service;
     }
 
-    @PostMapping
+    @PostMapping("/")
     public Skill create(@RequestBody Skill skill) {
         return service.createSkill(skill);
     }
@@ -31,14 +31,13 @@ public class SkillController {
         return service.getById(id);
     }
 
-    @GetMapping
+    @GetMapping("/")
     public List<Skill> getAll() {
         return service.getAllSkills();
     }
 
     @PutMapping("/{id}/deactivate")
-    public String deactivate(@PathVariable Long id) {
+    public void deactivate(@PathVariable Long id) {
         service.deactivateSkill(id);
-        return "Skill deactivated";
     }
 }

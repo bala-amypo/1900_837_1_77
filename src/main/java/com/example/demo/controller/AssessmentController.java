@@ -16,20 +16,20 @@ public class AssessmentController {
         this.service = service;
     }
 
-    @PostMapping
-    public AssessmentResult record(@RequestBody AssessmentResult result) {
-        return service.recordAssessment(result);
+    @PostMapping("/")
+    public AssessmentResult create(@RequestBody AssessmentResult ar) {
+        return service.recordAssessment(ar);
     }
 
-    @GetMapping("/student/{id}")
-    public List<AssessmentResult> getByStudent(@PathVariable Long id) {
-        return service.getResultsByStudent(id);
+    @GetMapping("/student/{studentId}")
+    public List<AssessmentResult> getByStudent(@PathVariable Long studentId) {
+        return service.getResultsByStudent(studentId);
     }
 
-    @GetMapping("/student/{sid}/skill/{kid}")
+    @GetMapping("/student/{studentId}/skill/{skillId}")
     public List<AssessmentResult> getByStudentAndSkill(
-            @PathVariable Long sid,
-            @PathVariable Long kid) {
-        return service.getResultsByStudentAndSkill(sid, kid);
+            @PathVariable Long studentId,
+            @PathVariable Long skillId) {
+        return service.getResultsByStudentAndSkill(studentId, skillId);
     }
 }

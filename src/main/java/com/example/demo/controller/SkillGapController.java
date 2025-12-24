@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.SkillGapRecord;
-import com.example.demo.service.SkillGapService;
+import com.example.demo.repository.SkillGapRecordRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,19 +10,14 @@ import java.util.List;
 @RequestMapping("/api/gaps")
 public class SkillGapController {
 
-    private final SkillGapService service;
+    private final SkillGapRecordRepository repo;
 
-    public SkillGapController(SkillGapService service) {
-        this.service = service;
-    }
-
-    @PostMapping("/compute/{studentId}")
-    public List<SkillGapRecord> compute(@PathVariable Long studentId) {
-        return service.computeGaps(studentId);
+    public SkillGapController(SkillGapRecordRepository repo) {
+        this.repo = repo;
     }
 
     @GetMapping("/student/{studentId}")
-    public List<SkillGapRecord> gaps(@PathVariable Long studentId) {
-        return service.getGapsByStudent(studentId);
+    public List<SkillGapRecord> getGaps(@PathVariable Long studentId) {
+        return repo.findByStudentProfileId(studentId);
     }
 }
