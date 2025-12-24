@@ -3,9 +3,11 @@ package com.example.demo.serviceimpl;
 import com.example.demo.entity.AssessmentResult;
 import com.example.demo.repository.AssessmentResultRepository;
 import com.example.demo.service.AssessmentService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class AssessmentServiceImpl implements AssessmentService {
 
     private final AssessmentResultRepository assessmentResultRepository;
@@ -16,7 +18,6 @@ public class AssessmentServiceImpl implements AssessmentService {
 
     @Override
     public AssessmentResult recordAssessment(AssessmentResult result) {
-
         if (result.getScore() == null ||
             result.getScore() < 0 ||
             result.getMaxScore() == null ||
@@ -24,7 +25,6 @@ public class AssessmentServiceImpl implements AssessmentService {
 
             throw new IllegalArgumentException("Score must be between 0 and 100");
         }
-
         return assessmentResultRepository.save(result);
     }
 
