@@ -17,19 +17,16 @@ public class SkillServiceImpl implements SkillService {
         this.repo = repo;
     }
 
-   @Override
-public Skill createSkill(Skill skill) {
+    @Override
+    public Skill createSkill(Skill skill) {
 
-    // FIX: Case-insensitive duplicate check
-    repo.findAll().forEach(s -> {
-        if (s.getCode() != null && s.getCode().equalsIgnoreCase(skill.getCode())) {
+        // t006: duplicate code check
+        if (repo.findByCode(skill.getCode()).isPresent()) {
             throw new IllegalArgumentException("Duplicate skill code");
         }
-    });
 
-    return repo.save(skill);
-}
-
+        return repo.save(skill);
+    }
 
     @Override
     public Skill updateSkill(Long id, Skill updated) {
@@ -40,7 +37,7 @@ public Skill createSkill(Skill skill) {
         s.setDescription(updated.getDescription());
         s.setCategory(updated.getCategory());
         s.setMinCompetencyScore(updated.getMinCompetencyScore());
-        s.setActive(updated.isActive());  // boolean getter is isActive()
+        s.setActive(updated.isActive()); // boolean getter = isActive()
 
         return repo.save(s);
     }
@@ -65,7 +62,6 @@ public Skill createSkill(Skill skill) {
     public void deactivateSkill(Long id) {
         Skill s = repo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Skill not found"));
-
         s.setActive(false);
         repo.save(s);
     }

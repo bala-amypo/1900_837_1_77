@@ -17,25 +17,24 @@ public class AssessmentServiceImpl implements AssessmentService {
         this.repo = repo;
     }
 
-   @Override
-public AssessmentResult recordAssessment(AssessmentResult result) {
+    @Override
+    public AssessmentResult recordAssessment(AssessmentResult result) {
 
-    if (result.getScore() == null) {
-        throw new IllegalArgumentException("Score cannot be null");
+        if (result.getScore() == null) {
+            throw new IllegalArgumentException("Score cannot be null"); // t041
+        }
+
+        if (result.getScore() < 0 || result.getScore() > result.getMaxScore()) {
+            throw new IllegalArgumentException("Score must be between 0 and 100");
+        }
+
+        // t050 — auto-set attemptedAt
+        if (result.getAttemptedAt() == null) {
+            result.setAttemptedAt(Instant.now());
+        }
+
+        return repo.save(result);
     }
-
-    if (result.getScore() < 0 || result.getScore() > result.getMaxScore()) {
-        throw new IllegalArgumentException("Score must be between 0 and 100");
-    }
-
-    // Fix auto-set attemptedAt when null
-    if (result.getAttemptedAt() == null) {
-        result.setAttemptedAt(Instant.now());
-    }
-
-    return repo.save(result);
-}
-
 
     @Override
     public List<AssessmentResult> getResultsByStudent(Long studentId) {

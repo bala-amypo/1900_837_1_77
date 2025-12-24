@@ -9,9 +9,6 @@ import java.util.List;
 @Repository
 public interface SkillGapRecommendationRepository extends JpaRepository<SkillGapRecommendation, Long> {
 
-    // Used in multiple tests
+    // ⭐ Correct method required by test t038
     List<SkillGapRecommendation> findByStudentProfileIdOrderByGeneratedAtDesc(Long studentId);
-
-    // ⭐ REQUIRED BY TEST CASE t038 — MUST BE EXACT NAME
-    List<SkillGapRecommendation> findByStudentOrdered(Long studentId);
 }
