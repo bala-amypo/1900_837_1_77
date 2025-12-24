@@ -31,10 +31,16 @@ public class StudentProfile {
     // REQUIRED BY TEST SUITE (fix for "grade" method missing)
     private String grade;
 
-    private Instant lastUpdatedAt = Instant.now();
+    private Instant lastUpdatedAt;
 
-    @PreUpdate
-    public void preUpdate() {
-        this.lastUpdatedAt = Instant.now();
-    }
+@PrePersist
+public void prePersist() {
+    this.lastUpdatedAt = Instant.now();
+}
+
+@PreUpdate
+public void preUpdate() {
+    this.lastUpdatedAt = Instant.now();
+}
+
 }
