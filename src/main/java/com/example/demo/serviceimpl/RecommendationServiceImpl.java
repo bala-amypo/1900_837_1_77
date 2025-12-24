@@ -53,6 +53,7 @@ public class RecommendationServiceImpl implements RecommendationService {
                 .priority(priority)
                 .recommendedAction("Improve " + skill.getName())
                 .generatedBy("SYSTEM")
+                .generatedAt(Instant.now())
                 .build();
 
         return recRepo.save(rec);
@@ -75,8 +76,7 @@ public class RecommendationServiceImpl implements RecommendationService {
     }
 
     @Override
-public List<SkillGapRecommendation> getRecommendationsForStudent(Long studentId) {
-    return recRepo.findByStudentProfileIdOrderByGeneratedAtDesc(studentId); // ⭐ Fix for t038
-}
-
+    public List<SkillGapRecommendation> getRecommendationsForStudent(Long studentId) {
+        return recRepo.findByStudentProfileIdOrderByGeneratedAtDesc(studentId);
+    }
 }

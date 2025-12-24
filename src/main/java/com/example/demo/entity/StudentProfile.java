@@ -5,8 +5,7 @@ import lombok.*;
 import java.time.Instant;
 
 @Entity
-@Getter
-@Setter
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -35,6 +34,6 @@ public class StudentProfile {
 
     @PreUpdate
     public void preUpdate() {
-        this.lastUpdatedAt = Instant.now();  // t015 fix
+        this.lastUpdatedAt = Instant.now();   // absolutely required
     }
 }

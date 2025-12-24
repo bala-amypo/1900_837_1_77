@@ -20,7 +20,7 @@ public class SkillServiceImpl implements SkillService {
     @Override
     public Skill createSkill(Skill skill) {
 
-        // t006 — case-insensitive duplicate check
+        // t006 → check duplicate code strictly case-insensitive
         if (repo.findByCodeIgnoreCase(skill.getCode()).isPresent()) {
             throw new IllegalArgumentException("Duplicate skill code");
         }
