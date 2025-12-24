@@ -6,6 +6,8 @@ import com.example.demo.repository.*;
 import com.example.demo.service.RecommendationService;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -42,8 +44,7 @@ public class RecommendationServiceImpl implements RecommendationService {
 
         double score = results.isEmpty() ? 0 : results.get(results.size() - 1).getScore();
         double gap = 100 - score;
-
-        String priority = gap >= 20 ? "HIGH" : (gap >= 10 ? "MEDIUM" : "LOW");
+        String priority = gap >= 20 ? "HIGH" : gap >= 10 ? "MEDIUM" : "LOW";
 
         SkillGapRecommendation rec = SkillGapRecommendation.builder()
                 .studentProfile(sp)
@@ -52,6 +53,7 @@ public class RecommendationServiceImpl implements RecommendationService {
                 .priority(priority)
                 .recommendedAction("Improve " + skill.getName())
                 .generatedBy("SYSTEM")
+                .generatedAt(Instant.now())
                 .build();
 
         return recRepo.save(rec);
@@ -64,10 +66,13 @@ public class RecommendationServiceImpl implements RecommendationService {
                 .orElseThrow(() -> new ResourceNotFoundException("Profile not found"));
 
         List<Skill> skills = skillRepo.findByActiveTrue();
+        List<SkillGapRecommendation> list = new ArrayList<>();
 
-        return skills.stream()
-                .map(s -> computeRecommendationForStudentSkill(studentId, s.getId()))
-                .toList();
+        for (Skill s : skills) {
+            list.add(computeRecommendationForStudentSkill(studentId, s.getId()));
+        }
+
+        return list;
     }
 
     @Override
