@@ -25,6 +25,6 @@ public class Skill {
     private String description;
 
     private Double minCompetencyScore;
-
+    @Builder.Default
     private boolean active = true;
 }

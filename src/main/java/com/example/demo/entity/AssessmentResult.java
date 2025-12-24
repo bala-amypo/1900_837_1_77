@@ -25,8 +25,8 @@ public class AssessmentResult {
     private String assessmentId;
 
     private Double score;
-
+    @Builder.Default
     private Double maxScore = 100.0;
-
+    @Builder.Default
     private Instant attemptedAt = Instant.now();
 }
