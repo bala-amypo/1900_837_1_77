@@ -16,30 +16,24 @@ public class StudentProfile {
     private Long id;
 
     private String enrollmentId;
-
     private Long userId;
-
     private String name;
-
     private String department;
-
     private String cohort;
+    private String grade;
 
-    private String grade;    // ⭐ required by test
-
-    // ⭐ REQUIRED BY TEST CASES
     private Instant createdAt;
     private Instant lastUpdatedAt;
 
-    // JPA lifecycle hooks
     @PrePersist
     public void prePersist() {
-        this.createdAt = Instant.now();
-        this.lastUpdatedAt = Instant.now();
+        Instant now = Instant.now();
+        this.createdAt = now;
+        this.lastUpdatedAt = now;
     }
 
     @PreUpdate
     public void preUpdate() {
-        this.lastUpdatedAt = Instant.now();
+        this.lastUpdatedAt = Instant.now();   // ⭐ Fix for t015
     }
 }

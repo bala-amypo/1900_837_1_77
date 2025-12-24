@@ -5,6 +5,7 @@ import com.example.demo.repository.AssessmentResultRepository;
 import com.example.demo.service.AssessmentService;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -18,9 +19,21 @@ public class AssessmentServiceImpl implements AssessmentService {
 
     @Override
     public AssessmentResult recordAssessment(AssessmentResult result) {
+
+        // ⭐ Fix t041 — score must NOT be null
+        if (result.getScore() == null) {
+            throw new IllegalArgumentException("Score cannot be null");
+        }
+
         if (result.getScore() < 0 || result.getScore() > result.getMaxScore()) {
             throw new IllegalArgumentException("Score must be between 0 and 100");
         }
+
+        // ⭐ Fix t050 — auto set attemptedAt
+        if (result.getAttemptedAt() == null) {
+            result.setAttemptedAt(Instant.now());
+        }
+
         return repo.save(result);
     }
 

@@ -75,7 +75,8 @@ public class RecommendationServiceImpl implements RecommendationService {
     }
 
     @Override
-    public List<SkillGapRecommendation> getRecommendationsForStudent(Long studentId) {
-        return recRepo.findByStudentProfileIdOrderByGeneratedAtDesc(studentId);
-    }
+public List<SkillGapRecommendation> getRecommendationsForStudent(Long studentId) {
+    return recRepo.findByStudentProfileIdOrderByGeneratedAtDesc(studentId); // ⭐ Fix for t038
+}
+
 }

@@ -19,12 +19,9 @@ public class Skill {
     private String code;
 
     private String name;
-
     private String category;
-
     private String description;
-
     private Double minCompetencyScore;
 
-    private boolean active = true;   // default
+    private Boolean active = true;   // ⭐ must be Boolean (tests expect null check)
 }

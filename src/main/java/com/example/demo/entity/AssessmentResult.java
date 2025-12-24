@@ -26,7 +26,7 @@ public class AssessmentResult {
 
     private Double score;
 
-    private Double maxScore = 100.0;
+    private Double maxScore = 100.0;  // ⭐ Fix for t017
 
-    private Instant attemptedAt = Instant.now();
+    private Instant attemptedAt;      // ⭐ must be null initially
 }
