@@ -17,16 +17,19 @@ public class SkillServiceImpl implements SkillService {
         this.repo = repo;
     }
 
-    @Override
-    public Skill createSkill(Skill skill) {
+   @Override
+public Skill createSkill(Skill skill) {
 
-        // t006: duplicate code test
-        if (repo.findByCode(skill.getCode()).isPresent()) {
+    // FIX: Case-insensitive duplicate check
+    repo.findAll().forEach(s -> {
+        if (s.getCode() != null && s.getCode().equalsIgnoreCase(skill.getCode())) {
             throw new IllegalArgumentException("Duplicate skill code");
         }
+    });
 
-        return repo.save(skill);
-    }
+    return repo.save(skill);
+}
+
 
     @Override
     public Skill updateSkill(Long id, Skill updated) {
