@@ -23,17 +23,16 @@ public class OpenApiConfig {
                 .bearerFormat("JWT");
 
         return new OpenAPI()
-                // ✅ Your server URL (kept as-is)
+                
                 .servers(List.of(
                         new Server().url("https://9288.408procr.amypo.ai/")
                 ))
 
-                // ✅ Add security scheme
                 .components(new Components()
                         .addSecuritySchemes("bearerAuth", bearerAuth)
                 )
 
-                // ✅ Apply security globally
+             
                 .addSecurityItem(new SecurityRequirement().addList("bearerAuth"));
     }
 }
